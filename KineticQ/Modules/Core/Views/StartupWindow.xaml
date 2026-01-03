@@ -1,0 +1,35 @@
+﻿<Window x:Class="KineticQ.Modules.Core.Views.StartupWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:KineticQ.Modules.Core.Views"
+        mc:Ignorable="d"
+        Title="Welcome" Height="300" Width="500"
+        WindowStartupLocation="CenterScreen" ResizeMode="NoResize"
+        Background="{StaticResource BackgroundDark}">
+    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+
+        <TextBlock Text="KinetiCUE" FontSize="48" FontWeight="Bold" 
+                       Foreground="{StaticResource BrandPurple}" 
+                       HorizontalAlignment="Center"/>
+
+        <TextBlock Text="Automation Control System" 
+                       Foreground="{StaticResource TextMuted}" 
+                       HorizontalAlignment="Center" Margin="0,0,0,40"/>
+
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+            <Button Command="{Binding NewProjectCommand}" 
+                        Content="New Project"
+                        Style="{StaticResource FlatButton}" 
+                        Background="{StaticResource BrandPurple}"
+                        Width="140" Height="40"/>
+
+            <Button Command="{Binding OpenProjectCommand}" 
+                        Content="Open Existing..."
+                        Style="{StaticResource FlatButton}"
+                        Width="140" Height="40"/>
+        </StackPanel>
+
+    </StackPanel>
+</Window>

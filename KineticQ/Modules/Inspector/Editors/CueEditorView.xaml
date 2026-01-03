@@ -1,0 +1,137 @@
+﻿<UserControl x:Class="KineticQ.Modules.Inspector.Editors.CueEditorView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:KineticQ.Modules.Inspector.Editors"
+             xmlns:vm="clr-namespace:KineticQ.Modules.Cueing.ViewModels"
+             xmlns:models="clr-namespace:KineticQ.Modules.Cueing.Models"
+             xmlns:sys="clr-namespace:System;assembly=System.Runtime"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <ObjectDataProvider x:Key="TriggerEnum" MethodName="GetValues" ObjectType="{x:Type sys:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="models:CueTrigger"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+    </UserControl.Resources>
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="0,0,10,0">
+        <StackPanel>
+
+            <TextBlock Text="Identification" Style="{StaticResource DataLabelStyle}" Margin="0,0,0,10"/>
+            <Grid Margin="0,0,0,20">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="10"/>
+                    <ColumnDefinition Width="3*"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Grid.Column="0">
+                    <TextBlock Text="Cue Number" Foreground="{StaticResource TextMuted}"/>
+                    <TextBox Text="{Binding Number}" Padding="5"/>
+                </StackPanel>
+
+                <StackPanel Grid.Column="2">
+                    <TextBlock Text="Label" Foreground="{StaticResource TextMuted}"/>
+                    <TextBox Text="{Binding Label}" Padding="5"/>
+                </StackPanel>
+            </Grid>
+
+            <TextBlock Text="Timing &amp; Trigger" Style="{StaticResource DataLabelStyle}" Margin="0,0,0,10"/>
+            <Border Background="{StaticResource BackgroundLight}" CornerRadius="4" Padding="10" Margin="0,0,0,20">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="10"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Grid.Column="0">
+                        <TextBlock Text="Trigger Type" Foreground="{StaticResource TextMuted}"/>
+                        <ComboBox ItemsSource="{Binding Source={StaticResource TriggerEnum}}"
+                                  SelectedItem="{Binding Trigger}"
+                                  Padding="5"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="2">
+                        <TextBlock Text="Wait / Delay (s)" Foreground="{StaticResource TextMuted}"/>
+                        <TextBox Text="{Binding TriggerDelay, StringFormat=N2}" Padding="5"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <Grid Margin="0,0,0,10">
+                <TextBlock Text="Machine Instructions" Style="{StaticResource DataLabelStyle}" VerticalAlignment="Center"/>
+                <Button Content="+ Add Machine" 
+                        Command="{Binding AddInstructionCommand}" 
+                        HorizontalAlignment="Right"
+                        Padding="10,2"
+                        Style="{StaticResource FlatButton}"
+                        FontSize="11"/>
+            </Grid>
+
+            <ItemsControl ItemsSource="{Binding Instructions}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate DataType="{x:Type vm:MoveInstructionViewModel}">
+                        <Border Background="{StaticResource BackgroundLight}" CornerRadius="4" Padding="10" Margin="0,0,0,10">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="10"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+
+                                <Grid Grid.Row="0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <StackPanel>
+                                        <TextBlock Text="Target Machine" Foreground="{StaticResource TextMuted}" FontSize="10"/>
+                                        <ComboBox ItemsSource="{Binding AvailableMachines}"
+                                                  DisplayMemberPath="Name"
+                                                  SelectedValuePath="Id"
+                                                  SelectedValue="{Binding SelectedMachineId}"
+                                                  Padding="5"/>
+                                    </StackPanel>
+
+                                    <Button Grid.Column="1" 
+                                            Content="X" 
+                                            Command="{Binding DataContext.RemoveInstructionCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                            CommandParameter="{Binding}"
+                                            Background="Transparent" 
+                                            BorderThickness="0"
+                                            Foreground="{StaticResource TextMuted}"
+                                            VerticalAlignment="Top"
+                                            Margin="10,0,0,0"/>
+                                </Grid>
+
+                                <Grid Grid.Row="2">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="10"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <StackPanel Grid.Column="0">
+                                        <TextBlock Text="Target Pos" Foreground="{StaticResource TextMuted}"/>
+                                        <TextBox Text="{Binding TargetPosition}" Padding="5"/>
+                                    </StackPanel>
+
+                                    <StackPanel Grid.Column="2">
+                                        <TextBlock Text="Duration (s)" Foreground="{StaticResource TextMuted}"/>
+                                        <TextBox Text="{Binding Duration}" Padding="5"/>
+                                    </StackPanel>
+                                </Grid>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

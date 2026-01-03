@@ -1,0 +1,69 @@
+﻿<UserControl x:Class="KineticQ.Modules.Machines.Views.MachineCardView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:models="clr-namespace:KineticQ.Modules.Machines"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="250">
+
+    <Border Style="{StaticResource CardBorderStyle}">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <StackPanel Grid.Row="0" Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,0,10">
+                <Ellipse Style="{StaticResource StatusDotStyle}" Fill="{StaticResource SafetyGreen}"/>
+                <TextBlock Text="{Binding Name}" FontSize="16" FontWeight="Bold" Foreground="{StaticResource TextPrimary}"/>
+            </StackPanel>
+
+            <UniformGrid Grid.Row="1" Columns="2" Rows="3" Margin="0,0,0,10">
+                <StackPanel Margin="0,5,10,5">
+                    <TextBlock Text="POSITION" Style="{StaticResource DataLabelStyle}"/>
+                    <TextBlock Style="{StaticResource DataValueStyle}">
+                        <Run Text="{Binding CurrentPosition, StringFormat=F2, Mode=OneWay}"/><Run Text="{Binding Units}"/>
+                    </TextBlock>
+                    <TextBlock Style="{StaticResource DataValueStyle}">
+                        <Run Text="{Binding TargetPosition, StringFormat=F2, Mode=OneWay}"/><Run Text="{Binding Units}"/>
+                    </TextBlock>
+                </StackPanel>
+
+                <StackPanel Margin="0,5">
+                    <TextBlock Text="VELOCITY" Style="{StaticResource DataLabelStyle}"/>
+                    <TextBlock Style="{StaticResource DataValueStyle}">
+                        <Run Text="{Binding CurrentVelocity, StringFormat=F2, Mode=OneWay}"/><Run Text="{Binding Units}"/><Run Text="/s"/>
+                    </TextBlock>
+                    <TextBlock Style="{StaticResource DataValueStyle}">
+                        <Run Text="{Binding TargetVelocity, StringFormat=F2, Mode=OneWay}"/><Run Text="{Binding Units}"/><Run Text="/s"/>
+                    </TextBlock>
+                </StackPanel>
+
+                <StackPanel Margin="0,5">
+                    <TextBlock Text="STATUS" Style="{StaticResource DataLabelStyle}"/>
+                    <TextBlock Text="IDLE" Style="{StaticResource DataValueStyle}" Foreground="{StaticResource SafetyGreen}"/>
+                </StackPanel>
+                
+                <StackPanel Margin="0,5">
+                    <TextBlock Text="ENABLED" Style="{StaticResource DataLabelStyle}"/>
+                    <Ellipse Style="{StaticResource StatusDotStyle}" Fill="{StaticResource SafetyGreen}"/>
+                </StackPanel>
+
+                <StackPanel Margin="0,5">
+                    <TextBlock Text="BRAKE" Style="{StaticResource DataLabelStyle}"/>
+                    <Ellipse Style="{StaticResource StatusDotStyle}" Fill="{StaticResource SafetyRed}"/>
+                </StackPanel>
+            </UniformGrid>
+
+            <Grid Grid.Row="2">
+
+                <Button Content="STOP" Style="{StaticResource FlatButton}" 
+                        BorderBrush="{StaticResource SafetyRed}" 
+                        Foreground="{StaticResource SafetyRed}"
+                        FontWeight="Bold" Padding="20,5"/>
+            </Grid>
+        </Grid>
+    </Border>
+</UserControl>
