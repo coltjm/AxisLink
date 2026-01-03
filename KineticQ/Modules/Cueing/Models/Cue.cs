@@ -1,7 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using System.Collections.Generic;
 
-namespace KineticQ.Modules.Cueing.Models
+namespace KinetiCUE.Modules.Cueing.Models
 {
     public enum CueTrigger
     {

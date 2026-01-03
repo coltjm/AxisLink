@@ -1,12 +1,12 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-using KinetiCUE.Models;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 using System.Text.Json;
+using CommunityToolkit.Mvvm.ComponentModel;
+using KinetiCUE.Models;
+using KinetiCUE.Modules.Machines.Models;
 
-
-namespace KineticQ.Services
+namespace KinetiCUE.Services
 {
     public partial class FileManager : ObservableObject
     {
@@ -61,7 +61,7 @@ namespace KineticQ.Services
 
         public void SaveShow(string filePath, string userLabel = "", bool isMilestone = false)
         {
-            Debug.WriteLine(CurrentShow.Revision);
+            Debug.WriteLine((object?)CurrentShow.Revision);
             // Update the Data Model
             CurrentShow.Revision++;
             CurrentShow.Label = userLabel;
@@ -131,7 +131,7 @@ namespace KineticQ.Services
             var options = new JsonSerializerOptions { WriteIndented = true };
 
             // Write current.json
-            string newJson = JsonSerializer.Serialize(CurrentShow, options);
+            string newJson = JsonSerializer.Serialize<ShowFile>(CurrentShow, options);
 
             File.WriteAllText(Path.Combine(tempPath, CurrentFileName), newJson);
 
@@ -192,7 +192,7 @@ namespace KineticQ.Services
         public int GetNextMachineId()
         {
             if (CurrentShow.Machines.Count == 0) return 0;
-            return CurrentShow.Machines.Max(m => m.Id) + 1;
+            return Enumerable.Max<Machine>(CurrentShow.Machines, m => m.Id) + 1;
         }
     }
 

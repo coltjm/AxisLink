@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace KineticQ.Modules.Core.Views
+namespace KinetiCUE.Modules.Core.Views
 {
     /// <summary>
     /// Interaction logic for ProjectSetup.xaml

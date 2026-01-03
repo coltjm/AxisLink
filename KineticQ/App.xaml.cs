@@ -1,12 +1,9 @@
-﻿
-using KineticQ.Services;
-using System.Configuration;
-using System.Data;
-using System.Diagnostics;
-using System.Windows;
-using KineticQ.Modules.Core.Views;
+﻿using System.Windows;
+using KinetiCUE.Modules.Core.ViewModels;
+using KinetiCUE.Modules.Core.Views;
+using KinetiCUE.Services;
 
-namespace KineticQ
+namespace KinetiCUE
 {
     /// <summary>
     /// Interaction logic for App.xaml
@@ -32,8 +29,8 @@ namespace KineticQ
         private void ShowStartupScreen()
         {
             ShutdownMode = ShutdownMode.OnExplicitShutdown;
-            var vm = new KineticQ.Modules.Core.ViewModels.StartupViewModel();
-            var window = new KineticQ.Modules.Core.Views.StartupWindow(); 
+            var vm = new StartupViewModel();
+            var window = new StartupWindow(); 
             window.DataContext = vm;
 
             // Connect the VM's close request to the Window

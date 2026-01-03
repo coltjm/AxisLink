@@ -1,6 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 
-namespace KineticQ.Modules.Cueing.Models
+namespace KinetiCUE.Modules.Cueing.Models
 {
     // Must be partial for the source generator to work
     public partial class MoveInstruction : ObservableObject

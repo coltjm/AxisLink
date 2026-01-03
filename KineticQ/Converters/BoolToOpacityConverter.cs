@@ -1,8 +1,7 @@
-﻿using System;
-using System.Globalization;
+﻿using System.Globalization;
 using System.Windows.Data;
 
-namespace KineticQ.Converters
+namespace KinetiCUE.Converters
 {
     public class BoolToOpacityConverter : IValueConverter
     {

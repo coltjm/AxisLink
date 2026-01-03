@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace KineticQ.Modules.Machines.Views
+namespace KinetiCUE.Modules.Machines.Views
 {
     /// <summary>
     /// Interaction logic for MachineConfigWindow.xaml

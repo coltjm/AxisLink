@@ -1,9 +1,9 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using KineticQ.Services;
-using Machine = KineticQ.Modules.Machines.Models.Machine;
+using KinetiCUE.Services;
+using Machine = KinetiCUE.Modules.Machines.Models.Machine;
 
-namespace KineticQ.Modules.Machines.ViewModels
+namespace KinetiCUE.Modules.Machines.ViewModels
 {
     public partial class MachineConfigViewModel : ObservableObject
     {

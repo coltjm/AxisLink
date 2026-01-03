@@ -1,25 +1,25 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
-using KineticQ.Modules.Core.ViewModels;
-using KineticQ.Modules.Core.Views;
-using KineticQ.Modules.Machines.ViewModels;
-using KineticQ.Modules.Machines.Views;
-using KineticQ.Modules.Workspace.ViewModel;
-using KineticQ.Modules.Workspace.Views;
-using KineticQ.Services;
-using Microsoft.Win32;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
-using KineticQ.Modules.Cueing.Models;
-using KineticQ.Modules.Cueing.Views;
-using KineticQ.Modules.Cueing.ViewModels;
-using KineticQ.Modules.Inspector.Views;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using KinetiCUE.Models;
-using Machine = KineticQ.Modules.Machines.Models.Machine;
+using KinetiCUE.Modules.Core.ViewModels;
+using KinetiCUE.Modules.Core.Views;
+using KinetiCUE.Modules.Cueing.Models;
+using KinetiCUE.Modules.Cueing.ViewModels;
+using KinetiCUE.Modules.Cueing.Views;
+using KinetiCUE.Modules.Inspector.Views;
+using KinetiCUE.Modules.Machines.ViewModels;
+using KinetiCUE.Modules.Machines.Views;
+using KinetiCUE.Modules.Workspace.ViewModel;
+using KinetiCUE.Modules.Workspace.Views;
+using KinetiCUE.Services;
+using Microsoft.Win32;
+using Machine = KinetiCUE.Modules.Machines.Models.Machine;
 
-namespace KineticQ.ViewModels
+namespace KinetiCUE.ViewModels
 {
     internal partial class MainViewModel : ObservableObject
     {
@@ -109,7 +109,7 @@ namespace KineticQ.ViewModels
                 IsDirty = FileManager.Instance.HasUnsavedChanges;
             }
 
-            else if (e.PropertyName == nameof(FileManager.CurrentShow))
+            else if (e.PropertyName == nameof(KinetiCUE.Services.FileManager.CurrentShow))
             {
                 SubscribeToNewShow();
             }
@@ -218,9 +218,9 @@ namespace KineticQ.ViewModels
             }
 
             // SCENARIO 2: SUBSEQUENT SAVE (Prompt for details)
-            var vm = new KineticQ.Modules.Core.ViewModels.SavePromptViewModel();
+            var vm = new SavePromptViewModel();
 
-            var prompt = new KineticQ.Modules.Core.Views.SavePromptWindow();
+            var prompt = new SavePromptWindow();
 
             prompt.DataContext = vm;
             prompt.Owner = Application.Current.MainWindow;
@@ -311,7 +311,7 @@ namespace KineticQ.ViewModels
             var vm = new MachineConfigViewModel(machineToEdit);
 
             // 2. Create the Window
-            var window = new KineticQ.Modules.Machines.Views.MachineConfigWindow();
+            var window = new MachineConfigWindow();
 
             // 3. Link them
             window.DataContext = vm;
@@ -330,7 +330,7 @@ namespace KineticQ.ViewModels
             var vm = new MachineConfigViewModel();
 
             // 2. Create the Window
-            var window = new KineticQ.Modules.Machines.Views.MachineConfigWindow();
+            var window = new MachineConfigWindow();
 
             // 3. Link them
             window.DataContext = vm;

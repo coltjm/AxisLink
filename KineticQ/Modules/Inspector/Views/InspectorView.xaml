@@ -1,8 +1,10 @@
-﻿<UserControl x:Class="KineticQ.Modules.Inspector.Views.InspectorView"
+﻿<UserControl x:Class="KinetiCUE.Modules.Inspector.Views.InspectorView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:vm="clr-namespace:KineticQ.Modules.Machines.ViewModels"
-             xmlns:editors="clr-namespace:KineticQ.Modules.Inspector.Editors">
+             xmlns:vm="clr-namespace:KinetiCUE.Modules.Machines.ViewModels"
+             xmlns:viewModels="clr-namespace:KinetiCUE.Modules.Machines.ViewModels"
+             xmlns:editors="clr-namespace:KinetiCUE.Modules.Inspector.Editors"
+             xmlns:cvm1="clr-namespace:KinetiCUE.Modules.Cueing.ViewModels">
 
     <Grid>
 
@@ -11,13 +13,12 @@
         <ContentControl Grid.Row="1" Content="{Binding SelectedContext}" Margin="10,40,10,10">
             <ContentControl.Resources>
 
-                <DataTemplate DataType="{x:Type vm:MachineViewModel}">
+                <DataTemplate DataType="{x:Type viewModels:MachineViewModel}">
                     <editors:MachineEditorView />
                 </DataTemplate>
 
-                <DataTemplate DataType="{x:Type cvm:CueViewModel}" 
-                              xmlns:cvm="clr-namespace:KineticQ.Modules.Cueing.ViewModels"
-                              xmlns:ceditors="clr-namespace:KineticQ.Modules.Cueing.Views">
+                <DataTemplate DataType="{x:Type cvm1:CueViewModel}" 
+                              xmlns:cvm="clr-namespace:KinetiCUE.Modules.Cueing.ViewModels">
                     <editors:CueEditorView />
                     </DataTemplate>
             </ContentControl.Resources>

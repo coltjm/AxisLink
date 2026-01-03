@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace KineticQ.Modules.Machines.Views
+namespace KinetiCUE.Modules.Machines.Views
 {
     /// <summary>
     /// Interaction logic for MachineListView.xaml

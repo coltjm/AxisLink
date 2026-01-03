@@ -1,9 +1,9 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using System.Windows;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using KineticQ.Services;
-using System.Windows;
+using KinetiCUE.Services;
 
-namespace KineticQ.Modules.Core.ViewModels
+namespace KinetiCUE.Modules.Core.ViewModels
 {
     internal partial class ProjectSetupViewModel : ObservableObject
     {

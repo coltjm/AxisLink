@@ -1,12 +1,13 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-using KineticQ.Services;
-using KineticQ.Modules.Machines.Models;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Collections.Specialized;
-using System.Linq;
-using KinetiCUE.Models; // Needed for SingleOrDefault
+using CommunityToolkit.Mvvm.ComponentModel;
+using KinetiCUE.Models;
+using KinetiCUE.Modules.Machines.Models;
+using KinetiCUE.Services;
 
-namespace KineticQ.Modules.Machines.ViewModels
+// Needed for SingleOrDefault
+
+namespace KinetiCUE.Modules.Machines.ViewModels
 {
     internal partial class MachineListViewModel : ObservableObject
     {
@@ -32,7 +33,7 @@ namespace KineticQ.Modules.Machines.ViewModels
             // Since this VM stays alive, we need to know when the ShowFile object is swapped out.
             FileManager.Instance.PropertyChanged += (s, e) =>
             {
-                if (e.PropertyName == nameof(FileManager.CurrentShow))
+                if (e.PropertyName == nameof(KinetiCUE.Services.FileManager.CurrentShow))
                 {
                     HookIntoShow(FileManager.Instance.CurrentShow);
                 }

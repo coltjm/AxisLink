@@ -1,8 +1,11 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using KineticQ.Modules.Machines.Models;
-using KineticQ.Services;
+using KinetiCUE.Modules.Machines.Models;
+using KinetiCUE.Services;
 using System.Collections.ObjectModel;
-using KineticQ.Modules.Cueing.Models;
+using KinetiCUE.Modules.Cueing.Models;
+using Cue = KinetiCUE.Modules.Cueing.Models.Cue;
+using FileManager = KinetiCUE.Services.FileManager;
+using Machine = KinetiCUE.Modules.Machines.Models.Machine;
 
 namespace KinetiCUE.Models
 {

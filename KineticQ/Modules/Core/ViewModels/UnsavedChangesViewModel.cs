@@ -1,8 +1,8 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using System.Windows;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using System.Windows;
 
-namespace KineticQ.Modules.Core.ViewModels
+namespace KinetiCUE.Modules.Core.ViewModels
 {
     internal partial class UnsavedChangesViewModel : ObservableObject
     {

@@ -1,4 +1,4 @@
-﻿<Window x:Class="KineticQ.Modules.Core.Views.SavePromptWindow"
+﻿<Window x:Class="KinetiCUE.Modules.Core.Views.SavePromptWindow"
         x:Name="SavePrompt"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"

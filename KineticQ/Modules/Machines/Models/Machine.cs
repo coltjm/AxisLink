@@ -1,9 +1,8 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using System.Text.Json.Serialization;
+using CommunityToolkit.Mvvm.ComponentModel;
+using KinetiCUE.Modules.Cueing.Models;
 
-using System.Text.Json.Serialization;
-using KineticQ.Modules.Cueing.Models;
-
-namespace KineticQ.Modules.Machines.Models
+namespace KinetiCUE.Modules.Machines.Models
 {
     public partial class Machine : ObservableObject
     {

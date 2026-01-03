@@ -1,6 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 
-namespace KineticQ.Modules.Workspace.ViewModel
+namespace KinetiCUE.Modules.Workspace.ViewModel
 {
     public partial class CustomizeLayoutViewModel : ObservableObject
     {

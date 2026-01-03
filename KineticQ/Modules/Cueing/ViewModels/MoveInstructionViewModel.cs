@@ -1,11 +1,10 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
-using KineticQ.Modules.Cueing.Models;
-using KineticQ.Modules.Machines.Models; // For Machine model
-using KineticQ.Services;
-using System.Linq;
+using KinetiCUE.Modules.Cueing.Models;
+using KinetiCUE.Modules.Machines.Models;
+using KinetiCUE.Services;
+// For Machine model
 
-namespace KineticQ.Modules.Cueing.ViewModels
+namespace KinetiCUE.Modules.Cueing.ViewModels
 {
     public partial class MoveInstructionViewModel : ObservableObject
     {

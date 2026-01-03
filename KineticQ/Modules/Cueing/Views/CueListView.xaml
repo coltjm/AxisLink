@@ -1,7 +1,7 @@
-﻿<UserControl x:Class="KineticQ.Modules.Cueing.Views.CueListView"
+﻿<UserControl x:Class="KinetiCUE.Modules.Cueing.Views.CueListView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:vm="clr-namespace:KineticQ.ViewModels">
+             xmlns:vm="clr-namespace:KinetiCUE.ViewModels">
 
     <Grid>
         <Grid.RowDefinitions>

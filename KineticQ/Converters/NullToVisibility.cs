@@ -2,7 +2,7 @@
 using System.Windows;
 using System.Windows.Data;
 
-namespace KineticQ.Converters
+namespace KinetiCUE.Converters
 {
     public class NullToVisibilityConverter : IValueConverter
     {

@@ -1,13 +1,12 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Collections.Specialized;
-using System.Linq;
-using KineticQ.Modules.Cueing.Models;
-using KineticQ.Services;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using KinetiCUE.Models;
+using KinetiCUE.Modules.Cueing.Models;
+using KinetiCUE.Services;
 
-namespace KineticQ.Modules.Cueing.ViewModels
+namespace KinetiCUE.Modules.Cueing.ViewModels
 {
     public partial class CueListViewModel : ObservableObject
     {
@@ -31,7 +30,7 @@ namespace KineticQ.Modules.Cueing.ViewModels
 
             FileManager.Instance.PropertyChanged += (s, e) =>
             {
-                if (e.PropertyName == nameof(FileManager.CurrentShow))
+                if (e.PropertyName == nameof(KinetiCUE.Services.FileManager.CurrentShow))
                 {
                     HookIntoShow(FileManager.Instance.CurrentShow);
                 }

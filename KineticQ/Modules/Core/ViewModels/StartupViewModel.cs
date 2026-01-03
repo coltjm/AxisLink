@@ -1,9 +1,9 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using KineticQ.Services;
+using KinetiCUE.Services;
 using Microsoft.Win32;
 
-namespace KineticQ.Modules.Core.ViewModels
+namespace KinetiCUE.Modules.Core.ViewModels
 {
     public partial class StartupViewModel : ObservableObject
     {

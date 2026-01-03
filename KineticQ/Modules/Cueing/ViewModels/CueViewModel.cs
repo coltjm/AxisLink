@@ -1,12 +1,12 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
-using KineticQ.Modules.Cueing.Models;
-using KineticQ.Services;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Runtime.CompilerServices;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using KinetiCUE.Modules.Cueing.Models;
+using KinetiCUE.Modules.Machines.Models;
+using KinetiCUE.Services;
 
-namespace KineticQ.Modules.Cueing.ViewModels
+namespace KinetiCUE.Modules.Cueing.ViewModels
 {
     public partial class CueViewModel : ObservableObject
     {
@@ -91,8 +91,8 @@ namespace KineticQ.Modules.Cueing.ViewModels
         private void AddInstruction()
         {
             // 1. Default to the first available machine that isn't already in the cue
-            var availableMachine = FileManager.Instance.CurrentShow.Machines
-                .FirstOrDefault(m => !_model.Instructions.ContainsKey(m.Id));
+            var availableMachine = Enumerable
+                .FirstOrDefault<Machine>(FileManager.Instance.CurrentShow.Machines, m => !_model.Instructions.ContainsKey(m.Id));
 
             if (availableMachine == null) return; // No machines left to add!
 

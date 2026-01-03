@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace KineticQ.Modules.Core.Views
+namespace KinetiCUE.Modules.Core.Views
 {
     public partial class SavePromptWindow : Window
     {

@@ -1,9 +1,8 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using KineticQ.Modules.Machines.Models;
-using KineticQ.Services;
-using System.ComponentModel;
+using KinetiCUE.Modules.Machines.Models;
+using KinetiCUE.Services;
 
-namespace KineticQ.Modules.Machines.ViewModels
+namespace KinetiCUE.Modules.Machines.ViewModels
 {
     internal partial class MachineViewModel : ObservableObject
     {
@@ -154,7 +153,7 @@ namespace KineticQ.Modules.Machines.ViewModels
         public bool IsFaulted => _model.IsFaulted;
         public string FaultMessage => _model.FaultMessage;
 
-        public bool IsAtTargetSpeed => Math.Abs(_model.CurrentVelocity - _model.TargetVelocity) < 0.1;
+        public bool IsAtTargetSpeed => Math.Abs((float)(_model.CurrentVelocity - _model.TargetVelocity)) < 0.1;
 
         [ObservableProperty] private bool _isSelected;
 
