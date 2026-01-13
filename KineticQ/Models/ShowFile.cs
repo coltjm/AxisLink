@@ -3,6 +3,7 @@ using KinetiCUE.Modules.Machines.Models;
 using KinetiCUE.Services;
 using System.Collections.ObjectModel;
 using KinetiCUE.Modules.Cueing.Models;
+using KinetiCUE.Modules.PLC.Models;
 using Cue = KinetiCUE.Modules.Cueing.Models.Cue;
 using FileManager = KinetiCUE.Services.FileManager;
 using Machine = KinetiCUE.Modules.Machines.Models.Machine;
@@ -38,12 +39,14 @@ namespace KinetiCUE.Models
 
         public ObservableCollection<Machine> Machines { get; set; } = new ObservableCollection<Machine>();
         public ObservableCollection<Cue> Cues { get; set; } = new ObservableCollection<Cue>();
+        public ObservableCollection<PLCModel> PLCs { get; set; } = new ObservableCollection<PLCModel>();
 
         // CONSTRUCTOR
         public ShowFile()
         {
             Machines.CollectionChanged += (s, e) => FileManager.Instance.MarkAsDirty();
             Cues.CollectionChanged += (s, e) => FileManager.Instance.MarkAsDirty();
+            PLCs.CollectionChanged += (s, e) => FileManager.Instance.MarkAsDirty();
         }
 
         protected override void OnPropertyChanged(System.ComponentModel.PropertyChangedEventArgs e)

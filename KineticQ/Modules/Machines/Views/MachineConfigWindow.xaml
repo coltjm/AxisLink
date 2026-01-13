@@ -133,25 +133,16 @@
                                 <RowDefinition Height="10"/>
                                 <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
-                            <StackPanel Grid.Column="0" Grid.Row="0">
-                                <TextBlock Text="IP Address" Foreground="{StaticResource TextMuted}"/>
-                                <TextBox Text="{Binding IPAddress}" Padding="5"/>
+
+                            <StackPanel Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0">
+                                <TextBlock Text="Assigned PLC Device" Foreground="{StaticResource TextMuted}"/>
+                                <ComboBox ItemsSource="{Binding AvailablePlcs}" 
+                                          DisplayMemberPath="Name" 
+                                          SelectedValuePath="Id"
+                                          SelectedValue="{Binding ParentPlcId}"
+                                          Padding="5" Margin="0,2,0,0"/>
                             </StackPanel>
-                            <Grid Grid.Row="0" Grid.Column="2">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="10"/>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
-                                <StackPanel Grid.Column="0">
-                                    <TextBlock Text="Port" Foreground="{StaticResource TextMuted}"/>
-                                    <TextBox Text="{Binding Port}" Padding="5"/>
-                                </StackPanel>
-                                <StackPanel Grid.Column="2">
-                                    <TextBlock Text="Unit ID" Foreground="{StaticResource TextMuted}"/>
-                                    <TextBox Text="{Binding UnitId}" Padding="5"/>
-                                </StackPanel>
-                            </Grid>
+
                             <StackPanel Grid.Column="0" Grid.Row="2">
                                 <TextBlock Text="Move Coil (Go Signal)" Foreground="{StaticResource TextMuted}"/>
                                 <TextBox Text="{Binding Addr_MoveCmd}" Padding="5"/>
@@ -171,7 +162,7 @@
                                 <TextBlock Text="Current Position Register" Foreground="{StaticResource TextMuted}"/>
                                 <TextBox Text="{Binding Addr_CurrentPos}" Padding="5"/>
                             </StackPanel>
-                            
+
                             <StackPanel Grid.Column="0" Grid.Row="6">
                                 <TextBlock Text="Target Velocity Register" Foreground="{StaticResource TextMuted}"/>
                                 <TextBox Text="{Binding Addr_TargetVel}" Padding="5"/>
@@ -184,7 +175,6 @@
                         </Grid>
                     </StackPanel>
                 </Border>
-
             </StackPanel>
         </ScrollViewer>
 

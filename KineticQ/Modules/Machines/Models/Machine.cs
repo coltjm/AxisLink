@@ -1,5 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 using CommunityToolkit.Mvvm.ComponentModel;
+using KinetiCUE.Models;
 using KinetiCUE.Modules.Cueing.Models;
 
 namespace KinetiCUE.Modules.Machines.Models
@@ -19,9 +20,9 @@ namespace KinetiCUE.Modules.Machines.Models
         public bool IsLinear { get; set; } = true; // Linear vs Rotary
 
         // --- NETWORK ---
-        public string IPAddress { get; set; } = "192.168.0.10";
-        public int Port { get; set; } = 502;
-        public int UnitId { get; set; } = 1;
+        public int PLCId = 0;
+
+        
 
         // --- MODBUS MAPPING (The Form Data) ---
         // Note: We store these as STRINGS because users might type "40001" or "40001.1"
@@ -62,8 +63,7 @@ namespace KinetiCUE.Modules.Machines.Models
         public Machine(
             int id, string name, float maxVelocity,
             float maxPosition, float minPosition, float homePosition,
-            float stepsPerRev, float distPerRev, bool isLinear, string IPAddress,
-            int port, int unitId, string Addr_MoveCmd, string Addr_TargetPos,
+            float stepsPerRev, float distPerRev, bool isLinear, int PLCId, string Addr_MoveCmd, string Addr_TargetPos,
             string Addr_TargetVel, string Addr_CurrentPos, string Addr_StatusBit, string Addr_FaultBit)
         {
             Id = id;
@@ -74,9 +74,7 @@ namespace KinetiCUE.Modules.Machines.Models
             StepsPerRevolution = stepsPerRev;
             DistPerRevolution = distPerRev;
             IsLinear = isLinear;
-            this.IPAddress = IPAddress;
-            Port = port;
-            UnitId = unitId;
+            this.PLCId = PLCId;
             this.Addr_MoveCmd = Addr_MoveCmd;
             this.Addr_TargetPos = Addr_TargetPos;
             this.Addr_TargetVel = Addr_TargetVel;

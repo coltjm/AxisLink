@@ -5,6 +5,7 @@ using System.Text.Json;
 using CommunityToolkit.Mvvm.ComponentModel;
 using KinetiCUE.Models;
 using KinetiCUE.Modules.Machines.Models;
+using KinetiCUE.Modules.PLC.Models;
 
 namespace KinetiCUE.Services
 {
@@ -18,6 +19,10 @@ namespace KinetiCUE.Services
 
         [ObservableProperty]
         private ShowFile _currentShow;
+        [ObservableProperty]
+        private PlcConnectionManager _connectionManager;
+        [ObservableProperty]
+        private PLCService _commandService;
         [ObservableProperty]
         private string _currentFilePath = "";
         private bool _hasUnsavedChanges = false;
@@ -41,6 +46,8 @@ namespace KinetiCUE.Services
         private FileManager()
         {
             _currentShow = new ShowFile();
+            _connectionManager = new PlcConnectionManager(CurrentShow);
+            _commandService = new PLCService(ConnectionManager);
         }
 
 
@@ -193,6 +200,12 @@ namespace KinetiCUE.Services
         {
             if (CurrentShow.Machines.Count == 0) return 0;
             return Enumerable.Max<Machine>(CurrentShow.Machines, m => m.Id) + 1;
+        }
+
+        public int GetNextPLCId()
+        {
+            if (CurrentShow.PLCs.Count == 0) return 0;
+            return Enumerable.Max<PLCModel>(CurrentShow.PLCs, m => m.Id) + 1;
         }
     }
 

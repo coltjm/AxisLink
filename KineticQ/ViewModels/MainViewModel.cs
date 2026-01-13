@@ -1,8 +1,4 @@
-﻿using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.Windows;
-using System.Windows.Controls;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using KinetiCUE.Models;
 using KinetiCUE.Modules.Core.ViewModels;
@@ -13,10 +9,18 @@ using KinetiCUE.Modules.Cueing.Views;
 using KinetiCUE.Modules.Inspector.Views;
 using KinetiCUE.Modules.Machines.ViewModels;
 using KinetiCUE.Modules.Machines.Views;
+using KinetiCUE.Modules.PLC.Models;
+using KinetiCUE.Modules.PLC.ViewModels;
+using KinetiCUE.Modules.PLC.Views;
 using KinetiCUE.Modules.Workspace.ViewModel;
 using KinetiCUE.Modules.Workspace.Views;
 using KinetiCUE.Services;
 using Microsoft.Win32;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+using System.Diagnostics;
+using System.Windows;
+using System.Windows.Controls;
 using Machine = KinetiCUE.Modules.Machines.Models.Machine;
 
 namespace KinetiCUE.ViewModels
@@ -30,17 +34,35 @@ namespace KinetiCUE.ViewModels
         private string _currentProjectName;
 
         [ObservableProperty]
+        private string _plcStatusText;
+
+        [ObservableProperty]
+        private string _plcStatusColor;
+
+        [ObservableProperty]
+        private string _eStopText;
+
+        [ObservableProperty]
+        private string _eStopColor;
+
+        [ObservableProperty]
+        private string _eStopBackground;
+
+        [ObservableProperty]
         [NotifyPropertyChangedFor(nameof(WindowTitle))]
         private bool _isDirty;
         [ObservableProperty]
         private object? _selectedContext;
+
         private ShowFile? _watchedShow;
         public string WindowTitle => $"{CurrentProjectName}{(IsDirty ? "*" : "")} - KinetiCUE";
         public ObservableCollection<Cue> Cues => FileManager.Instance.CurrentShow.Cues;
         public ObservableCollection<Machine> Machines => FileManager.Instance.CurrentShow.Machines;
+        public ObservableCollection<PLCModel> PLCs => FileManager.Instance.CurrentShow.PLCs;
 
         public MachineListViewModel MachineListVM { get; }
         public CueListViewModel CueListVM { get; }
+        public PLCService PLCService { get; }
 
         // Display Variables for 4 Quadrant View
         private readonly Dictionary<string, Func<object>> _viewRegistry;
@@ -94,6 +116,11 @@ namespace KinetiCUE.ViewModels
             {
                 SelectedContext = obj;
             };
+            PLCs.CollectionChanged += OnPlcListChanged;
+            foreach (var plc in PLCs) SubscribeToPlc(plc);
+
+            // 3. Force initial update
+            UpdateSystemStatus();
             // Initialize values immediately (so it doesn't wait for the first change)
             CurrentProjectName = FileManager.Instance.CurrentShow.ShowName;
             IsDirty = FileManager.Instance.HasUnsavedChanges;
@@ -146,6 +173,61 @@ namespace KinetiCUE.ViewModels
             }
         }
 
+        private void UpdateSystemStatus()
+        {
+            // A. Generate the PLC List Text
+            // Creates a string like:
+            // "MAIN PLC: CONNECTED"
+            // "STAGE LEFT: DISCONNECTED"
+            var statusLines = PLCs.Select(p => p.StatusDisplayString);
+            PlcStatusText = string.Join("\n", statusLines);
+
+            // B. Determine Global PLC Color
+            // If ANY plc is disconnected -> Red. Otherwise -> Green.
+            bool allConnected = PLCs.All(p => p.IsConnected);
+            PlcStatusColor = allConnected ? "#388E3C" : "#D32F2F";
+
+            // C. Determine Global E-Stop Status
+            // System is safe ONLY if ALL PLCs are Connected AND Safe
+            bool isSystemSafe = PLCs.All(p => p.IsConnected && !p.IsEStopped);
+
+            if (isSystemSafe)
+            {
+                EStopText = "SYSTEM READY";
+                EStopColor = "#388E3C"; // Green
+                EStopBackground = "#002200"; // Dark Green
+            }
+            else
+            {
+                EStopText = "E-STOP ACTIVE";
+                EStopColor = "#D32F2F"; // Red
+                EStopBackground = "#220000"; // Dark Red
+            }
+        }
+        private void SubscribeToPlc(PLCModel plc)
+        {
+            // When a specific PLC updates its connection/safety, re-run our global check
+            plc.PropertyChanged += (s, e) =>
+            {
+                if (e.PropertyName == nameof(PLCModel.IsConnected) ||
+                    e.PropertyName == nameof(PLCModel.IsEStopped))
+                {
+                    // Must marshal to UI thread for View updates
+                    Application.Current.Dispatcher.Invoke(UpdateSystemStatus);
+                }
+            };
+        }
+
+        private void OnPlcListChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e.NewItems != null)
+                foreach (PLCModel p in e.NewItems) SubscribeToPlc(p);
+
+            // (Technically should unsubscribe from OldItems to prevent memory leaks, 
+            // but for a singleton app it's often negligible)
+
+            UpdateSystemStatus();
+        }
         private object GetViewByKey(string key)
         {
             // 1. Check if the key exists in our registry
@@ -353,6 +435,28 @@ namespace KinetiCUE.ViewModels
         }
 
         [RelayCommand]
+        private void NewPLC()
+        {
+            // 1. Create the VM
+            var vm = new PLCViewModel();
+
+            // 2. Create the Window
+            var window = new PLCSetup();
+
+            // 3. Link them
+            window.DataContext = vm;
+
+            window.Owner = Application.Current.MainWindow;
+
+            // 4. Hook up the Close Action so the VM can close the window
+            vm.RequestClose = () => window.Close();
+
+            // 5. Show as Dialog (blocks interaction with main window until closed)
+            window.ShowDialog();
+
+        }
+
+        [RelayCommand]
         private void ConfigureProject()
         {
             var vm = new ProjectSetupViewModel();
@@ -412,7 +516,7 @@ namespace KinetiCUE.ViewModels
         [RelayCommand]
         private void Go()
         {
-            //TODO
+            FileManager.Instance.CommandService.ExecuteCueAsync(Cues[CurrentCue]);
             return;
         }
 

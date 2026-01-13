@@ -1,6 +1,8 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using KinetiCUE.Modules.PLC.Models;
 using KinetiCUE.Services;
+using System.Collections.ObjectModel;
 using Machine = KinetiCUE.Modules.Machines.Models.Machine;
 
 namespace KinetiCUE.Modules.Machines.ViewModels
@@ -12,6 +14,9 @@ namespace KinetiCUE.Modules.Machines.ViewModels
         // This Action allows the ViewModel to tell the Window to close
         public Action? RequestClose { get; set; }
 
+        public ObservableCollection<PLCModel> AvailablePlcs => FileManager.Instance.CurrentShow.PLCs;
+
+
         // --- TEMPORARY EDITING FIELDS ---
         [ObservableProperty] private int _id;
         [ObservableProperty] private string _name;
@@ -22,9 +27,7 @@ namespace KinetiCUE.Modules.Machines.ViewModels
         [ObservableProperty] private float _stepsPerRevolution;
         [ObservableProperty] private float _distPerRevolution;
         [ObservableProperty] private bool _isLinear;
-        [ObservableProperty] private string _iPAddress;
-        [ObservableProperty] private int _port;
-        [ObservableProperty] private int _unitId;
+        [ObservableProperty] private int _pLCId;
         [ObservableProperty] private string _addr_MoveCmd;
         [ObservableProperty] private string _addr_TargetPos;
         [ObservableProperty] private string _addr_TargetVel;
@@ -48,9 +51,7 @@ namespace KinetiCUE.Modules.Machines.ViewModels
             StepsPerRevolution = machine.StepsPerRevolution;
             DistPerRevolution = machine.DistPerRevolution;
             IsLinear = machine.IsLinear;
-            IPAddress = machine.IPAddress;
-            Port = machine.Port;
-            UnitId = machine.UnitId;
+            PLCId = machine.PLCId;
             Addr_MoveCmd = machine.Addr_MoveCmd;
             Addr_TargetPos = machine.Addr_TargetPos;
             Addr_TargetVel = machine.Addr_TargetVel;
@@ -71,9 +72,7 @@ namespace KinetiCUE.Modules.Machines.ViewModels
             StepsPerRevolution = 200;
             DistPerRevolution = 10;
             IsLinear = true;
-            IPAddress = "";
-            Port = 0;
-            UnitId = 0;
+            PLCId = 0;
             Addr_MoveCmd = "";
             Addr_TargetPos = "";
             Addr_TargetVel = "";
@@ -99,9 +98,7 @@ namespace KinetiCUE.Modules.Machines.ViewModels
                 _originalModel.StepsPerRevolution = StepsPerRevolution;
                 _originalModel.DistPerRevolution = DistPerRevolution;
                 _originalModel.IsLinear = IsLinear;
-                _originalModel.IPAddress = IPAddress;
-                _originalModel.Port = Port;
-                _originalModel.UnitId = UnitId;
+                _originalModel.PLCId = PLCId;
                 _originalModel.Addr_MoveCmd = Addr_MoveCmd;
                 _originalModel.Addr_TargetPos = Addr_TargetPos;
                 _originalModel.Addr_TargetVel = Addr_TargetVel;
@@ -119,9 +116,7 @@ namespace KinetiCUE.Modules.Machines.ViewModels
                     MaxPosition, MinPosition, HomePosition,
                     StepsPerRevolution, DistPerRevolution,
                     IsLinear,
-                    IPAddress,
-                    Port,
-                    UnitId,
+                    PLCId,
                     Addr_MoveCmd,
                     Addr_TargetPos,
                     Addr_TargetVel,

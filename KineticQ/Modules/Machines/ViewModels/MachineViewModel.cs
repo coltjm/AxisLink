@@ -81,22 +81,10 @@ namespace KinetiCUE.Modules.Machines.ViewModels
 
         // --- Network ---
 
-        public string IPAddress
+        public int PLCId
         {
-            get => _model.IPAddress;
-            set => SetModelProperty(value, (m, v) => m.IPAddress = v);
-        }
-
-        public int Port
-        {
-            get => _model.Port;
-            set => SetModelProperty(value, (m, v) => m.Port = v);
-        }
-
-        public int UnitId
-        {
-            get => _model.UnitId;
-            set => SetModelProperty(value, (m, v) => m.UnitId = v);
+            get => _model.PLCId;
+            set => SetModelProperty(value, (m, v) => m.PLCId = v);
         }
 
         // --- PLC Registers ---
