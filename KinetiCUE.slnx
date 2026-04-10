@@ -2,4 +2,5 @@
   <Project Path="KinetiCUE.Core/KinetiCUE.Core.csproj" Id="a5fb9f3d-07ac-4839-a5f9-cb39c2370e59" />
   <Project Path="KinetiCUE.Infrastructure/KinetiCUE.Infrastructure.csproj" Id="11ca19c0-37df-4f67-9d0e-da1e1401bba3" />
   <Project Path="KinetiCUE.Desktop/KinetiCUE.Desktop.csproj" />
+  <Project Path="KinetiCUE.Tests/KinetiCUE.Tests.csproj" Id="11321ba9-3fee-474d-9c62-d75067eb9c6c" />
 </Solution>

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using KinetiCUE.Core.Models.KQ;
+using System;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Text;
@@ -9,6 +10,8 @@ namespace KinetiCUE.Core.Models.Standard
     // Location subclass specific to Axes in E1.44-2014 R2024
     public class AxisLocation
     {
+        // Parameterless constructor for xml serialization and deserialization
+        public AxisLocation() { }
         // See ANSI E1.44-2014 R2024 5.3.1.1 for details on how location is defined
         // x poisition in mm
         [XmlElement("b_x")]
@@ -49,8 +52,12 @@ namespace KinetiCUE.Core.Models.Standard
 
     // Basic Axis model made in accordance with ANSI E1.44-2014 R2024
     [XmlType("b_axis")]
+    [XmlInclude(typeof(KQAxis))]
     public class StandardAxis
     {
+        // Parameterless constructor for xml serialization and deserialization
+        public StandardAxis() { }
+
         // Only the id is required (according to E1.44-2014 R2024)
         [XmlAttribute("b_id")]
         public required int Id { get; set; }

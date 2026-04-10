@@ -1,4 +1,5 @@
-﻿using System;
+﻿using KinetiCUE.Core.Models.KQ;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Xml.Serialization;
@@ -7,7 +8,8 @@ namespace KinetiCUE.Core.Models.Standard
 {
     // Must be wrapped in "b_patch" with a "b_interactive_decision_point" for entire list (if decision point is needed)
 
-    [XmlType("b_object")]
+    [XmlType("b_patch_object")]
+    [XmlInclude(typeof(KQPatch))]
     public class StandardPatch
     {
         // Id corresponding to a scenery object
@@ -21,5 +23,8 @@ namespace KinetiCUE.Core.Models.Standard
 
         [XmlElement("b_group")]
         public int? GroupId { get; set; }
+
+        // Parameterless constructor for xml serialization and deserialization
+        public StandardPatch() { }
     }
 }

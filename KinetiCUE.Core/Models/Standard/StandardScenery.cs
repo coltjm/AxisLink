@@ -1,4 +1,5 @@
-﻿using System;
+﻿using KinetiCUE.Core.Models.KQ;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Xml.Serialization;
@@ -19,6 +20,9 @@ namespace KinetiCUE.Core.Models.Standard
         // Saved trim positions
         [XmlElement("b_trim")]
         public List<SceneryTrim>? Trims { get; set; } = new();
+
+        // Parameterless constructor for xml serialization and deserialization
+        public SceneryTrims() { }
     }
 
     public class SceneryLimitTrim
@@ -32,6 +36,9 @@ namespace KinetiCUE.Core.Models.Standard
         // Position in mm according to E1.44-2014 R2024 5.3.1.2
         [XmlElement("b_position")]
         public float? Position { get; set; }
+
+        // Parameterless constructor for xml serialization and deserialization
+        public SceneryLimitTrim() { }
     }
 
     public class SceneryTrim
@@ -48,9 +55,13 @@ namespace KinetiCUE.Core.Models.Standard
         // Position in mm according to E1.44-2014 R2024 5.3.1.2
         [XmlElement("b_position")]
         public float? Position { get; set; }
+
+        // Parameterless constructor for xml serialization and deserialization
+        public SceneryTrim() { }
     }
 
-    [XmlType("b_object")]
+    [XmlType("b_scenery_object")]
+    [XmlInclude(typeof(KQScenery))]
     public class StandardScenery
     {
         [XmlAttribute("b_id")]
@@ -79,7 +90,10 @@ namespace KinetiCUE.Core.Models.Standard
 
         [XmlElement("b_trims")]
         public SceneryTrims? Trims { get; set; }
-       
+
+        // Parameterless constructor for xml serialization and deserialization
+        public StandardScenery() { }
+
 
     }
 }

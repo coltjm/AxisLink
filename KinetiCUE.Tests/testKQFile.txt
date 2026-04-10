@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-16"?>
+<showfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <header xsi:type="KQHeader">
+    <show_name>KQTest</show_name>
+    <notes>Unit test for KQ development</notes>
+    <user>Colt McGuire</user>
+    <date>
+      <year>2026</year>
+      <month>4</month>
+      <day>9</day>
+      <hour>6</hour>
+      <minute>5</minute>
+      <second>34</second>
+    </date>
+    <versions>
+      <version>KQ V0.1</version>
+    </versions>
+  </header>
+  <b_machinery>
+    <b_axes>
+      <b_axis xsi:type="kq_axis" b_id="0">
+        <b_type xsi:nil="true" />
+        <b_length xsi:nil="true" />
+        <b_positioning xsi:nil="true" />
+        <b_low_limit xsi:nil="true" />
+        <b_high_limit xsi:nil="true" />
+        <b_speed_type xsi:nil="true" />
+        <b_max_speed xsi:nil="true" />
+        <b_max_accel xsi:nil="true" />
+        <b_max_decel xsi:nil="true" />
+        <b_max_load xsi:nil="true" />
+        <plc>1</plc>
+        <steps_per_rev>200</steps_per_rev>
+        <dist_per_rev>100</dist_per_rev>
+        <sensors>
+          <sensor id="0">
+            <plc>0</plc>
+            <type>home</type>
+            <nc>true</nc>
+            <hardware_config xsi:type="ModbusSensorConfig">
+              <signal_addr>X001</signal_addr>
+            </hardware_config>
+          </sensor>
+        </sensors>
+        <hardware_type>modbus</hardware_type>
+        <hardware_config xsi:type="ModbusStepperConfig">
+          <pulse_addr>Y001</pulse_addr>
+          <direction_addr>Y002</direction_addr>
+        </hardware_config>
+      </b_axis>
+      <b_axis xsi:type="kq_axis" b_id="1">
+        <b_type xsi:nil="true" />
+        <b_length xsi:nil="true" />
+        <b_positioning xsi:nil="true" />
+        <b_low_limit xsi:nil="true" />
+        <b_high_limit xsi:nil="true" />
+        <b_speed_type xsi:nil="true" />
+        <b_max_speed xsi:nil="true" />
+        <b_max_accel xsi:nil="true" />
+        <b_max_decel xsi:nil="true" />
+        <b_max_load xsi:nil="true" />
+        <plc>1</plc>
+        <steps_per_rev>200</steps_per_rev>
+        <dist_per_rev>100</dist_per_rev>
+        <sensors />
+        <hardware_type>modbus</hardware_type>
+        <hardware_config xsi:type="ModbusStepperConfig">
+          <pulse_addr>Y001</pulse_addr>
+          <direction_addr>Y002</direction_addr>
+        </hardware_config>
+      </b_axis>
+    </b_axes>
+    <b_groups>
+      <b_group xsi:type="KQGroup" b_id="0">
+        <b_name>main group</b_name>
+        <b_type>free</b_type>
+        <b_speed_limit>100</b_speed_limit>
+        <b_master_axis b_id="0" />
+        <b_axis b_id="1">
+          <b_offset>200</b_offset>
+        </b_axis>
+      </b_group>
+    </b_groups>
+    <b_scenery>
+      <b_object xsi:type="KQScenery" b_id="0">
+        <b_name>Tree Flyrail</b_name>
+        <b_height>400</b_height>
+        <b_weight>10</b_weight>
+        <b_speed_limit>100</b_speed_limit>
+        <b_trims>
+          <b_lowtrim>
+            <b_name>minimum</b_name>
+            <b_position>100</b_position>
+          </b_lowtrim>
+          <b_hightrim>
+            <b_name>maximum</b_name>
+            <b_position>1000</b_position>
+          </b_hightrim>
+          <b_trim b_id="0">
+            <b_name>home</b_name>
+            <b_position>500</b_position>
+          </b_trim>
+        </b_trims>
+      </b_object>
+    </b_scenery>
+    <b_patch>
+      <b_object xsi:type="KQPatch" b_id="0">
+        <b_axis xsi:nil="true" />
+        <b_group>0</b_group>
+      </b_object>
+    </b_patch>
+    <b_cues>
+      <b_cue xsi:type="KQCue">
+        <b_number>1.23</b_number>
+        <b_name>Fly tree in</b_name>
+        <b_stack>2</b_stack>
+        <b_object xsi:type="KQCuePart" b_id="0">
+          <b_user>FOH</b_user>
+          <b_playback>2</b_playback>
+          <b_move_type>linear</b_move_type>
+          <b_start>
+            <b_type>limit</b_type>
+            <b_limit>maximum</b_limit>
+            <b_trim xsi:nil="true" />
+            <b_position xsi:nil="true" />
+          </b_start>
+          <b_target>
+            <b_type>limit</b_type>
+            <b_limit>minimum</b_limit>
+            <b_trim xsi:nil="true" />
+            <b_position xsi:nil="true" />
+            <b_distance xsi:nil="true" />
+            <b_delay>1.5</b_delay>
+            <b_time>10</b_time>
+            <b_accel>30</b_accel>
+            <b_decel>30</b_decel>
+            <b_speed>50</b_speed>
+          </b_target>
+        </b_object>
+      </b_cue>
+    </b_cues>
+  </b_machinery>
+</showfile>

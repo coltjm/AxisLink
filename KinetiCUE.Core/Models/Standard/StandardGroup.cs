@@ -1,4 +1,5 @@
-﻿using System;
+﻿using KinetiCUE.Core.Models.KQ;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Xml.Serialization;
@@ -19,6 +20,8 @@ namespace KinetiCUE.Core.Models.Standard
     // This axis is taken as the position reference of the group both for display and targeting purposes.
     public class GroupMasterAxis
     {
+        // Parameterless constructor for xml serialization and deserialization
+        public GroupMasterAxis() { }
         [XmlAttribute("b_id")]
         public required int Id { get; set; }
     }
@@ -26,6 +29,8 @@ namespace KinetiCUE.Core.Models.Standard
     // Axis subclass in E1.44-2014 R2024
     public class GroupAxis
     {
+        // Parameterless constructor for xml serialization and deserialization
+        public GroupAxis() { }
         [XmlAttribute("b_id")]
         public required int Id { get; set; }
 
@@ -37,6 +42,7 @@ namespace KinetiCUE.Core.Models.Standard
 
     // Basic Axis model made in accordance with ANSI E1.44-2014 R2024
     [XmlType("b_group")]
+    [XmlInclude(typeof(KQGroup))]
     public class StandardGroup
     {
         [XmlAttribute("b_id")]
@@ -63,6 +69,9 @@ namespace KinetiCUE.Core.Models.Standard
 
         [XmlElement("b_axis")]
         public List<GroupAxis> GroupAxes { get; set; } = new();
+
+        // Parameterless constructor for xml serialization and deserialization
+        public StandardGroup() { }
 
 
     }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using KinetiCUE.Core.Models.KQ;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Xml.Serialization;
@@ -24,8 +25,12 @@ namespace KinetiCUE.Core.Models.Standard
 
         [XmlElement("second")]
         public required int Second { get; set; }
-    }
 
+        // Parameterless constructor for xml serialization and deserialization
+        public Date() { }
+    }
+    
+    [XmlInclude(typeof(KQHeader))]
     public class StandardHeader
     {
         [XmlElement("show_name")]
@@ -42,7 +47,10 @@ namespace KinetiCUE.Core.Models.Standard
 
         [XmlArray("versions")]
         [XmlArrayItem("version")]
-        public List<string>? Version { get; set; }
+        public List<string>? Versions { get; set; }
+
+        // Parameterless constructor for xml serialization and deserialization
+        public StandardHeader() { }
 
     }
 }
