@@ -6,5 +6,6 @@ namespace KinetiCUE.Infrastructure.Management
 {
     public class MotionManager
     {
+        //holds all motion services and pollers
     }
 }

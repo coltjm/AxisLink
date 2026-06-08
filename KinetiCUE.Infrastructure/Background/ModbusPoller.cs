@@ -2,6 +2,7 @@
 using KinetiCUE.Infrastructure.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 
 namespace KinetiCUE.Infrastructure.Background
@@ -9,18 +10,37 @@ namespace KinetiCUE.Infrastructure.Background
     public class ModbusPoller : IPoller
     {
 
-        private readonly IMotionService _service;
-        private readonly IEnumerable<KQAxis> _axes;
+        public event Action<KQAxis>? PollCompleted;
+        public event Action<Exception>? PollFailed;
+        public bool IsPolling { get; set;} = false;
 
-        public async Task RunAsync(CancellationToken ct)
+        public void Start(IEnumerable<KQAxis> axes, TimeSpan interval)
         {
-            while (!ct.IsCancellationRequested)
-            {
-                // The Poller triggers the capability
-                await _service.UpdateAllStatesAsync(_axes);
+            IsPolling = true;
+            foreach (KQAxis axis in axes) {
+                Poll(axis);
+            }
+            throw new NotImplementedException();
+        }
+        public void Stop()
+        {
+            IsPolling = false;
+            throw new NotImplementedException();
+        }
 
-                await Task.Delay(50, ct); // 20Hz
+        protected async Task Poll(KQAxis axis) 
+        {
+            while (IsPolling) {
+                try { 
+                    Debug.WriteLine("Polling...");
+                    PollCompleted?.Invoke(axis);
+                }
+                catch (Exception e) {
+                    PollFailed?.Invoke(e);
+                }
             }
         }
+
+
     }
 }
