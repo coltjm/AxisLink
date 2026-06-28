@@ -2,40 +2,75 @@
 using KinetiCUE.Core.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Net;
 using System.Text;
 
 namespace KinetiCUE.Infrastructure.Services
 {
     public class SimulatedMotionService : IMotionService
     {
-        public bool IsConnected => throw new NotImplementedException();
+        public bool IsConnected { get; private set; } = false;
+        public bool IsJogging { get; private set; } = false;
 
-        public Task ConnectAsync(string ipAddress, int port)
+        public async Task ConnectAsync(string ipAddress, int port)
         {
-            throw new NotImplementedException();
+
+            // Think about how to mark the connection as complete - depends on where the connect call is made from
+            Debug.WriteLine($"Connecting to {ipAddress} on port {port}");
+            await Task.Delay(500);
+            IsConnected = true;
         }
 
-        public Task DisconnectAsync()
+        public async Task DisconnectAsync()
         {
-            throw new NotImplementedException();
+            Debug.WriteLine($"Disconnecting");
+            await Task.Delay(500);
+            IsConnected = false;
         }
 
-        public Task ExecuteMoveAsync(KQAxis axis, float targetPosition)
+        // needs to include things like expected start, accel, vel, decel, etc.
+        public async Task ExecuteMoveAsync(KQAxis axis, float targetPosition)
         {
-            throw new NotImplementedException();
+            Debug.WriteLine($"Moving Axis {axis.Name} to position: {targetPosition}");
+            if (axis.CurrentPos <  targetPosition) 
+            {
+                while (axis.CurrentPos < targetPosition)
+                {
+                    axis.CurrentPos += 5;
+                    Debug.WriteLine($"Current Position: {axis.CurrentPos}");
+                }
+            }
+            else
+            {
+                while (axis.CurrentPos > targetPosition)
+                {
+                    axis.CurrentPos -= 5;
+                    Debug.WriteLine($"Current Position: {axis.CurrentPos}");
+                }
+            }
+            Debug.WriteLine($"Axis Move Complete. Axis Position: {axis.CurrentPos}");
         }
 
-        public Task JogAsync(KQAxis axis, float velocity)
+        public async Task JogAsync(KQAxis axis, float velocity)
         {
-            throw new NotImplementedException();
+            Debug.WriteLine($"Jogging Axis {axis.Name} with velocity: {velocity}");
+            while (IsJogging)
+            {
+                axis.CurrentPos += velocity;
+                Debug.WriteLine($"Current Position: {axis.CurrentPos}");
+                await Task.Delay(250);
+            }
+            Debug.WriteLine($"Axis Jog Complete. Axis Position: {axis.CurrentPos}");
         }
 
-        public Task StopAxisAsync(KQAxis axis)
+        public async Task StopAxisAsync(KQAxis axis)
         {
-            throw new NotImplementedException();
+            IsJogging = false;
+            Debug.WriteLine($"Stopping Axis {axis.Name}");
         }
 
-        public Task UpdateAllStatesAsync(IEnumerable<KQAxis> axes)
+        public async Task UpdateAllStatesAsync(IEnumerable<KQAxis> axes)
         {
             throw new NotImplementedException();
         }

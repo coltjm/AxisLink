@@ -33,6 +33,7 @@ namespace KinetiCUE.Core.Models.Configs
         [XmlElement("brake_addr")]
         public string? BrakeAddress { get; set; }
         // X### - INPUT COIL
+        // READ IN POLL
         [XmlElement("alarm_addr")]
         public string? AlarmAddress { get; set; }
         
@@ -46,6 +47,7 @@ namespace KinetiCUE.Core.Models.Configs
         [XmlElement("destination_loaded_addr")]
         public string? DestinationLoaded { get; set; }
         // Whether or not this axis is in motion
+        // READ IN POLL
         [XmlElement("busy_addr")]
         public string? Busy {  get; set; }
         // Go signal for this axis
@@ -64,21 +66,27 @@ namespace KinetiCUE.Core.Models.Configs
         [XmlElement("jog_go_addr")]
         public string? JogGo { get; set; }
         // Whether or not PLC encountered error during move
+        // READ IN POLL
         [XmlElement("error_addr")]
         public string? Error { get; set; }
         // Error code of error if applicable
+        // READ IN POLL
         [XmlElement("error_code_addr")]
         public string? ErrorCode { get; set; }
         // If position move was completed (cue motion)
+        // READ IN POLL IF MOVE EXPECTED
         [XmlElement("pm_complete_addr")]
         public string? PMComplete { get; set; }
         // If position move was successful (cue motion)
+        // READ IN POLL IF MOVE EXPECTED
         [XmlElement("pm_success_addr")]
         public string? PMSuccess {  get; set; }
         // If velocity move was completed (jog motion)
+        // READ IN POLL IF MOVE EXPECTED
         [XmlElement("vm_complete_addr")]
         public string? VMComplete { get; set; }
         // If velocity move was successful (jog motion)
+        // READ IN POLL IF MOVE EXPECTED
         [XmlElement("vm_success_addr")]
         public string? VMSuccess { get; set; }
         [XmlElement("target_position_addr")]
@@ -98,8 +106,10 @@ namespace KinetiCUE.Core.Models.Configs
         public string? TargetJogAccel { get; set; }
         [XmlElement("target_jog_decel_addr")]
         public string? TargetJogDecel { get; set; }
+        // READ IN POLL
         [XmlElement("current_position_addr")]
         public string? CurrentPosition { get; set; }
+        // READ IN POLL
         [XmlElement("current_velocity_addr")]
         public string? CurrentVelocity { get; set; }
 

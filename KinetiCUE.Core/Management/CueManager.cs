@@ -1,10 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using KinetiCUE.Core.Models.KQ;
 
 namespace KinetiCUE.Core.Management
 {
     public class CueManager
     {
+        bool IsPolling { get; }
+
+        void Start(IEnumerable<KQAxis> axes, TimeSpan interval);
+        void Stop();
+
+        event Action<IEnumerable<KQAxis>>? PollCompleted;
+        event Action<Exception>? PollFailed;
     }
 }
