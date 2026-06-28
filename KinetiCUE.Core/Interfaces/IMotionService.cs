@@ -3,8 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace KinetiCUE.Infrastructure.Interfaces
+namespace KinetiCUE.Core.Interfaces
 {
+    // Manages interaction with motors.
     public interface IMotionService
     {
         // Connectivity

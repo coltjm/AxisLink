@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace KinetiCUE.Infrastructure.Interfaces
+namespace KinetiCUE.Core.Interfaces
 {
-    internal interface IPoller
+    public interface IFileStorage
     {
     }
 }

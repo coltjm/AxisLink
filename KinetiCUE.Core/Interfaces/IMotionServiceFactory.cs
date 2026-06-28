@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace KinetiCUE.Infrastructure.Management
+namespace KinetiCUE.Core.Interfaces
 {
-    public class MotionManager
+    public interface IMotionServiceFactory
     {
     }
 }

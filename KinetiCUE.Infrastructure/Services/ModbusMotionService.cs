@@ -1,5 +1,5 @@
 ﻿using KinetiCUE.Core.Models.KQ;
-using KinetiCUE.Infrastructure.Interfaces;
+using KinetiCUE.Core.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -10,7 +10,7 @@ namespace KinetiCUE.Infrastructure.Services
     {
         public bool IsConnected => throw new NotImplementedException();
 
-        public async void ConnectAsync()
+        public async Task ConnectAsync()
         {
             throw new NotImplementedException();
         }

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AvaloniaProject">
+    <option name="projectPerEditor">
+      <map>
+        <entry key="KinetiCUE.Desktop/Views/MainWindow.axaml" value="KinetiCUE.Desktop/KinetiCUE.Desktop.csproj" />
+      </map>
+    </option>
+  </component>
+</project>
