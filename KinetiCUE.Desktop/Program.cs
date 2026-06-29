@@ -1,7 +1,7 @@
 ﻿using Avalonia;
 using System;
 
-namespace KinetiCUE
+namespace KinetiCUE.Desktop
 {
     internal sealed class Program
     {

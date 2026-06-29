@@ -29,12 +29,12 @@
         <b_max_accel xsi:nil="true" />
         <b_max_decel xsi:nil="true" />
         <b_max_load xsi:nil="true" />
-        <plc>1</plc>
+        <controller_id>1</controller_id>
         <steps_per_rev>200</steps_per_rev>
         <dist_per_rev>100</dist_per_rev>
         <sensors>
           <sensor id="0">
-            <plc>0</plc>
+            <controller_id>0</controller_id>
             <type>home</type>
             <nc>true</nc>
             <hardware_config xsi:type="ModbusSensorConfig">
@@ -59,7 +59,7 @@
         <b_max_accel xsi:nil="true" />
         <b_max_decel xsi:nil="true" />
         <b_max_load xsi:nil="true" />
-        <plc>1</plc>
+        <controller_id>1</controller_id>
         <steps_per_rev>200</steps_per_rev>
         <dist_per_rev>100</dist_per_rev>
         <sensors />
@@ -140,4 +140,22 @@
       </b_cue>
     </b_cues>
   </b_machinery>
+  <controllers>
+    <controller id="0">
+      <name>Modbus Controller</name>
+      <connection_config xsi:type="ModbusConfig">
+        <IpAddress>192.168.1.100</IpAddress>
+        <Port>502</Port>
+        <EStopAddress>X000</EStopAddress>
+      </connection_config>
+    </controller>
+    <controller id="1">
+      <name>Modbus Controller 2</name>
+      <connection_config xsi:type="ModbusConfig">
+        <IpAddress>192.168.1.101</IpAddress>
+        <Port>502</Port>
+        <EStopAddress>X000</EStopAddress>
+      </connection_config>
+    </controller>
+  </controllers>
 </showfile>

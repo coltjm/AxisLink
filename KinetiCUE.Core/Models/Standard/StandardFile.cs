@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Xml.Serialization;
 
 namespace KinetiCUE.Core.Models.Standard
@@ -72,5 +73,6 @@ namespace KinetiCUE.Core.Models.Standard
             this.Machinery = new Machinery(Axes, Groups, Scenery, Patches, Cues);
             this.Header = new StandardHeader();
         }
+
     }
 }

@@ -16,10 +16,34 @@ namespace KinetiCUE.Tests.Models.KQ
         [Fact]
         public void KQFile_FullRoundTrip()
         {
+            var controller0 = new KQController
+            {
+                Id = 0,
+                Name = "Modbus Controller",
+                Config = new ModbusConfig
+                {
+                    IpAddress = "192.168.1.100",
+                    Port = "502",
+                    EStopAddress = "X000"
+                }
+
+            };
+            var controller1 = new KQController
+            {
+                Id = 1,
+                Name = "Modbus Controller 2",
+                Config = new ModbusConfig
+                {
+                    IpAddress = "192.168.1.101",
+                    Port = "502",
+                    EStopAddress = "X000"
+                }
+
+            };
             var sensor0 = new KQSensor
             {
                 Id = 0,
-                PLCId = 0,
+                ControllerId = 0,
                 SensorType = SensorTypes.Home,
                 NC = true,
                 Config = new ModbusSensorConfig
@@ -30,7 +54,7 @@ namespace KinetiCUE.Tests.Models.KQ
             var axis0 = new KQAxis
             {
                 Id = 0,
-                PLCId = 1,
+                ControllerId = 1,
                 StepsPerRevolution = 200,
                 DistancePerRevolution = 100,
                 Sensors = new List<KQSensor>
@@ -52,7 +76,7 @@ namespace KinetiCUE.Tests.Models.KQ
             var axis1 = new KQAxis
             {
                 Id = 1,
-                PLCId = 1,
+                ControllerId = 1,
                 StepsPerRevolution = 200,
                 DistancePerRevolution = 100,
                 Sensors = new(),
@@ -164,6 +188,7 @@ namespace KinetiCUE.Tests.Models.KQ
             };
             
             var originalFile = new KQFile(
+                new List<KQController>() { controller0, controller1 },
                 new List<StandardAxis>() { axis0, axis1}, 
                 new List<StandardGroup>() { group0},
                 new List<StandardScenery>() { scenery0},

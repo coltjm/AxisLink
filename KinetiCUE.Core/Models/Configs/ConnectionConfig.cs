@@ -8,6 +8,7 @@ namespace KinetiCUE.Core.Models.Configs
     // TODO should consider serial vs ethernet
 
     [XmlInclude(typeof(ModbusConfig))]
+    // [XmlInclude(typeof(OTHERConfig))]
     public abstract class ConnectionConfig
     {
         // Common properties for all connection types

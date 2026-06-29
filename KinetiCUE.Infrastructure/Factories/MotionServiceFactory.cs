@@ -1,23 +1,25 @@
 ﻿using KinetiCUE.Core.Interfaces;
+using KinetiCUE.Core.Models.Configs;
+using KinetiCUE.Core.Models.KQ;
+using KinetiCUE.Infrastructure.Services;
+using KinetiCUE.Infrastructure.Utils;
 using System;
 using System.Collections.Generic;
 using System.Text;
-using KinetiCUE.Infrastructure.Utils;
-using KinetiCUE.Core.Models.KQ;
-using KinetiCUE.Infrastructure.Services;
 
 namespace KinetiCUE.Infrastructure.Factories
 {
-    internal class MotionServiceFactory
+    public class MotionServiceFactory : IMotionServiceFactory
     {
         // Takes motion type and creates relevant services
-        public IMotionService CreateService(Enums.MotionType motionType, KQAxis axis)
+        public IMotionService CreateService(ConnectionConfig config)
         {
-            if(motionType == Enums.MotionType.Modbus)
+            return config switch
             {
-                return new ModbusMotionService();
-            }
-            return new SimulatedMotionService();
+                ModbusConfig modbus => new ModbusMotionService(modbus.IpAddress, modbus.Port),
+                // BeckhoffConfig beckhoff => new BeckhoffAdsService(beckhoff.AmsNetId),
+                _ => throw new NotSupportedException($"Unknown config type: {config.GetType().Name}")
+            };
         }
     }
 }

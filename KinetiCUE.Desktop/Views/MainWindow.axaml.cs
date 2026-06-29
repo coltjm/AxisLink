@@ -1,6 +1,6 @@
 using Avalonia.Controls;
 
-namespace KinetiCUE.Views
+namespace KinetiCUE.Desktop.Views
 {
     public partial class MainWindow : Window
     {

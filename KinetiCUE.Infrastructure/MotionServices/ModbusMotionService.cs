@@ -9,9 +9,19 @@ namespace KinetiCUE.Infrastructure.Services
     public class ModbusMotionService : IMotionService
     {
         public bool IsConnected => throw new NotImplementedException();
+        private string _ipAddress;
+        private string _port;
+
+        public ModbusMotionService(string ipAddress, string port)
+        {
+            _ipAddress = ipAddress;
+            _port = port;
+            throw new NotImplementedException();
+        }
 
         public async Task ConnectAsync()
         {
+            // Conect using the provided IP address and port
             throw new NotImplementedException();
         }
 

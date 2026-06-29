@@ -11,10 +11,13 @@ namespace KinetiCUE.Core.Models.KQ
     [XmlType("kq_file")]
     public class KQFile : StandardFile
     {
-        public KQFile(List<StandardAxis> Axes, List<StandardGroup> Groups, List<StandardScenery> Scenery, List<StandardPatch> Patches, List<StandardCue> Cues) 
+        [XmlArray("controllers")]
+        [XmlArrayItem("controller")]
+        public List<KQController> Controllers { get; set; }
+        public KQFile(List<KQController> controllers, List<StandardAxis> Axes, List<StandardGroup> Groups, List<StandardScenery> Scenery, List<StandardPatch> Patches, List<StandardCue> Cues) 
             : base(Axes, Groups, Scenery, Patches,  Cues)
         {
-            
+            this.Controllers = controllers;
         }
 
         // Parameterless constructor for xml serialization and deserialization

@@ -8,7 +8,7 @@ namespace KinetiCUE.Core.Interfaces
     // Manages interaction with motors.
     public interface IMotionService
     {
-        Task ConnectAsync(string ipAddress, int port);
+        Task ConnectAsync();
         Task DisconnectAsync();
         bool IsConnected { get; }
 

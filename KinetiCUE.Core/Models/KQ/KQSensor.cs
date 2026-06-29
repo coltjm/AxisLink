@@ -27,8 +27,8 @@ namespace KinetiCUE.Core.Models.KQ
         [XmlAttribute("id")]
         public required int Id { get; set; }
         // Sensors might be connected to a different plc than associated axis - I dont recommend but software will allow
-        [XmlElement("plc")]
-        public int? PLCId { get; set; }
+        [XmlElement("controller_id")]
+        public int? ControllerId { get; set; }
 
         [XmlElement("type")]
         public SensorTypes SensorType { get; set; }

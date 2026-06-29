@@ -1,10 +1,10 @@
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
-using KinetiCUE.ViewModels;
+using KinetiCUE.Desktop.ViewModels;
 using System;
 using System.Diagnostics.CodeAnalysis;
 
-namespace KinetiCUE
+namespace KinetiCUE.Desktop
 {
     /// <summary>
     /// Given a view model, returns the corresponding view if possible.

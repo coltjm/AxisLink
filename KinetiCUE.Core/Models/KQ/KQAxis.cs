@@ -17,8 +17,8 @@ namespace KinetiCUE.Core.Models.KQ
     {
         // Parameterless constructor for xml serialization and deserialization
         public KQAxis() { }
-        [XmlElement("plc")]
-        public int? PLCId { get; set; }
+        [XmlElement("controller_id")]
+        public int? ControllerId { get; set; }
 
         [XmlElement("steps_per_rev")]
         public int? StepsPerRevolution { get; set; }

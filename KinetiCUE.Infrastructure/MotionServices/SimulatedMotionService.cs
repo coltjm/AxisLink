@@ -12,12 +12,19 @@ namespace KinetiCUE.Infrastructure.Services
     {
         public bool IsConnected { get; private set; } = false;
         public bool IsJogging { get; private set; } = false;
+        private string _ipAddress;
+        private string _port;
+        public SimulatedMotionService(string ipAddress, string port) 
+        {
+            _ipAddress = ipAddress;
+            _port = port;
 
-        public async Task ConnectAsync(string ipAddress, int port)
+        }
+        public async Task ConnectAsync()
         {
 
             // Think about how to mark the connection as complete - depends on where the connect call is made from
-            Debug.WriteLine($"Connecting to {ipAddress} on port {port}");
+            Debug.WriteLine($"Connecting to {_ipAddress} on port {_port}");
             await Task.Delay(500);
             IsConnected = true;
         }
