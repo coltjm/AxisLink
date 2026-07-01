@@ -4,8 +4,9 @@ using Avalonia.Logging;
 using CommunityToolkit.Mvvm.Input;
 using Dock.Model.Controls;
 using KinetiCUE.Core.Interfaces;
+using KinetiCUE.Core.Management;
 using KinetiCUE.Desktop.Utilities;
-using KinetiCUE.Desktop.ViewModels.Windows;
+using KinetiCUE.Desktop.ViewModels.Windows.ControllerSetup;
 using KinetiCUE.Infrastructure.Loggers; // Lightweight, high-performance standard
 using System;
 using System.Diagnostics;
@@ -15,6 +16,8 @@ namespace KinetiCUE.Desktop.ViewModels
     public partial class MainWindowViewModel : ViewModelBase
     {
         public WorkspaceViewModel Workspace { get; }
+
+        public ShowFileManager FileManager { get; }
         public IRootDock Layout { get; set;}
         public IKQLogger Logger { get;}
 
@@ -37,10 +40,11 @@ namespace KinetiCUE.Desktop.ViewModels
         }
 
         // DI Constructor
-        public MainWindowViewModel(WorkspaceViewModel workspace, IKQLogger logger)
+        public MainWindowViewModel(WorkspaceViewModel workspace, IKQLogger logger, ShowFileManager fileManager)
         {
             Workspace = workspace;
             Logger = logger;
+            FileManager = fileManager;
 
             NewShowCommand = new RelayCommand(ExecuteNewShow);
             OpenShowCommand = new RelayCommand(ExecuteOpenShow);
@@ -99,9 +103,9 @@ namespace KinetiCUE.Desktop.ViewModels
         private void OpenNewControllerWindow()
         {
             Logger.LogInfo("Opening new Controller Setup window.");
-            var configVm = new ControllerSetupViewModel();
+            var configVm = new ControllerSetupViewModel(FileManager);
 
-            var setupWindow = new Views.Windows.ControllerSetupWindow(configVm);
+            var setupWindow = new Views.Windows.ControllerSetup.ControllerSetupWindow(configVm);
 
             if (Avalonia.Application.Current?.ApplicationLifetime is Avalonia.Controls.ApplicationLifetimes.IClassicDesktopStyleApplicationLifetime desktop)
             {

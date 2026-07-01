@@ -1,9 +1,9 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
-using KinetiCUE.Desktop.ViewModels.Windows;
+using KinetiCUE.Desktop.ViewModels.Windows.ControllerSetup;
 
-namespace KinetiCUE.Desktop.Views.Windows;
+namespace KinetiCUE.Desktop.Views.Windows.ControllerSetup;
 
 public partial class ControllerSetupWindow : Window
 {

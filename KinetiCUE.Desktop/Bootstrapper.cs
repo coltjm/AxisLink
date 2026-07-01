@@ -2,7 +2,7 @@
 using KinetiCUE.Core.Management;
 using KinetiCUE.Desktop.ViewModels;
 using KinetiCUE.Desktop.ViewModels.Modules;
-using KinetiCUE.Desktop.ViewModels.Windows;
+using KinetiCUE.Desktop.ViewModels.Windows.ControllerSetup;
 using KinetiCUE.Infrastructure.Factories;
 using KinetiCUE.Infrastructure.Loggers;
 using KinetiCUE.Infrastructure.ShowFileStorge;
