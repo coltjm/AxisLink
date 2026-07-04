@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Xml.Serialization;
 
-namespace AxisLink.Infrastructure.ShowFileStorge
+namespace AxisLink.Infrastructure.ShowFileStorage
 {
     public class XmlShowFileStorage : IShowFileStorage
     {

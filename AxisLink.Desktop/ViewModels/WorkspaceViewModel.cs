@@ -9,18 +9,20 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using AxisLink.Core.Management;
 
 namespace AxisLink.Desktop.ViewModels
 {
     public partial class WorkspaceViewModel : ViewModelBase
     {
-            private readonly IKQLogger _logger;
+            private readonly IConsoleLogger _logger;
+            private readonly ShowFileManager FileManager;
+        public ObservableCollection<ModuleViewModelBase> ActiveModules { get; } = new();
 
-            public ObservableCollection<ModuleViewModelBase> ActiveModules { get; } = new();
-
-            public WorkspaceViewModel(IKQLogger logger)
+            public WorkspaceViewModel(IConsoleLogger logger, ShowFileManager fileManager)
             {
                 _logger = logger;
+                FileManager = fileManager;
 
                 InitializeDefaultWorkspace();
             }
@@ -36,7 +38,7 @@ namespace AxisLink.Desktop.ViewModels
             public void ShowAxisViewer()
             {
                 // This architecture allows you to spin up multiple copies effortlessly
-                ActiveModules.Add(new AxisViewerModuleViewModel());
+                ActiveModules.Add(new AxisViewerModuleViewModel(FileManager));
             }
 
             public void ShowCueList()

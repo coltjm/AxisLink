@@ -15,7 +15,7 @@ namespace AxisLink.Desktop
         {
             var showFileManager = serviceProvider.GetRequiredService<ShowFileManager>();
             var motionManager = serviceProvider.GetRequiredService<MotionManager>();
-            var logger = serviceProvider.GetRequiredService<IKQLogger>();
+            var logger = serviceProvider.GetRequiredService<IConsoleLogger>();
             logger.LogInfo("=== STARTING ARCHITECTURE TRACE ===");
 
             showFileManager.OpenShow("C:\\Users\\coltj\\source\\repos\\coltjm\\AxisLink\\AxisLink.Tests\\testAxisLinkFile.txt");

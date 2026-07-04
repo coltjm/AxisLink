@@ -8,7 +8,7 @@ using System.Text;
 
 namespace AxisLink.Infrastructure.Loggers
 {
-    public class KQLogger : IKQLogger
+    public class KQLogger : IConsoleLogger
     {
         private readonly ILogger _logger;
         // Buffer to hold log entries until the UI is ready

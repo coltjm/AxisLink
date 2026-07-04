@@ -14,7 +14,7 @@ namespace AxisLink.Core.Interfaces
     }
 
     // KQLogger to avoid conflict with Serilog's ILogger
-    public interface IKQLogger
+    public interface IConsoleLogger
     {
         void Log(LogLevel level, string message, Exception? ex = null);
         event Action<KQLogEntry>? OnLogReceived;

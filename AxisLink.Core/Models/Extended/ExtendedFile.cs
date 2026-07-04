@@ -8,7 +8,7 @@ using System.Xml.Serialization;
 namespace AxisLink.Core.Models.Extended
 {
     [XmlRoot("showfile")]
-    [XmlType("kq_file")]
+    [XmlType("alink_file")]
     public class ExtendedFile : StandardFile
     {
         [XmlArray("controllers")]

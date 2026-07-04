@@ -18,11 +18,17 @@ namespace AxisLink.Core.Management
             _storage = storage;
         }
 
+        public ShowFileManager()
+        {
+        }
+
         // Opens a show file from the specified path and loads it into CurrentShow
         public void OpenShow(string path)
         {
             CurrentShow = _storage.LoadFromFileSystem(path);
         }
+
+        
 
         // Saves the current show file to the specified path
         public void SaveShow(string path)

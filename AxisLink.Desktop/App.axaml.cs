@@ -8,8 +8,9 @@ using AxisLink.Core.Management;
 using AxisLink.Core.Models.Configs;
 using AxisLink.Desktop;
 using AxisLink.Desktop.Utilities;
-using AxisLink.Desktop.ViewModels;
+using AxisLink.Desktop.ViewModels.Windows;
 using AxisLink.Desktop.Views;
+using AxisLink.Desktop.Views.Windows;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Diagnostics;
@@ -28,7 +29,8 @@ namespace AxisLink.Desktop
         public override void OnFrameworkInitializationCompleted()
         {
             IServiceProvider serviceProvider = Bootstrapper.CreateServiceProvider();
-            var logger = serviceProvider.GetRequiredService<IKQLogger>();
+            var windowManager = serviceProvider.GetRequiredService<WindowManager>();
+            var logger = serviceProvider.GetRequiredService<IConsoleLogger>();
 
             try
             {
@@ -47,14 +49,7 @@ namespace AxisLink.Desktop
             // TEMP TESTING
             ConsoleTesting.Test(serviceProvider);
 
-            if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
-            {
-                var mainViewModel = serviceProvider.GetRequiredService<MainWindowViewModel>();
-                desktop.MainWindow = new MainWindow
-                {
-                    DataContext = mainViewModel
-                };
-            }
+            windowManager.ShowLaunchWindow();
 
             base.OnFrameworkInitializationCompleted();
         }

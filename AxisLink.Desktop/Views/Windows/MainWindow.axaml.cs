@@ -1,6 +1,6 @@
 using Avalonia.Controls;
 
-namespace AxisLink.Desktop.Views
+namespace AxisLink.Desktop.Views.Windows
 {
     public partial class MainWindow : Window
     {

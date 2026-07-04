@@ -1,0 +1,41 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="using:AxisLink.Desktop.ViewModels.Windows"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="AxisLink.Desktop.Views.Windows.LaunchWindow"
+        x:DataType="vm:LaunchWindowViewModel"
+        WindowDecorations="None"
+        Title="Welcome"
+        Width="500" Height="350"
+        WindowStartupLocation="CenterScreen"
+        CanResize="False">
+  <Grid ColumnDefinitions="*, 1.5*">
+        <!-- Sidebar / Branding -->
+        <Border Grid.Column="0" Background="#2A2A2A" Padding="20">
+            <StackPanel VerticalAlignment="Bottom">
+                <TextBlock Text="AxisLink" FontSize="22" FontWeight="Bold" Foreground="White"/>
+                <TextBlock Text="v1.0.0" FontSize="11" Foreground="Gray"/>
+            </StackPanel>
+        </Border>
+
+        <!-- Actions Panel -->
+        <StackPanel Grid.Column="1" VerticalAlignment="Center" Spacing="15">
+            <TextBlock Text="Get Started" FontSize="18" FontWeight="SemiBold" Margin="0,0,0,10"/>
+            
+            <Button Content="Create New Show..." 
+                    Command="{Binding NewShowCommand}"
+                    HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"/>
+                    
+            <Button Content="Open Existing Show..." 
+                    Command="{Binding OpenShowCommand}"
+                    HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"/>
+                    
+            <Button Content="Exit" 
+                    Command="{Binding ExitCommand}"
+                    HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"
+                    Background="#3A1A1A" Foreground="#FF6B6B"/>
+        </StackPanel>
+    </Grid>
+</Window>

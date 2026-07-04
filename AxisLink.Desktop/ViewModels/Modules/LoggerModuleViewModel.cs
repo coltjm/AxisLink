@@ -12,13 +12,13 @@ namespace AxisLink.Desktop.ViewModels.Modules
 {
     public partial class LoggerModuleViewModel : ModuleViewModelBase
     {
-        private readonly IKQLogger _logger;
+        private readonly IConsoleLogger _logger;
         // Maybe open up to user defined in future
         private const int MaxLogEntries = 1000;
 
         public ObservableCollection<KQLogEntry> UIEntries { get; } = new();
 
-        public LoggerModuleViewModel(IKQLogger logger) 
+        public LoggerModuleViewModel(IConsoleLogger logger) 
         {
             Debug.WriteLine("=== LOGGER VM RUNTIME DI CONSTRUCTOR HIT ===");
             _logger = logger;
