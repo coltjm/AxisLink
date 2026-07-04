@@ -1,1 +1,1 @@
-KinetiCUE is a student project created by Colt McGuire with the goal of making scenic automation more accessible. The current iteration is focused on creating a cueing software that can control a Click PLC via Modbus
+AxisLink is a student project created by Colt McGuire with the goal of making scenic automation more accessible. The current iteration is focused on creating a cueing software that can control a Click PLC via Modbus
