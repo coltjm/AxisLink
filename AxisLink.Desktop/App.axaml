@@ -1,0 +1,19 @@
+<Application xmlns="https://github.com/avaloniaui"
+             xmlns:local="using:AxisLink.Desktop"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm-modules="using:AxisLink.Desktop.ViewModels.Modules"
+             xmlns:v-modules="using:AxisLink.Desktop.Views.Modules"
+             x:Class="AxisLink.Desktop.App"
+             RequestedThemeVariant="Default">
+             <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
+
+    <Application.DataTemplates>
+        <local:ViewLocator/>
+    </Application.DataTemplates>
+  
+    <Application.Styles>
+        <DockFluentTheme />
+        <FluentTheme />
+        
+    </Application.Styles>
+</Application>

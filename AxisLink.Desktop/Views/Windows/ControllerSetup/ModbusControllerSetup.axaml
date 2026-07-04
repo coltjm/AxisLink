@@ -1,0 +1,23 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:AxisLink.Desktop.ViewModels.Windows.ControllerSetup"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="AxisLink.Desktop.Views.Windows.ControllerSetup.ModbusControllerSetup"
+             x:DataType="vm:ModbusControllerSetupViewModel">
+
+  <StackPanel Margin="20" Spacing="15">
+      <TextBlock Text="Modbus Controller" FontSize="18" FontWeight="Bold"/>
+        
+        <StackPanel Spacing="5">
+            <TextBlock Text="Controller Name:"/>
+            <TextBox Text="{Binding ControllerName}"/>
+        </StackPanel>
+
+        <StackPanel Spacing="5">
+            <TextBlock Text="IP Address:"/>
+            <TextBox Text="{Binding IpAddress}"/>
+        </StackPanel>
+    </StackPanel>
+</UserControl>
