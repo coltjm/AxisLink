@@ -1,0 +1,168 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="using:AxisLink.Desktop.ViewModels.Windows.AxisSetup"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="AxisLink.Desktop.Views.Windows.AxisSetup.AxisSetupWindow"
+        x:DataType="vm:AxisSetupViewModel"
+        Title="AxisSetupWindow">
+  <Grid RowDefinitions="Auto, *, Auto">
+        
+        <!-- Header Step Indicator -->
+        <Grid Grid.Row="0" ColumnDefinitions="*, *, *" Margin="0,0,0,20">
+            <TextBlock Grid.Column="0" Text="1. Identity" TextAlignment="Center" FontWeight="{Binding Page0FontWeight}" Foreground="{Binding Page0Foreground}"/>
+            <TextBlock Grid.Column="1" Text="2. Mechanics" TextAlignment="Center" FontWeight="{Binding Page1FontWeight}" Foreground="{Binding Page1Foreground}"/>
+            <TextBlock Grid.Column="2" Text="3. Hardware" TextAlignment="Center" FontWeight="{Binding Page2FontWeight}" Foreground="{Binding Page2Foreground}"/>
+        </Grid>
+
+        <!-- Multi-page Content Area -->
+        <Carousel Grid.Row="1" SelectedIndex="{Binding CurrentPageIndex}">
+            <Carousel.PageTransition>
+                <PageSlide Duration="0.25" Orientation="Horizontal"/>
+            </Carousel.PageTransition>
+            
+            <!-- PAGE 1: IDENTITY & CORE SPECIFICATIONS (ANSI E1.44) -->
+            <ScrollViewer>
+                <StackPanel Spacing="15" Margin="5">
+                    <Grid ColumnDefinitions="*, *">
+                        <StackPanel Grid.Column="1">
+                            <TextBlock Text="Axis ID (Auto-Generated)" Foreground="Gray" Margin="0,0,0,5"/>
+                        <!-- Read-only since it is assigned by the engine -->
+                        <NumericUpDown Value="{Binding CreatedAxis.Id}" IsReadOnly="True" FormatString="0"/>
+                            <TextBlock Text="Axis Name" Foreground="Gray" Margin="0,0,0,5"/>
+                            <TextBox Text="{Binding CreatedAxis.Name}"/>
+                        </StackPanel>
+                    </Grid>
+
+                    <TextBlock Text="Machine Type" Foreground="Gray"/>
+                    <ComboBox SelectedIndex="{Binding CreatedAxis.Type, FallbackValue=0}" HorizontalAlignment="Stretch">
+                        <ComboBoxItem Content="Cross-Stage Line Set"/>
+                        <ComboBoxItem Content="Up-Down Line Set"/>
+                        <ComboBoxItem Content="Point Hoist"/>
+                        <ComboBoxItem Content="Rotary"/>
+                        <ComboBoxItem Content="Other"/>
+                    </ComboBox>
+
+                    <Grid ColumnDefinitions="*, *">
+                        <StackPanel Grid.Column="0" Margin="0,0,10,0">
+                            <TextBlock Text="Location X (mm)" Foreground="Gray" Margin="0,0,0,5"/>
+                            <NumericUpDown Value="{Binding CreatedAxis.Location.X}"/>
+                        </StackPanel>
+                        <StackPanel Grid.Column="1">
+                            <TextBlock Text="Location Y (mm)" Foreground="Gray" Margin="0,0,0,5"/>
+                            <NumericUpDown Value="{Binding CreatedAxis.Location.Y}"/>
+                        </StackPanel>
+                    </Grid>
+                    <TextBlock Text="General Notes" Foreground="Gray"/>
+                    <TextBox Text="{Binding CreatedAxis.Notes}" Height="60" TextWrapping="Wrap"/>
+                </StackPanel>
+            </ScrollViewer>
+
+            <!-- PAGE 2: MECHANICAL LIMITS & SPEEDS -->
+            <ScrollViewer>
+                <StackPanel Spacing="15" Margin="5">
+                    <Grid ColumnDefinitions="*, *">
+                        <StackPanel Grid.Column="0" Margin="0,0,10,0">
+                            <TextBlock Text="Positioning Capability" Foreground="Gray" Margin="0,0,0,5"/>
+                            <ComboBox SelectedIndex="{Binding CreatedAxis.Positioning, FallbackValue=0}" HorizontalAlignment="Stretch">
+                                <ComboBoxItem Content="Yes (Encoder Attached)"/>
+                                <ComboBoxItem Content="No (Open Loop / Limits Only)"/>
+                            </ComboBox> 
+                        </StackPanel>
+                        <StackPanel Grid.Column="1">
+                            <TextBlock Text="Speed Type" Foreground="Gray" Margin="0,0,0,5"/>
+                            <ComboBox SelectedIndex="{Binding CreatedAxis.SpeedType, FallbackValue=0}" HorizontalAlignment="Stretch">
+                                <ComboBoxItem Content="Fixed / Constant Velocity"/>
+                                <ComboBoxItem Content="Variable Speed"/>
+                            </ComboBox>
+                        </StackPanel>
+                    </Grid>
+
+                    <Grid ColumnDefinitions="*, *">
+                        <StackPanel Grid.Column="0" Margin="0,0,10,0">
+                            <TextBlock Text="Low Limit (mm or deg)" Foreground="Gray" Margin="0,0,0,5"/>
+                            <NumericUpDown Value="{Binding CreatedAxis.LowLimit}"/>
+                        </StackPanel>
+                        <StackPanel Grid.Column="1">
+                            <TextBlock Text="High Limit (mm or deg)" Foreground="Gray" Margin="0,0,0,5"/>
+                            <NumericUpDown Value="{Binding CreatedAxis.HighLimit}"/>
+                        </StackPanel>
+                    </Grid>
+
+                    <Grid ColumnDefinitions="*, *">
+                        <StackPanel Grid.Column="0" Margin="0,0,10,0">
+                            <TextBlock Text="Max Velocity (units/s)" Foreground="Gray" Margin="0,0,0,5"/>
+                            <NumericUpDown Value="{Binding CreatedAxis.MaxSpeed}" Minimum="0"/>
+                        </StackPanel>
+                        <StackPanel Grid.Column="1">
+                            <TextBlock Text="Max Load (kg)" Foreground="Gray" Margin="0,0,0,5"/>
+                            <NumericUpDown Value="{Binding CreatedAxis.MaxLoad}" Minimum="0" FormatString="0"/>
+                        </StackPanel>
+                    </Grid>
+
+                    <Grid ColumnDefinitions="*, *, *">
+                        <StackPanel Grid.Column="0" Margin="0,0,8,0">
+                            <TextBlock Text="Max Accel" Foreground="Gray" Margin="0,0,0,5"/>
+                            <NumericUpDown Value="{Binding CreatedAxis.MaxAccel}" Minimum="0"/>
+                        </StackPanel>
+                        <StackPanel Grid.Column="1" Margin="0,0,8,0">
+                            <TextBlock Text="Max Decel" Foreground="Gray" Margin="0,0,0,5"/>
+                            <NumericUpDown Value="{Binding CreatedAxis.MaxDecel}" Minimum="0"/>
+                        </StackPanel>
+                        <StackPanel Grid.Column="2">
+                            <TextBlock Text="Batten Length" Foreground="Gray" Margin="0,0,0,5"/>
+                            <NumericUpDown Value="{Binding CreatedAxis.Length}" Minimum="0" FormatString="0"/>
+                        </StackPanel>
+                    </Grid>
+                </StackPanel>
+            </ScrollViewer>
+
+            <!-- PAGE 3: INTEGRATION & CONTROLLER HARDWARE CONTEXT -->
+            <ScrollViewer>
+                <StackPanel Spacing="15" Margin="5">
+                    <TextBlock Text="Hardware Field Configuration" FontSize="14" FontWeight="SemiBold" Margin="0,0,0,5"/>
+
+                    <!--<Grid ColumnDefinitions="*, *">
+                        <StackPanel Grid.Column="0" Margin="0,0,10,0">
+                            <TextBlock Text="Assigned Controller ID" Foreground="Gray" Margin="0,0,0,5"/>
+                            <NumericUpDown Value="{Binding ControllerId}" Minimum="0" FormatString="0"/>
+                        </StackPanel>
+                        <StackPanel Grid.Column="1">
+                            <TextBlock Text="Communication Framework" Foreground="Gray" Margin="0,0,0,5"/>
+                            <ComboBox SelectedIndex="{Binding SelectedHardwareTypeIndex}" HorizontalAlignment="Stretch">
+                                <ComboBoxItem Content="Modbus TCP / RTU"/>
+                            </ComboBox>
+                        </StackPanel>
+                    </Grid>-->
+
+                    <Border BorderBrush="#3E3E42" BorderThickness="1" CornerRadius="4" Padding="15" Margin="0,10,0,0">
+                        <StackPanel Spacing="12">
+                            <TextBlock Text="Scaling Constants" FontWeight="SemiBold" Foreground="#007ACC"/>
+                            
+                            <StackPanel>
+                                <TextBlock Text="Motor Steps Per Revolution" Foreground="Gray" Margin="0,0,0,5"/>
+                                <NumericUpDown Value="{Binding CreatedAxis.StepsPerRevolution}" Minimum="1" FormatString="0"/>
+                            </StackPanel>
+
+                            <StackPanel>
+                                <TextBlock Text="Linear/Rotary Travel Distance Per Revolution (mm or deg)" Foreground="Gray" Margin="0,0,0,5"/>
+                                <NumericUpDown Value="{Binding CreatedAxis.DistancePerRevolution}" Minimum="0.001"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+            </ScrollViewer>
+        </Carousel>
+
+        <!-- Bottom Controls Footer Navigation Block -->
+        <Grid Grid.Row="2" ColumnDefinitions="Auto, *, Auto" Margin="0,20,0,0">
+            <Button Grid.Column="0" Content="Back" Command="{Binding PreviousPageCommand}" IsEnabled="{Binding CanGoBack}"/>
+            <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="10">
+                <Button Content="Next" Command="{Binding NextPageCommand}" IsVisible="{Binding !IsLastPage}"/>
+                <Button Content="Save Axis" Command="{Binding SaveAxisCommand}" IsVisible="{Binding IsLastPage}" Background="#153A15" Foreground="#8FFF8F"/>
+            </StackPanel>
+        </Grid>
+        
+    </Grid>
+</Window>

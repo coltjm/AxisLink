@@ -1,0 +1,49 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:extended="using:AxisLink.Core.Models.Extended"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:modules="using:AxisLink.Desktop.ViewModels.Modules"
+             xmlns:standard="using:AxisLink.Core.Models.Standard"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="AxisLink.Desktop.Views.Modules.ControllerViewerModuleView"
+             x:DataType="modules:ControllerViewerModuleViewModel">
+  <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+        <ItemsControl ItemsSource="{Binding DisplayControllers}" Margin="15">
+            
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <UniformGrid Columns="3" HorizontalAlignment="Stretch"/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+
+            <ItemsControl.ItemTemplate>
+                <DataTemplate x:DataType="extended:ExtendedController">
+                    <Border Margin="8" 
+                            Padding="15" 
+                            Background="#252526" 
+                            BorderBrush="#3E3E42"
+                            BorderThickness="1"
+                            CornerRadius="4">
+                        <Grid RowDefinitions="Auto, Auto, *, Auto">
+                            
+                            <Grid Grid.Row="0" ColumnDefinitions="*, Auto" Margin="0,0,0,10">
+                                <TextBlock Grid.Column="0" 
+                                           Text="{Binding Name}" 
+                                           FontSize="16" 
+                                           FontWeight="SemiBold" 
+                                           Foreground="#F5F5F5"/>
+                                <TextBlock Grid.Column="1" 
+                                           Text="{Binding Id, StringFormat='ID: {0}'}" 
+                                           FontSize="11" 
+                                           Foreground="#858585" 
+                                           VerticalAlignment="Center"/>
+                            </Grid>
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+            
+        </ItemsControl>
+    </ScrollViewer>
+</UserControl>
