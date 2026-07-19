@@ -12,7 +12,6 @@
         WindowStartupLocation="CenterScreen"
         CanResize="False">
   <Grid ColumnDefinitions="*, 1.5*">
-        <!-- Sidebar / Branding -->
         <Border Grid.Column="0" Background="#2A2A2A" Padding="20">
             <StackPanel VerticalAlignment="Bottom">
                 <TextBlock Text="AxisLink" FontSize="22" FontWeight="Bold" Foreground="White"/>
@@ -20,7 +19,6 @@
             </StackPanel>
         </Border>
 
-        <!-- Actions Panel -->
         <StackPanel Grid.Column="1" VerticalAlignment="Center" Spacing="15">
             <TextBlock Text="Get Started" FontSize="18" FontWeight="SemiBold" Margin="0,0,0,10"/>
             

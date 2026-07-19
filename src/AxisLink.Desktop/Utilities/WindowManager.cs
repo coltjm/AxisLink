@@ -20,6 +20,8 @@ namespace AxisLink.Desktop.Utilities
         {
             serviceProvider = ServiceProvider;
         }
+
+        // Open the launch window and close the previos main window
         public void ShowLaunchWindow()
         {
             if(Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
@@ -36,6 +38,8 @@ namespace AxisLink.Desktop.Utilities
             }
             
         }
+
+        // Open the main window and close the launch window
         public void ShowMainWindow()
         {
             if (Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
@@ -52,6 +56,7 @@ namespace AxisLink.Desktop.Utilities
             }
         }
 
+        // Open the controller setup window as a dialog, with the main window as the owner
         public void ShowControllerSetupWindow()
         {
             if (Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
@@ -64,6 +69,7 @@ namespace AxisLink.Desktop.Utilities
             }
         }
 
+        // Open the axis setup window as a dialog, with the main window as the owner
         public void ShowAxisSetupWindow()
         {
             if (Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)

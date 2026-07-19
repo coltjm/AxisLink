@@ -18,6 +18,7 @@ namespace AxisLink.Desktop.Utilities
     {
         private readonly IConsoleLogger _logger;
         private readonly IServiceProvider _serviceProvider;
+        // Collection of the currently active modules in the workspace
         public ObservableCollection<ModuleViewModelBase> ActiveModules { get; } = new();
 
         public WorkspaceManager(IConsoleLogger logger, IServiceProvider serviceProvider)
@@ -30,12 +31,14 @@ namespace AxisLink.Desktop.Utilities
 
         private void InitializeDefaultWorkspace()
         {
-                
+            // Add the default modules to the workspace
+            // TODO open the default modules based on user preferences or saved workspace state
             var loggerModule = new LoggerModuleViewModel(_logger) { Title = "System Log Console" };
             ActiveModules.Add(loggerModule);
 
         }
 
+        // Methods to show different modules in the workspace
         public void ShowAxisViewer()
         {
             var module = _serviceProvider.GetRequiredService<AxisViewerModuleViewModel>();

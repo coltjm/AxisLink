@@ -28,7 +28,7 @@ namespace AxisLink.Desktop
             // Create file storage singleton
             services.AddSingleton<IShowFileStorage, XmlShowFileStorage>();
             services.AddSingleton<IMotionServiceFactory, MotionServiceFactory>();
-            services.AddSingleton<IConsoleLogger, KQLogger>();
+            services.AddSingleton<IConsoleLogger, ConsoleLogger>();
             // UI Services
             services.AddSingleton<FileDialogService>();
             services.AddSingleton<WindowManager>();

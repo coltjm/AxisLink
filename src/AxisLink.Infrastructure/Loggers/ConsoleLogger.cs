@@ -8,7 +8,7 @@ using System.Text;
 
 namespace AxisLink.Infrastructure.Loggers
 {
-    public class KQLogger : IConsoleLogger
+    public class ConsoleLogger : IConsoleLogger
     {
         private readonly ILogger _logger;
         // Buffer to hold log entries until the UI is ready
@@ -50,7 +50,7 @@ namespace AxisLink.Infrastructure.Loggers
             }
         }
 
-        public KQLogger()
+        public ConsoleLogger()
         {
             // Set up Serilog to log to a file in the user's AppData directory (or other location as needed)
             string logDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "AxisLink", "logs");

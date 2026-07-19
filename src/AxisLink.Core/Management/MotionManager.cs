@@ -10,15 +10,22 @@ namespace AxisLink.Core.Management
 {
     public class MotionManager
     {
+        // Dictionary to hold motion services for each controller, keyed by controller ID
         private readonly Dictionary<int, IMotionService> _services = new();
+        // ShowFileManager to manage the current show file and its machinery
         private readonly ShowFileManager _showFileManager;
+        // MotionServiceFactory to create motion services based on controller configurations
         private readonly IMotionServiceFactory _serviceFactory;
+        // List of axes as ExtendedAxis (if possible)
         public List<ExtendedAxis> Axes { get; private set; } = new();
+        // List of controllers as ExtendedController (if possible)
         public List<ExtendedController> Controllers { get; private set; } = new();
+        // Events to notify when axes or controllers are added or removed
         public event Action<ExtendedAxis>? AxisAdded;
         public event Action<ExtendedAxis>? AxisRemoved;
         public event Action<ExtendedController>? ControllerAdded;
         public event Action<ExtendedController>? ControllerRemoved;
+        // Running counters for the next axis and controller IDs
         public int nextAxisId { get; private set; }
         public int nextControllerId { get; private set; }
         public MotionManager(ShowFileManager showFileManager, IMotionServiceFactory serviceFactory)
@@ -26,10 +33,12 @@ namespace AxisLink.Core.Management
             // Initialize the ShowFileManager and MotionServiceFactory from dependency injection
             _showFileManager = showFileManager;
             _serviceFactory = serviceFactory;
+            // Populate the Axes and Controllers lists from the current show file, filtering for ExtendedAxis and ExtendedController types
             Axes = _showFileManager.CurrentShow?.Machinery?.Axes?
                 .OfType<ExtendedAxis>().ToList() ?? new List<ExtendedAxis>();
             Controllers = _showFileManager.CurrentShow?.Controllers?
                 .OfType<ExtendedController>().ToList() ?? new List<ExtendedController>();
+            // Set the next IDs based on the maximum existing IDs in the lists, or start from 1 if the lists are empty
             nextAxisId = Axes.Any() ? Axes.Max(a => a.Id) + 1 : 1;
             nextControllerId = Controllers.Any() ? Controllers.Max(c => c.Id) + 1 : 1;
         }
@@ -104,32 +113,42 @@ namespace AxisLink.Core.Management
         public void AddNewAxis(ExtendedAxis axis)
         {
             if (axis == null) throw new ArgumentNullException(nameof(axis));
+            // Add axis and update show file and next id accordingly
             Axes.Add(axis);
             _showFileManager.CurrentShow.Machinery?.Axes?.Add(axis);
             nextAxisId++;
+            // Trigger event to notify listeners of the new axis
             AxisAdded?.Invoke(axis);
         }
         public void AddNewController(ExtendedController controller)
         {
             if (controller == null) throw new ArgumentNullException(nameof(controller));
+            // Add controller and update show file and next id accordingly
             Controllers.Add(controller);
             _showFileManager.CurrentShow.Controllers.Add(controller);
             nextControllerId++;
+            // Trigger event to notify listeners of the new controller
             ControllerAdded?.Invoke(controller);
         }
 
         public void RemoveController(ExtendedController controller) {
             if (controller == null) throw new ArgumentNullException(nameof(controller));
+            // Remove controller and update show file accordingly
+            // Do not update next id, skip over any removed ids to avoid conflicts
             Controllers.Remove(controller);
             _showFileManager.CurrentShow.Controllers.Remove(controller);
+            // Trigger event to notify listeners of the removed controller
             ControllerRemoved?.Invoke(controller);  
         }
 
         public void RemoveAxis(ExtendedAxis axis)
         {
             if (axis == null) throw new ArgumentNullException(nameof(axis));
+            // Remove axis and update show file accordingly
+            // Do not update next id, skip over any removed ids to avoid conflicts
             Axes.Remove(axis);
             _showFileManager.CurrentShow.Machinery?.Axes?.Remove(axis);
+            // Trigger event to notify listeners of the removed axis
             AxisRemoved?.Invoke(axis);
         }
     }

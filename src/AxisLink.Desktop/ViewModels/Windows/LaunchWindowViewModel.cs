@@ -31,6 +31,7 @@ namespace AxisLink.Desktop.ViewModels.Windows
         [RelayCommand]
         private void NewShow()
         {
+            // Create a new show file and initialize the workspace
             FileManager.NewShow();
             windowManager.ShowMainWindow();
 
@@ -39,12 +40,13 @@ namespace AxisLink.Desktop.ViewModels.Windows
         [RelayCommand]
         private async Task OpenShow()
         {
+            // Open a file dialog to select an existing show file
             string? selectedPath = await fileDialogService.OpenFileDialogAsync(
                 title: "Open AxisLink Project",
                 extensions: new[] { "*.xml", "*.alink" , "*.txt"},
                 filterName: "Project Files"
             );
-
+            // If a file was selected, open it and initialize the workspace
             if (!string.IsNullOrEmpty(selectedPath))
             {
                 Logger.LogInfo("Opening Show: " + selectedPath);

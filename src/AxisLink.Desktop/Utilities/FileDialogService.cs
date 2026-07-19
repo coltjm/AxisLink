@@ -13,6 +13,7 @@ namespace AxisLink.Desktop.Utilities
 {
     public class FileDialogService
     {
+        // Open file dialog for selecting a file with specific extensions
         public async Task<string?> OpenFileDialogAsync(string title, string[] extensions, string filterName)
         {
             if (Application.Current?.ApplicationLifetime is not IClassicDesktopStyleApplicationLifetime desktop)

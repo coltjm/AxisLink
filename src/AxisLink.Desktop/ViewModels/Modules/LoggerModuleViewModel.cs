@@ -20,7 +20,6 @@ namespace AxisLink.Desktop.ViewModels.Modules
 
         public LoggerModuleViewModel(IConsoleLogger logger) 
         {
-            Debug.WriteLine("=== LOGGER VM RUNTIME DI CONSTRUCTOR HIT ===");
             _logger = logger;
             // When logger action is invoked, update UI
             _logger.OnLogReceived += OnLogAppend;

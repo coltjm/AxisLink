@@ -18,10 +18,8 @@ namespace AxisLink.Desktop
             var showFileManager = serviceProvider.GetRequiredService<ShowFileManager>();
             var motionManager = serviceProvider.GetRequiredService<MotionManager>();
             var logger = serviceProvider.GetRequiredService<IConsoleLogger>();
-            logger.LogInfo("=== STARTING ARCHITECTURE TRACE ===");
+            logger.LogInfo("=== STARTING CONSOLE TESTING ===");
 
-            showFileManager.OpenShow("C:\\Users\\coltj\\source\\repos\\coltjm\\AxisLink\\src\\AxisLink.Tests\\testAxisLinkFile.txt");
-            logger.LogInfo($"Successfully loaded show: {showFileManager.CurrentShow.Header.ShowName}");
             Task.Run(async () =>
             {
                 try
@@ -42,9 +40,10 @@ namespace AxisLink.Desktop
                 ShowNetworkInterfaces(logger);
             });
 
-            // 3. UI/Framework initialization finishes instantly here
+            
             logger.LogInfo("=== MAIN THREAD INITIALIZATION COMPLETE ===");
         }
+        // TESTING METHOD TO SHOW NETWORK INTERFACES
         public static void ShowNetworkInterfaces(IConsoleLogger logger)
         {
             IPGlobalProperties computerProperties = IPGlobalProperties.GetIPGlobalProperties();

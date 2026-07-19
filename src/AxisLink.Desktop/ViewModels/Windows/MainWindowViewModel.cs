@@ -44,8 +44,8 @@ namespace AxisLink.Desktop.ViewModels.Windows
         // Parameterless constructor for the Avalonia Previewer
         public MainWindowViewModel()
         {
-            Workspace = new WorkspaceManager(new KQLogger(), null);
-            Logger = new KQLogger();
+            Workspace = new WorkspaceManager(new ConsoleLogger(), null);
+            Logger = new ConsoleLogger();
         }
 
         // --- BACKEND LOGIC ACTIONS ---

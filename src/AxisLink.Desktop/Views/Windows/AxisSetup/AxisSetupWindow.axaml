@@ -9,26 +9,23 @@
         Title="AxisSetupWindow">
   <Grid RowDefinitions="Auto, *, Auto">
         
-        <!-- Header Step Indicator -->
         <Grid Grid.Row="0" ColumnDefinitions="*, *, *" Margin="0,0,0,20">
             <TextBlock Grid.Column="0" Text="1. Identity" TextAlignment="Center" FontWeight="{Binding Page0FontWeight}" Foreground="{Binding Page0Foreground}"/>
             <TextBlock Grid.Column="1" Text="2. Mechanics" TextAlignment="Center" FontWeight="{Binding Page1FontWeight}" Foreground="{Binding Page1Foreground}"/>
             <TextBlock Grid.Column="2" Text="3. Hardware" TextAlignment="Center" FontWeight="{Binding Page2FontWeight}" Foreground="{Binding Page2Foreground}"/>
         </Grid>
 
-        <!-- Multi-page Content Area -->
         <Carousel Grid.Row="1" SelectedIndex="{Binding CurrentPageIndex}">
             <Carousel.PageTransition>
                 <PageSlide Duration="0.25" Orientation="Horizontal"/>
             </Carousel.PageTransition>
             
-            <!-- PAGE 1: IDENTITY & CORE SPECIFICATIONS (ANSI E1.44) -->
             <ScrollViewer>
                 <StackPanel Spacing="15" Margin="5">
                     <Grid ColumnDefinitions="*, *">
                         <StackPanel Grid.Column="1">
                             <TextBlock Text="Axis ID (Auto-Generated)" Foreground="Gray" Margin="0,0,0,5"/>
-                        <!-- Read-only since it is assigned by the engine -->
+                       
                         <NumericUpDown Value="{Binding CreatedAxis.Id}" IsReadOnly="True" FormatString="0"/>
                             <TextBlock Text="Axis Name" Foreground="Gray" Margin="0,0,0,5"/>
                             <TextBox Text="{Binding CreatedAxis.Name}"/>
@@ -59,7 +56,6 @@
                 </StackPanel>
             </ScrollViewer>
 
-            <!-- PAGE 2: MECHANICAL LIMITS & SPEEDS -->
             <ScrollViewer>
                 <StackPanel Spacing="15" Margin="5">
                     <Grid ColumnDefinitions="*, *">
@@ -118,7 +114,6 @@
                 </StackPanel>
             </ScrollViewer>
 
-            <!-- PAGE 3: INTEGRATION & CONTROLLER HARDWARE CONTEXT -->
             <ScrollViewer>
                 <StackPanel Spacing="15" Margin="5">
                     <TextBlock Text="Hardware Field Configuration" FontSize="14" FontWeight="SemiBold" Margin="0,0,0,5"/>
@@ -155,7 +150,6 @@
             </ScrollViewer>
         </Carousel>
 
-        <!-- Bottom Controls Footer Navigation Block -->
         <Grid Grid.Row="2" ColumnDefinitions="Auto, *, Auto" Margin="0,20,0,0">
             <Button Grid.Column="0" Content="Back" Command="{Binding PreviousPageCommand}" IsEnabled="{Binding CanGoBack}"/>
             <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="10">

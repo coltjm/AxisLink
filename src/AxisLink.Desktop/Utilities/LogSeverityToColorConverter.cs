@@ -7,6 +7,7 @@ using System.Globalization;
 
 namespace AxisLink.Desktop.Utilities
 {
+    // Converts LogSeverity to a corresponding color for UI representation
     public class LogSeverityToColorConverter : IValueConverter
     {
         public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)

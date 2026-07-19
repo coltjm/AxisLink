@@ -59,7 +59,7 @@ namespace AxisLink.Desktop.ViewModels.Windows.AxisSetup
         private void SaveAxis()
         {
             Logger.LogInfo("Saving Axis...");
-            // TODO: Pass the configuration parameters to your background PLC manager here
+            // TODO: Pass the configuration parameters to controller manager here
             if(CreatedAxis == null)
             {
                 // Log error or handle the case where createdAxis is null
