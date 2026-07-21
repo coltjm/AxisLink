@@ -4,6 +4,7 @@ using AxisLink.Core.Management;
 using AxisLink.Desktop.ViewModels;
 using AxisLink.Desktop.ViewModels.Modules;
 using CommunityToolkit.Mvvm.ComponentModel;
+using Dock.Avalonia.Controls;
 using Dock.Model.Avalonia.Controls;
 using Dock.Model.Controls;
 using Dock.Model.Core;
@@ -39,43 +40,57 @@ namespace AxisLink.Desktop.Utilities
 
         private IRootDock CreateDefaultWorkspaceLayout()
         {
-            var cueListModule = _serviceProvider.GetRequiredService<CueListModuleViewModel>();
+            var cueListVm = _serviceProvider.GetRequiredService<CueListModuleViewModel>();
+            cueListVm.Title = "Cue List";
+            var cueListModule = _dockFactory.CreateDocument();
             cueListModule.Id = "CueListMaster";
-            cueListModule.Title = "Cue List";
+            cueListModule.Title = cueListVm.Title;
+            cueListModule.Context = cueListVm;
 
-            var axisViewerModule = _serviceProvider.GetRequiredService<AxisViewerModuleViewModel>();
+
+            var axisViewerVm = _serviceProvider.GetRequiredService<AxisViewerModuleViewModel>();
+            axisViewerVm.Title = "Axis Viewer - Velocity";
+            var axisViewerModule = _dockFactory.CreateDocument();
             axisViewerModule.Id = "AxisViewerVelocity";
-            axisViewerModule.Title = "Axis Viewer - Velocity";
+            axisViewerModule.Title = axisViewerVm.Title;
+            axisViewerModule.Context = axisViewerVm;
 
-            var controllerViewerModule = _serviceProvider.GetRequiredService<ControllerViewerModuleViewModel>();
+            var controllerViewerVm = _serviceProvider.GetRequiredService<ControllerViewerModuleViewModel>();
+            controllerViewerVm.Title = "Controller Viewer - Master";
+            var controllerViewerModule = _dockFactory.CreateDocument();
             controllerViewerModule.Id = "ControllerViewerMaster";
+            controllerViewerModule.Title = controllerViewerVm.Title;
+            controllerViewerModule.Context = controllerViewerVm;
 
-            var loggerModule = _serviceProvider.GetRequiredService<LoggerModuleViewModel>();
+            var loggerVm = _serviceProvider.GetRequiredService<LoggerModuleViewModel>();
+            loggerVm.Title = "Logger Console";
+            var loggerModule = _dockFactory.CreateDocument();
             loggerModule.Id = "LoggerConsole";
+            loggerModule.Title = loggerVm.Title;
+            loggerModule.Context = loggerVm;
 
-            // 1. STRICT FIX: Use Factory methods to create docks instead of 'new'
             var mainDocumentDock = _dockFactory.CreateDocumentDock();
             mainDocumentDock.Id = "MainDocuments";
             mainDocumentDock.IsCollapsable = false;
             mainDocumentDock.ActiveDockable = cueListModule;
             mainDocumentDock.VisibleDockables = _dockFactory.CreateList<IDockable>(cueListModule, axisViewerModule);
 
-            var rightToolDock = _dockFactory.CreateToolDock();
-            rightToolDock.Id = "RightTools";
-            rightToolDock.ActiveDockable = controllerViewerModule;
-            rightToolDock.VisibleDockables = _dockFactory.CreateList<IDockable>(controllerViewerModule);
+            var rightDocumentDock = _dockFactory.CreateDocumentDock();
+            rightDocumentDock.Id = "RightTools";
+            rightDocumentDock.ActiveDockable = controllerViewerModule;
+            rightDocumentDock.VisibleDockables = _dockFactory.CreateList<IDockable>(controllerViewerModule);
 
-            var bottomToolDock = _dockFactory.CreateToolDock();
-            bottomToolDock.Id = "BottomTools";
-            bottomToolDock.ActiveDockable = loggerModule;
-            bottomToolDock.VisibleDockables = _dockFactory.CreateList<IDockable>(loggerModule);
+            var bottomDocumentDock = _dockFactory.CreateDocumentDock();
+            bottomDocumentDock.Id = "BottomTools";
+            bottomDocumentDock.ActiveDockable = loggerModule;
+            bottomDocumentDock.VisibleDockables = _dockFactory.CreateList<IDockable>(loggerModule);
 
             var mainHorizontalGroup = _dockFactory.CreateProportionalDock();
             mainHorizontalGroup.Orientation = Orientation.Horizontal;
             mainHorizontalGroup.VisibleDockables = _dockFactory.CreateList<IDockable>(
                 mainDocumentDock,
                 _dockFactory.CreateProportionalDockSplitter(),
-                rightToolDock
+                rightDocumentDock
             );
 
             var mainVerticalGroup = _dockFactory.CreateProportionalDock();
@@ -83,7 +98,7 @@ namespace AxisLink.Desktop.Utilities
             mainVerticalGroup.VisibleDockables = _dockFactory.CreateList<IDockable>(
                 mainHorizontalGroup,
                 _dockFactory.CreateProportionalDockSplitter(),
-                bottomToolDock
+                bottomDocumentDock
             );
 
             var root = _dockFactory.CreateRootDock();
@@ -93,14 +108,17 @@ namespace AxisLink.Desktop.Utilities
             root.DefaultDockable = mainVerticalGroup;
             root.VisibleDockables = _dockFactory.CreateList<IDockable>(mainVerticalGroup);
 
-            // 2. STRICT FIX: Map the modules BEFORE calling InitLayout
-            // This stops Dock from wiping your module contexts to null
             _dockFactory.ContextLocator = new Dictionary<string, Func<object>>
             {
-                [cueListModule.Id] = () => cueListModule,
-                [axisViewerModule.Id] = () => axisViewerModule,
-                [controllerViewerModule.Id] = () => controllerViewerModule,
-                [loggerModule.Id] = () => loggerModule
+                [cueListModule.Id] = () => cueListVm,
+                [axisViewerModule.Id] = () => axisViewerVm,
+                [controllerViewerModule.Id] = () => controllerViewerVm,
+                [loggerModule.Id] = () => loggerVm
+            };
+
+            _dockFactory.HostWindowLocator = new Dictionary<string, Func<IHostWindow>>
+            {
+                [nameof(IHostWindow)] = () => new HostWindow()
             };
 
             root.Factory = _dockFactory;
@@ -118,15 +136,22 @@ namespace AxisLink.Desktop.Utilities
             if (_dockFactory.FindDockable(RootLayout, d => d.Id == "MainDocuments") is not IDocumentDock documentDock)
                 return;
 
-            var newModule = _serviceProvider.GetRequiredService<T>();
+            var newVm = _serviceProvider.GetRequiredService<T>();
+            newVm.Title = customTitle ?? newVm.Title;
+            var newModule = _dockFactory.CreateDocument();
+            newModule.Title = newVm.Title;
+            newModule.Context = newVm;
             newModule.Id = Guid.NewGuid().ToString();
             if (!string.IsNullOrEmpty(customTitle))
             {
                 newModule.Title = customTitle;
             }
+            newModule.Context = newVm;
+            _dockFactory.ContextLocator ??= new Dictionary<string, Func<object>>();
+            _dockFactory.ContextLocator[newModule.Id] = () => newVm;
 
             _dockFactory.AddDockable(documentDock, newModule);
-            newModule.Context = newModule;
+            
             _dockFactory.SetActiveDockable(newModule);
         }
 

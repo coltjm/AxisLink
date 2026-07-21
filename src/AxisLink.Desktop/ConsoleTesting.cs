@@ -16,7 +16,7 @@ namespace AxisLink.Desktop
         public static void Test(IServiceProvider serviceProvider)
         {
             var showFileManager = serviceProvider.GetRequiredService<ShowFileManager>();
-            var motionManager = serviceProvider.GetRequiredService<MotionManager>();
+            //var motionManager = serviceProvider.GetRequiredService<MotionManager>();
             var logger = serviceProvider.GetRequiredService<IConsoleLogger>();
             logger.LogInfo("=== STARTING CONSOLE TESTING ===");
 
@@ -27,7 +27,7 @@ namespace AxisLink.Desktop
                     await Task.Delay(1000); // Simulate some delay before starting network connections
                     logger.LogInfo("[Background] Starting parallel network connections...");
 
-                    await motionManager.StartupAsync();
+                    //await motionManager.StartupAsync();
 
                     logger.LogInfo("[Background] All network connections finalized successfully.");
                     throw new Exception("Simulated connection failure for testing purposes."); // Simulate a connection failure

@@ -21,15 +21,22 @@ namespace AxisLink.Desktop
             Debug.WriteLine("-------------------------\n{0}", param);
             if (param is null)
                 return null;
+            if (param is IDockable dockable)
+            {
+                param = dockable.Context;
+                if (param is null)
+                    return new TextBlock { Text = "Not Found: Dock Context is null" };
+            }
 
             var name = param.GetType().FullName!.Replace("ViewModel", "View", StringComparison.Ordinal);
             var type = Type.GetType(name);
-            
+
             if (type != null)
             {
-                return (Control)Activator.CreateInstance(type)!;
+                var control = (Control)Activator.CreateInstance(type)!;
+                control.DataContext = param;
+                return control;
             }
-
             return new TextBlock { Text = "Not Found: " + name };
         }
 

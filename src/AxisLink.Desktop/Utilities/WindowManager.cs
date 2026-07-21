@@ -54,8 +54,7 @@ namespace AxisLink.Desktop.Utilities
                 desktop.MainWindow = mainWindow;
                 mainWindow.Show();
 
-                // Visually remove the window without killing the underlying OS input handle
-                oldWindow?.Hide();
+                oldWindow?.Close();
             }
         }
 

@@ -69,25 +69,6 @@
         </Border>
 
         <DockControl Layout="{Binding Workspace.RootLayout}">
-            <DockControl.Styles>
-        <!-- Explicitly style Document and Tool controls to render their Context -->
-        <Style Selector="DocumentControl">
-            <Setter Property="Content" Value="{Binding Context}" />
-        </Style>
-        <Style Selector="ToolControl">
-            <Setter Property="Content" Value="{Binding Context}" />
-        </Style>
-    </DockControl.Styles>
-            <DockControl.DataTemplates>
-        
-        <DataTemplate DataType="modvm:CueListModuleViewModel">
-            <TextBlock Text="CUE LIST VIEW TEST" Background="Red" Foreground="White" FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-        </DataTemplate>
-        
-        <DataTemplate DataType="modvm:AxisViewerModuleViewModel">
-            <TextBlock Text="AXIS VIEWER TEST" Background="Blue" Foreground="White" FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-        </DataTemplate>
-    </DockControl.DataTemplates>
 </DockControl>
     </DockPanel>
 

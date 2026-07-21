@@ -7,12 +7,13 @@ using System.Text;
 
 namespace AxisLink.Desktop.ViewModels.Modules
 {
-    public abstract partial class ModuleViewModelBase : Document, IDisposable
+    public abstract partial class ModuleViewModelBase : ViewModelBase, IDisposable
     {
-        protected ModuleViewModelBase()
-        {
-            Context = this;
-        }
+        [ObservableProperty]
+        private string _title = "New Module";
+
+        public bool CanClose { get; set; } = true;
+
         public virtual void Dispose()
         {
         }

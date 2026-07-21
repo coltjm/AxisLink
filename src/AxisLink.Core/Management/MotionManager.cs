@@ -34,8 +34,8 @@ namespace AxisLink.Core.Management
             Axes = _showFileManager?.CurrentShow?.Machinery?.Axes;
             Controllers = _showFileManager?.CurrentShow?.Controllers;
             // Set the next IDs based on the maximum existing IDs in the lists, or start from 1 if the lists are empty
-            nextAxisId = showFileManager.CurrentShow.Machinery.Axes.Count != 0 ? Axes.Max(a => a.Id) + 1 : 1;
-            nextControllerId = Controllers.Count != 0 ? Controllers.Max(c => c.Id) + 1 : 1;
+            nextAxisId = showFileManager?.CurrentShow?.Machinery.Axes.Count != 0 ? Axes.Max(a => a.Id) + 1 : 1;
+            nextControllerId = Controllers?.Count != 0 ? Controllers.Max(c => c.Id) + 1 : 1;
         }
 
         // Startup motion services for all controllers in the show file
