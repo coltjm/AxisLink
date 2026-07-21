@@ -1,4 +1,4 @@
-﻿using AxisLink.Core.Models.Extended;
+﻿using AxisLink.Core.Models.Show;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -16,9 +16,9 @@ namespace AxisLink.Core.Interfaces
         bool IsConnected { get; }
 
         
-        Task UpdateAllStatesAsync(IEnumerable<ExtendedAxis> axes);
-        Task ExecuteMoveAsync(ExtendedAxis axis, float targetPosition);
-        Task StopAxisAsync(ExtendedAxis axis);
-        Task JogAsync(ExtendedAxis axis, float velocity);
+        Task UpdateAllStatesAsync(IEnumerable<Axis> axes);
+        Task ExecuteMoveAsync(Axis axis, float targetPosition);
+        Task StopAxisAsync(Axis axis);
+        Task JogAsync(Axis axis, float velocity);
     }
 }

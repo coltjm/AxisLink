@@ -21,7 +21,6 @@ namespace AxisLink.Desktop.ViewModels.Windows
         private readonly ShowFileManager FileManager;
         private readonly WindowManager windowManager;
         private readonly FileDialogService fileDialogService;
-        public IRootDock Layout { get; set;}
         private readonly IConsoleLogger Logger;
 
         // Dynamic properties for menu checking states
@@ -44,7 +43,7 @@ namespace AxisLink.Desktop.ViewModels.Windows
         // Parameterless constructor for the Avalonia Previewer
         public MainWindowViewModel()
         {
-            Workspace = new WorkspaceManager(new ConsoleLogger(), null);
+            Workspace = new WorkspaceManager(new ConsoleLogger(), null, null);
             Logger = new ConsoleLogger();
         }
 
@@ -57,7 +56,7 @@ namespace AxisLink.Desktop.ViewModels.Windows
 
             FileManager.NewShow();
             // Reopen main window to reset the workspace and UI state?
-            windowManager.ShowMainWindow();
+            //windowManager.ShowMainWindow();
             Logger.LogInfo("File -> New Show triggered.");
         }
 

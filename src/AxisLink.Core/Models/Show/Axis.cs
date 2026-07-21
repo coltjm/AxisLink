@@ -1,12 +1,18 @@
-﻿using AxisLink.Core.Models.Extended;
+﻿using AxisLink.Core.Models.Configs;
 using System;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Text;
 using System.Xml.Serialization;
 
-namespace AxisLink.Core.Models.Standard
+namespace AxisLink.Core.Models.Show
 {
+    // AxisLink supported hardware types
+    public enum HardwareType
+    {
+        [XmlEnum("modbus")] Modbus
+    }
+
     // Location subclass specific to Axes in E1.44-2014 R2024
     public class AxisLocation
     {
@@ -52,12 +58,12 @@ namespace AxisLink.Core.Models.Standard
 
     // Basic Axis model made in accordance with ANSI E1.44-2014 R2024
     [XmlType("b_axis")]
-    [XmlInclude(typeof(ExtendedAxis))]
-    public class StandardAxis
+    public class Axis
     {
         // Parameterless constructor for xml serialization and deserialization
-        public StandardAxis() { }
+        public Axis() { }
 
+        // ------------------ESTA PROPERTIES------------------------------
         // Only the id is required (according to E1.44-2014 R2024)
         [XmlAttribute("b_id")]
         public required int Id { get; set; }
@@ -112,5 +118,44 @@ namespace AxisLink.Core.Models.Standard
         // max load in kg
         [XmlElement("b_max_load")]
         public int? MaxLoad { get; set; }
+
+
+        // ------------------AXISLINK SPECIFIC PROPERTIES------------------------------
+        [XmlElement("alink_controller_id")]
+        public int? ControllerId { get; set; }
+
+        [XmlElement("alink_steps_per_rev")]
+        public int? StepsPerRevolution { get; set; }
+
+        // Distance the output moves per revolution of motor (circumference of output device typically), in mm or degrees
+        // In the future, can auto calc this for some configurations
+        [XmlElement("alink_dist_per_rev")]
+        public float? DistancePerRevolution { get; set; }
+
+        [XmlArray("alink_sensors")]
+        [XmlArrayItem("alink_sensor")]
+        public List<Sensor>? Sensors { get; set; } = [];
+
+        // Type of interface. Currently only modbus is supported
+        [XmlElement("alink_hardware_type")]
+        public HardwareType? HardwareType { get; set; }
+
+        // Config is polymorphic and can function for different motor/connection types
+        [XmlElement("alink_hardware_config")]
+        public AxisHardwareConfig? Config { get; set; }
+
+        [XmlIgnore]
+        public bool? IsEnabled { get; set; }
+
+        [XmlIgnore]
+        public bool? HasAlarm { get; set; }
+
+        // in mm or degrees
+        [XmlIgnore]
+        public float? CurrentPos { get; set; }
+
+        // in mm/s or degree/s
+        [XmlIgnore]
+        public float? CurrentVel { get; set; }
     }
 }

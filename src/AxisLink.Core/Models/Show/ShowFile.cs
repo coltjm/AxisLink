@@ -1,11 +1,10 @@
-﻿using AxisLink.Core.Models.Extended;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Text.Json.Serialization;
 using System.Xml.Serialization;
 
-namespace AxisLink.Core.Models.Standard
+namespace AxisLink.Core.Models.Show
 {
 
     public class PatchList
@@ -14,12 +13,12 @@ namespace AxisLink.Core.Models.Standard
         [XmlElement("b_interactive_decision_point")]
         public string? InteractiveDecisionPoint { get; set; }
         [XmlElement("b_object")]
-        public List<StandardPatch>? Patches { get; set; }
+        public List<Patch>? Patches { get; set; }
 
         // Parameterless constructor for xml serialization and deserialization
         public PatchList() { }
 
-        public PatchList(List<StandardPatch> Patches) 
+        public PatchList(List<Patch> Patches) 
         {
             this.Patches = Patches;
         }
@@ -29,21 +28,21 @@ namespace AxisLink.Core.Models.Standard
     {
         
         [XmlArray("b_axes")]
-        public List<StandardAxis>? Axes { get; set; }
+        public List<Axis>? Axes { get; set; }
         [XmlArray("b_groups")]
-        public List<StandardGroup>? Groups { get; set; }
+        public List<Group>? Groups { get; set; }
         [XmlArray("b_scenery")]
         [XmlArrayItem("b_object")]
-        public List<StandardScenery>? Scenery { get; set; }
+        public List<Scenery>? Scenery { get; set; }
         [XmlElement("b_patch")]
         public PatchList? Patches { get; set; }
         [XmlArray("b_cues")]
-        public List<StandardCue>? Cues { get; set; }
+        public List<Cue>? Cues { get; set; }
 
         // Parameterless constructor for xml serialization and deserialization
         public Machinery() { }
 
-        public Machinery(List<StandardAxis> Axes, List<StandardGroup> Groups, List<StandardScenery> Scenery, List<StandardPatch> Patches, List<StandardCue> Cues)
+        public Machinery(List<Axis> Axes, List<Group> Groups, List<Scenery> Scenery, List<Patch> Patches, List<Cue> Cues)
         { 
             this.Axes = Axes;
             this.Groups = Groups;
@@ -57,21 +56,26 @@ namespace AxisLink.Core.Models.Standard
 
     [XmlRoot("showfile")]
     [XmlType("standard_file")]
-    public class StandardFile
+    public class ShowFile
     {
         [XmlElement("header")]
-        public StandardHeader? Header { get; set; }
+        public Header? Header { get; set; }
 
         [XmlElement("b_machinery")]
         public Machinery? Machinery { get; set; }
 
-        // Parameterless constructor for xml serialization and deserialization
-        public StandardFile() { }
+        [XmlArray("alink_controllers")]
+        [XmlArrayItem("alink_controller")]
+        public List<Controller>? Controllers { get; set; }
 
-        public StandardFile(List<StandardAxis> Axes, List<StandardGroup> Groups, List<StandardScenery> Scenery, List<StandardPatch> Patches, List<StandardCue> Cues)
+        // Parameterless constructor for xml serialization and deserialization
+        public ShowFile() { }
+
+        public ShowFile(List<Controller> Controllers, List<Axis> Axes, List<Group> Groups, List<Scenery> Scenery, List<Patch> Patches, List<Cue> Cues)
         {
             this.Machinery = new Machinery(Axes, Groups, Scenery, Patches, Cues);
-            this.Header = new StandardHeader();
+            this.Header = new Header();
+            this.Controllers = Controllers;
         }
 
     }

@@ -1,10 +1,9 @@
-﻿using AxisLink.Core.Models.Extended;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Xml.Serialization;
 
-namespace AxisLink.Core.Models.Standard
+namespace AxisLink.Core.Models.Show
 {
     public class Date
     {
@@ -30,8 +29,7 @@ namespace AxisLink.Core.Models.Standard
         public Date() { }
     }
     
-    [XmlInclude(typeof(ExtendedHeader))]
-    public class StandardHeader
+    public class Header
     {
         [XmlElement("show_name")]
         public string? ShowName { get; set; }
@@ -50,7 +48,7 @@ namespace AxisLink.Core.Models.Standard
         public List<string>? Versions { get; set; }
 
         // Parameterless constructor for xml serialization and deserialization
-        public StandardHeader() { }
+        public Header() { }
 
     }
 }

@@ -20,6 +20,7 @@ namespace AxisLink.Desktop.ViewModels.Modules
 
         public LoggerModuleViewModel(IConsoleLogger logger) 
         {
+            Title = "Logger Console";
             _logger = logger;
             // When logger action is invoked, update UI
             _logger.OnLogReceived += OnLogAppend;

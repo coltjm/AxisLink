@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Xml.Serialization;
 
-namespace AxisLink.Core.Models.Extended
+namespace AxisLink.Core.Models.Show
 {
     public enum SensorTypes
     {
@@ -20,10 +20,10 @@ namespace AxisLink.Core.Models.Extended
     }
 
     [XmlType("sensor")]
-    public class ExtendedSensor 
+    public class Sensor 
     {
         // Parameterless constructor for xml serialization and deserialization
-        public ExtendedSensor() { }
+        public Sensor() { }
         [XmlAttribute("id")]
         public required int Id { get; set; }
         // Sensors might be connected to a different plc than associated axis - I dont recommend but software will allow

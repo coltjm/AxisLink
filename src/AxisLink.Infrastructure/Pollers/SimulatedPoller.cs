@@ -3,20 +3,20 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Diagnostics;
-using AxisLink.Core.Models.Extended;
+using AxisLink.Core.Models.Show;
 
-namespace AxisLink.Infrastructure.Background
+namespace AxisLink.Infrastructure.Pollers
 {
     public class SimulatedPoller : IPoller
     {
-        public event Action<IEnumerable<ExtendedAxis>>? PollCompleted;
+        public event Action<IEnumerable<Axis>>? PollCompleted;
         public event Action<Exception>? PollFailed;
         public bool IsPolling { get; private set; } = false;
 
         private CancellationTokenSource? _cts;
         private Task? _pollingTask;
 
-        public void Start(IEnumerable<ExtendedAxis> axes, TimeSpan interval)
+        public void Start(IEnumerable<Axis> axes, TimeSpan interval)
         {
             // Only start polling if we arent already
             if (IsPolling) 
@@ -63,10 +63,10 @@ namespace AxisLink.Infrastructure.Background
             }
         }
 
-        protected async Task PollLoopAsync(IEnumerable<ExtendedAxis> axes, TimeSpan interval, CancellationToken token)
+        protected async Task PollLoopAsync(IEnumerable<Axis> axes, TimeSpan interval, CancellationToken token)
         {
 
-            Random random = new Random();
+            Random random = new();
             // Poll until stop is called
             while (!token.IsCancellationRequested && IsPolling)
             {

@@ -1,23 +1,23 @@
-﻿using AxisLink.Core.Models.Extended;
+﻿using AxisLink.Core.Models.Show;
 using AxisLink.Core.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 
-namespace AxisLink.Infrastructure.Background
+namespace AxisLink.Infrastructure.Pollers
 {
     public class ModbusPoller : IPoller
     {
 
-        public event Action<ExtendedAxis>? PollCompleted;
+        public event Action<Axis>? PollCompleted;
         public event Action<Exception>? PollFailed;
         public bool IsPolling { get; set;} = false;
 
-        public void Start(IEnumerable<ExtendedAxis> axes, TimeSpan interval)
+        public void Start(IEnumerable<Axis> axes, TimeSpan interval)
         {
             IsPolling = true;
-            foreach (ExtendedAxis axis in axes) {
+            foreach (Axis axis in axes) {
                 Poll(axis);
             }
             throw new NotImplementedException();
@@ -28,7 +28,7 @@ namespace AxisLink.Infrastructure.Background
             throw new NotImplementedException();
         }
 
-        protected async Task Poll(ExtendedAxis axis) 
+        protected async Task Poll(Axis axis) 
         {
             while (IsPolling) {
                 try { 

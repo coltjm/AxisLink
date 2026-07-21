@@ -1,5 +1,5 @@
 ﻿using AxisLink.Core.Interfaces;
-using AxisLink.Core.Models.Extended;
+using AxisLink.Core.Models.Show;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -10,9 +10,9 @@ namespace AxisLink.Core.Management
     {
         // Holds show file info
         private readonly IShowFileStorage _storage;
-        public ExtendedFile CurrentShow { get; private set; }
+        public ShowFile CurrentShow { get; private set; }
 
-        public List<ExtendedAxis> axes;
+        public List<Axis> axes;
 
         public ShowFileManager(IShowFileStorage storage)
         {
@@ -45,7 +45,16 @@ namespace AxisLink.Core.Management
         public void NewShow()
         {
             // Prompt user to save current show if it has unsaved changes (not implemented here)
-            CurrentShow = new ExtendedFile();
+            // create empty collections to avoid null reference exceptions
+            List<Controller> controllers = new List<Controller>();
+            List<Axis> Axes = new List<Axis>();
+            List<Group> Groups = new List<Group>();
+            List<Scenery> Scenery = new List<Scenery>();
+            List<Patch> Patches = new List<Patch>();
+            List<Cue> Cues = new List<Cue>();
+
+            CurrentShow = new ShowFile(controllers, Axes, Groups, Scenery, Patches, Cues);
+            
         }
 
     }

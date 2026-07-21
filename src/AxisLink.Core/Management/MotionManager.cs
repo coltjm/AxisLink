@@ -1,6 +1,6 @@
 ﻿using AxisLink.Core.Interfaces;
 using AxisLink.Core.Models.Configs;
-using AxisLink.Core.Models.Extended;
+using AxisLink.Core.Models.Show;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -11,20 +11,18 @@ namespace AxisLink.Core.Management
     public class MotionManager
     {
         // Dictionary to hold motion services for each controller, keyed by controller ID
-        private readonly Dictionary<int, IMotionService> _services = new();
+        private readonly Dictionary<int, IMotionService> _services = [];
         // ShowFileManager to manage the current show file and its machinery
         private readonly ShowFileManager _showFileManager;
         // MotionServiceFactory to create motion services based on controller configurations
         private readonly IMotionServiceFactory _serviceFactory;
-        // List of axes as ExtendedAxis (if possible)
-        public List<ExtendedAxis> Axes { get; private set; } = new();
-        // List of controllers as ExtendedController (if possible)
-        public List<ExtendedController> Controllers { get; private set; } = new();
+        public readonly List<Axis> Axes;
+        public readonly List<Controller> Controllers;
         // Events to notify when axes or controllers are added or removed
-        public event Action<ExtendedAxis>? AxisAdded;
-        public event Action<ExtendedAxis>? AxisRemoved;
-        public event Action<ExtendedController>? ControllerAdded;
-        public event Action<ExtendedController>? ControllerRemoved;
+        public event Action<Axis>? AxisAdded;
+        public event Action<Axis>? AxisRemoved;
+        public event Action<Controller>? ControllerAdded;
+        public event Action<Controller>? ControllerRemoved;
         // Running counters for the next axis and controller IDs
         public int nextAxisId { get; private set; }
         public int nextControllerId { get; private set; }
@@ -33,14 +31,11 @@ namespace AxisLink.Core.Management
             // Initialize the ShowFileManager and MotionServiceFactory from dependency injection
             _showFileManager = showFileManager;
             _serviceFactory = serviceFactory;
-            // Populate the Axes and Controllers lists from the current show file, filtering for ExtendedAxis and ExtendedController types
-            Axes = _showFileManager.CurrentShow?.Machinery?.Axes?
-                .OfType<ExtendedAxis>().ToList() ?? new List<ExtendedAxis>();
-            Controllers = _showFileManager.CurrentShow?.Controllers?
-                .OfType<ExtendedController>().ToList() ?? new List<ExtendedController>();
+            Axes = _showFileManager?.CurrentShow?.Machinery?.Axes;
+            Controllers = _showFileManager?.CurrentShow?.Controllers;
             // Set the next IDs based on the maximum existing IDs in the lists, or start from 1 if the lists are empty
-            nextAxisId = Axes.Any() ? Axes.Max(a => a.Id) + 1 : 1;
-            nextControllerId = Controllers.Any() ? Controllers.Max(c => c.Id) + 1 : 1;
+            nextAxisId = showFileManager.CurrentShow.Machinery.Axes.Count != 0 ? Axes.Max(a => a.Id) + 1 : 1;
+            nextControllerId = Controllers.Count != 0 ? Controllers.Max(c => c.Id) + 1 : 1;
         }
 
         // Startup motion services for all controllers in the show file
@@ -110,44 +105,40 @@ namespace AxisLink.Core.Management
             }
         }
         
-        public void AddNewAxis(ExtendedAxis axis)
+        public void AddNewAxis(Axis axis)
         {
-            if (axis == null) throw new ArgumentNullException(nameof(axis));
-            // Add axis and update show file and next id accordingly
+            ArgumentNullException.ThrowIfNull(axis);
+            // update show file and next id accordingly
             Axes.Add(axis);
-            _showFileManager.CurrentShow.Machinery?.Axes?.Add(axis);
             nextAxisId++;
             // Trigger event to notify listeners of the new axis
             AxisAdded?.Invoke(axis);
         }
-        public void AddNewController(ExtendedController controller)
+        public void AddNewController(Controller controller)
         {
-            if (controller == null) throw new ArgumentNullException(nameof(controller));
+            ArgumentNullException.ThrowIfNull(controller);
             // Add controller and update show file and next id accordingly
             Controllers.Add(controller);
-            _showFileManager.CurrentShow.Controllers?.Add(controller); //threw err because controllers is null in a new show. TODO populate if empty
             nextControllerId++;
             // Trigger event to notify listeners of the new controller
             ControllerAdded?.Invoke(controller);
         }
 
-        public void RemoveController(ExtendedController controller) {
-            if (controller == null) throw new ArgumentNullException(nameof(controller));
+        public void RemoveController(Controller controller) {
+            ArgumentNullException.ThrowIfNull(controller);
             // Remove controller and update show file accordingly
             // Do not update next id, skip over any removed ids to avoid conflicts
             Controllers.Remove(controller);
-            _showFileManager.CurrentShow.Controllers.Remove(controller);
             // Trigger event to notify listeners of the removed controller
             ControllerRemoved?.Invoke(controller);  
         }
 
-        public void RemoveAxis(ExtendedAxis axis)
+        public void RemoveAxis(Axis axis)
         {
-            if (axis == null) throw new ArgumentNullException(nameof(axis));
+            ArgumentNullException.ThrowIfNull(axis);
             // Remove axis and update show file accordingly
             // Do not update next id, skip over any removed ids to avoid conflicts
             Axes.Remove(axis);
-            _showFileManager.CurrentShow.Machinery?.Axes?.Remove(axis);
             // Trigger event to notify listeners of the removed axis
             AxisRemoved?.Invoke(axis);
         }

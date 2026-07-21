@@ -1,7 +1,6 @@
 ﻿using AxisLink.Core.Interfaces;
 using AxisLink.Core.Management;
-using AxisLink.Core.Models.Extended;
-using AxisLink.Core.Models.Standard;
+using AxisLink.Core.Models.Show;
 using CommunityToolkit.Mvvm.ComponentModel;
 using System;
 using System.Collections.Generic;
@@ -16,7 +15,7 @@ namespace AxisLink.Desktop.ViewModels.Modules
         private readonly MotionManager motionManager;
         private readonly IConsoleLogger Logger;
         // List of axes to display in the module, bound to the UI
-        public ObservableCollection<ExtendedAxis> DisplayAxes { get; } = new();
+        public ObservableCollection<Axis> DisplayAxes { get; } = new();
         public AxisViewerModuleViewModel(ShowFileManager fileManager, MotionManager _motionManager, IConsoleLogger logger)
         {
             FileManager = fileManager;
@@ -33,13 +32,13 @@ namespace AxisLink.Desktop.ViewModels.Modules
             motionManager.AxisRemoved += OnAxisRemoved;
         }
 
-        private void OnAxisAdded(ExtendedAxis axis)
+        private void OnAxisAdded(Axis axis)
         {
             // When axis is added, update UI collection on the UI thread
             Avalonia.Threading.Dispatcher.UIThread.Post(() => DisplayAxes.Add(axis));
         }
 
-        private void OnAxisRemoved(ExtendedAxis axis)
+        private void OnAxisRemoved(Axis axis)
         {
             // When axis is removed, update UI collection on the UI thread
             Avalonia.Threading.Dispatcher.UIThread.Post(() => DisplayAxes.Remove(axis));

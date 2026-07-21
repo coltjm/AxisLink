@@ -1,4 +1,4 @@
-﻿using AxisLink.Core.Models.Extended;
+﻿using AxisLink.Core.Models.Show;
 using AxisLink.Core.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -40,22 +40,22 @@ namespace AxisLink.Infrastructure.Services
             throw new NotImplementedException();
         }
 
-        public Task ExecuteMoveAsync(ExtendedAxis axis, float targetPosition)
+        public Task ExecuteMoveAsync(Axis axis, float targetPosition)
         {
             throw new NotImplementedException();
         }
 
-        public Task JogAsync(ExtendedAxis axis, float velocity)
+        public Task JogAsync(Axis axis, float velocity)
         {
             throw new NotImplementedException();
         }
 
-        public Task StopAxisAsync(ExtendedAxis axis)
+        public Task StopAxisAsync(Axis axis)
         {
             throw new NotImplementedException();
         }
 
-        public Task UpdateAllStatesAsync(IEnumerable<ExtendedAxis> axes)
+        public Task UpdateAllStatesAsync(IEnumerable<Axis> axes)
         {
             // Read all 
             throw new NotImplementedException();

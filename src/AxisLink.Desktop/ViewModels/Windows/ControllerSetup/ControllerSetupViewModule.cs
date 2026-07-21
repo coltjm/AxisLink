@@ -5,8 +5,8 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using AxisLink.Core.Models.Configs;
-using AxisLink.Core.Models.Extended;
 using System.Diagnostics;
+using AxisLink.Core.Models.Show;
 
 namespace AxisLink.Desktop.ViewModels.Windows.ControllerSetup
 {
@@ -30,7 +30,7 @@ namespace AxisLink.Desktop.ViewModels.Windows.ControllerSetup
                 ConnectionConfig connectionConfig = new ModbusConfig(ModbusControllerSetupViewModel.IpAddress,
                     ModbusControllerSetupViewModel.Port.ToString(),
                     ModbusControllerSetupViewModel.EstopAddress);
-                ExtendedController controller = new ExtendedController(
+                Controller controller = new Controller(
                     id: motionManager.nextControllerId,
                     name: ModbusControllerSetupViewModel.ControllerName,
                     config: connectionConfig);

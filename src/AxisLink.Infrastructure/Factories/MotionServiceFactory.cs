@@ -1,6 +1,5 @@
 ﻿using AxisLink.Core.Interfaces;
 using AxisLink.Core.Models.Configs;
-using AxisLink.Core.Models.Extended;
 using AxisLink.Infrastructure.Services;
 using AxisLink.Infrastructure.Utils;
 using System;

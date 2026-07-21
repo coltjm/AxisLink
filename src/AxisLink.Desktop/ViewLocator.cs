@@ -1,7 +1,9 @@
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
 using AxisLink.Desktop.ViewModels;
+using Dock.Model.Core;
 using System;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 
 namespace AxisLink.Desktop
@@ -16,12 +18,13 @@ namespace AxisLink.Desktop
     {
         public Control? Build(object? param)
         {
+            Debug.WriteLine("-------------------------\n{0}", param);
             if (param is null)
                 return null;
 
             var name = param.GetType().FullName!.Replace("ViewModel", "View", StringComparison.Ordinal);
             var type = Type.GetType(name);
-
+            
             if (type != null)
             {
                 return (Control)Activator.CreateInstance(type)!;
@@ -32,7 +35,8 @@ namespace AxisLink.Desktop
 
         public bool Match(object? data)
         {
-            return data is ViewModelBase;
+            Debug.WriteLine($"[ViewLocator] Match checked: {data?.GetType().Name ?? "null"} with val: {data}");
+            return data is ViewModelBase || data is IDockable;
         }
     }
 }

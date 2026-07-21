@@ -1,5 +1,5 @@
 ﻿using AxisLink.Core.Interfaces;
-using AxisLink.Core.Models.Extended;
+using AxisLink.Core.Models.Show;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -9,22 +9,22 @@ namespace AxisLink.Infrastructure.ShowFileStorage
 {
     public class XmlShowFileStorage : IShowFileStorage
     {
-        public ExtendedFile LoadFromFileSystem(string path)
+        public ShowFile LoadFromFileSystem(string path)
         {
-            var serializer = new XmlSerializer(typeof(ExtendedFile));
+            var serializer = new XmlSerializer(typeof(ShowFile));
             using var stream = new StreamReader(path);
-            return (ExtendedFile)serializer.Deserialize(stream);
+            return (ShowFile)serializer.Deserialize(stream);
         }
 
-        public void SaveAsToFileSystem(ExtendedFile show, string path)
+        public void SaveAsToFileSystem(ShowFile show, string path)
         {
 
             throw new NotImplementedException();   
         }
 
-        public void SaveToFileSystem(ExtendedFile show, string path)
+        public void SaveToFileSystem(ShowFile show, string path)
         {
-            var serializer = new XmlSerializer(typeof(ExtendedFile));
+            var serializer = new XmlSerializer(typeof(ShowFile));
             string xml;
             using var stream = new MemoryStream();
             using (var writer = new StringWriter())
@@ -34,7 +34,6 @@ namespace AxisLink.Infrastructure.ShowFileStorage
                 File.WriteAllText(path, xml);
             }
         }
-        // Reads and updates the show file
 
 
     }

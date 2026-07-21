@@ -8,6 +8,7 @@ using AxisLink.Desktop.ViewModels.Windows.ControllerSetup;
 using AxisLink.Infrastructure.Factories;
 using AxisLink.Infrastructure.Loggers;
 using AxisLink.Infrastructure.ShowFileStorage;
+using Dock.Model.Core;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -32,11 +33,13 @@ namespace AxisLink.Desktop
             // UI Services
             services.AddSingleton<FileDialogService>();
             services.AddSingleton<WindowManager>();
-            services.AddTransient<WorkspaceManager>();
+            services.AddSingleton<WorkspaceManager>();
+            services.AddSingleton<IFactory, DockFactory>();
             // Set up managers
             services.AddSingleton<MotionManager>();
             services.AddSingleton<CueManager>();
             services.AddSingleton<ShowFileManager>();
+            
 
             // Add UI VMs as Transients (new instance created each time requested)
             // Main Windows

@@ -1,4 +1,4 @@
-﻿using AxisLink.Core.Models.Extended;
+﻿using AxisLink.Core.Models.Show;
 using AxisLink.Core.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -6,7 +6,7 @@ using System.Diagnostics;
 using System.Net;
 using System.Text;
 
-namespace AxisLink.Infrastructure.Services
+namespace AxisLink.Infrastructure.MotionServices
 {
     public class SimulatedMotionService : IMotionService
     {
@@ -37,7 +37,7 @@ namespace AxisLink.Infrastructure.Services
         }
 
         // needs to include things like expected start, accel, vel, decel, etc.
-        public async Task ExecuteMoveAsync(ExtendedAxis axis, float targetPosition)
+        public async Task ExecuteMoveAsync(Axis axis, float targetPosition)
         {
             Debug.WriteLine($"Moving Axis {axis.Name} to position: {targetPosition}");
             if (axis.CurrentPos <  targetPosition) 
@@ -59,7 +59,7 @@ namespace AxisLink.Infrastructure.Services
             Debug.WriteLine($"Axis Move Complete. Axis Position: {axis.CurrentPos}");
         }
 
-        public async Task JogAsync(ExtendedAxis axis, float velocity)
+        public async Task JogAsync(Axis axis, float velocity)
         {
             Debug.WriteLine($"Jogging Axis {axis.Name} with velocity: {velocity}");
             while (IsJogging)
@@ -71,13 +71,13 @@ namespace AxisLink.Infrastructure.Services
             Debug.WriteLine($"Axis Jog Complete. Axis Position: {axis.CurrentPos}");
         }
 
-        public async Task StopAxisAsync(ExtendedAxis axis)
+        public async Task StopAxisAsync(Axis axis)
         {
             IsJogging = false;
             Debug.WriteLine($"Stopping Axis {axis.Name}");
         }
 
-        public async Task UpdateAllStatesAsync(IEnumerable<ExtendedAxis> axes)
+        public async Task UpdateAllStatesAsync(IEnumerable< Axis> axes)
         {
             throw new NotImplementedException();
         }

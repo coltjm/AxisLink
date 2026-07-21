@@ -1,6 +1,5 @@
 ﻿using AxisLink.Core.Models.Configs;
-using AxisLink.Core.Models.Extended;
-using AxisLink.Core.Models.Standard;
+using AxisLink.Core.Models.Show;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,12 +10,12 @@ using FluentAssertions;
 
 namespace AxisLink.Tests.Models.Extended
 {
-    public class ExtendedSerializationTests
+    public class SerializationTests
     {
         [Fact]
         public void ExtendedFile_FullRoundTrip()
         {
-            var controller0 = new ExtendedController
+            var controller0 = new Controller
             {
                 Id = 0,
                 Name = "Modbus Controller",
@@ -28,7 +27,7 @@ namespace AxisLink.Tests.Models.Extended
                 }
 
             };
-            var controller1 = new ExtendedController
+            var controller1 = new Controller
             {
                 Id = 1,
                 Name = "Modbus Controller 2",
@@ -40,7 +39,7 @@ namespace AxisLink.Tests.Models.Extended
                 }
 
             };
-            var sensor0 = new ExtendedSensor
+            var sensor0 = new Sensor
             {
                 Id = 0,
                 ControllerId = 0,
@@ -51,13 +50,13 @@ namespace AxisLink.Tests.Models.Extended
                     SignalAddress = "X001"
                 }
             };
-            var axis0 = new ExtendedAxis
+            var axis0 = new Axis
             {
                 Id = 0,
                 ControllerId = 1,
                 StepsPerRevolution = 200,
                 DistancePerRevolution = 100,
-                Sensors = new List<ExtendedSensor>
+                Sensors = new List<Sensor>
                 {
                     sensor0
                 },
@@ -73,7 +72,7 @@ namespace AxisLink.Tests.Models.Extended
                 CurrentVel = 0
 
             };
-            var axis1 = new ExtendedAxis
+            var axis1 = new Axis
             {
                 Id = 1,
                 ControllerId = 1,
@@ -92,7 +91,7 @@ namespace AxisLink.Tests.Models.Extended
                 CurrentVel = 0
 
             };
-            var group0 = new ExtendedGroup
+            var group0 = new Group
             {
                 Id = 0,
                 Name = "main group",
@@ -104,7 +103,7 @@ namespace AxisLink.Tests.Models.Extended
                     new GroupAxis { Id = 1, Offset = 200}
                 }
             };
-            var scenery0 = new ExtendedScenery 
+            var scenery0 = new Scenery 
             { 
                 Id = 0,
                 Name = "Tree Flyrail",
@@ -134,14 +133,14 @@ namespace AxisLink.Tests.Models.Extended
                     }
                 }
             };
-            var patch0 = new ExtendedPatch
+            var patch0 = new Patch
             { 
                 // References scenery0
                 Id = 0,
                 // Connect scenery0 to group0
                 GroupId = 0                
             };
-            var cuePart0 = new ExtendedCuePart 
+            var cuePart0 = new CuePart 
             { 
                 Id = 0,
                 User = "FOH",
@@ -163,16 +162,16 @@ namespace AxisLink.Tests.Models.Extended
                     Speed = 50
                 }
             };
-            var cue0 = new ExtendedCue
+            var cue0 = new Cue
             { 
                 Number = "1.23",
                 Name = "Fly tree in",
                 Stack = 2,
-                CueParts = new List<StandardCuePart> { cuePart0 }
+                CueParts = new List<CuePart> { cuePart0 }
             };
-            var header = new ExtendedHeader 
+            var header = new Header 
             {
-                ShowName = "ExtendedTest",
+                ShowName = "Serialization Test",
                 Notes = "Unit test for App development",
                 User = "Colt McGuire",
                 Date = new Date
@@ -187,17 +186,17 @@ namespace AxisLink.Tests.Models.Extended
                 Versions = new List<string> { "AxisLink V0.1" }
             };
             
-            var originalFile = new ExtendedFile(
-                new List<ExtendedController>() { controller0, controller1 },
-                new List<StandardAxis>() { axis0, axis1}, 
-                new List<StandardGroup>() { group0},
-                new List<StandardScenery>() { scenery0},
-                new List<StandardPatch>() { patch0 },
-                new List<StandardCue>() { cue0}
+            var originalFile = new ShowFile(
+                new List<Controller>() { controller0, controller1 },
+                new List<Axis>() { axis0, axis1}, 
+                new List<Group>() { group0},
+                new List<Scenery>() { scenery0},
+                new List<Patch>() { patch0 },
+                new List<Cue>() { cue0}
             );
             originalFile.Header = header;
 
-            var serializer = new XmlSerializer(typeof(ExtendedFile));
+            var serializer = new XmlSerializer(typeof(ShowFile));
             string xml;
 
             // Serialize to string
@@ -209,10 +208,10 @@ namespace AxisLink.Tests.Models.Extended
             }
 
             // Deserialize back to object
-            ExtendedFile deserialized;
+            ShowFile deserialized;
             using (var reader = new StringReader(xml))
             {
-                deserialized = (ExtendedFile)serializer.Deserialize(reader);
+                deserialized = (ShowFile)serializer.Deserialize(reader);
             }
             deserialized.Should().BeEquivalentTo(originalFile, options => options
                 .Excluding(member => member.Name == "CurrentPos")

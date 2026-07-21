@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using AxisLink.Core.Models.Extended;
+using AxisLink.Core.Models.Show;
 
 namespace AxisLink.Core.Management
 {

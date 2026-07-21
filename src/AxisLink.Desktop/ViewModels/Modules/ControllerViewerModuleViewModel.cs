@@ -1,7 +1,6 @@
 ﻿using AxisLink.Core.Interfaces;
 using AxisLink.Core.Management;
-using AxisLink.Core.Models.Extended;
-using AxisLink.Core.Models.Standard;
+using AxisLink.Core.Models.Show;
 using CommunityToolkit.Mvvm.ComponentModel;
 using System;
 using System.Collections.Generic;
@@ -16,7 +15,7 @@ namespace AxisLink.Desktop.ViewModels.Modules
         private readonly MotionManager motionManager;
         private readonly IConsoleLogger Logger;
         // List of controllers to display in the module, bound to the UI
-        public ObservableCollection<ExtendedController> DisplayControllers { get; } = new();
+        public ObservableCollection<Controller> DisplayControllers { get; } = new();
         public ControllerViewerModuleViewModel(ShowFileManager fileManager, MotionManager _motionManager, IConsoleLogger logger)
         {
             FileManager = fileManager;
@@ -33,13 +32,13 @@ namespace AxisLink.Desktop.ViewModels.Modules
             motionManager.ControllerRemoved += OnControllerRemoved;
         }
 
-        private void OnControllerAdded(ExtendedController controller)
+        private void OnControllerAdded(Controller controller)
         {
             // When controller is added, update UI collection on the UI thread
             Avalonia.Threading.Dispatcher.UIThread.Post(() => DisplayControllers.Add(controller));
         }
 
-        private void OnControllerRemoved(ExtendedController controller)
+        private void OnControllerRemoved(Controller controller)
         {
             // When controller is removed, update UI collection on the UI thread
             Avalonia.Threading.Dispatcher.UIThread.Post(() => DisplayControllers.Remove(controller));

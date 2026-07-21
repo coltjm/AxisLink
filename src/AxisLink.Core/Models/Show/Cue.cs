@@ -1,18 +1,16 @@
-﻿using AxisLink.Core.Models.Extended;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Xml.Serialization;
 
-namespace AxisLink.Core.Models.Standard
+namespace AxisLink.Core.Models.Show
 {
     
     [XmlType("b_cue")]
-    [XmlInclude(typeof(ExtendedCue))]
-    public class StandardCue
+    public class Cue
     {
         // Parameterless constructor for xml serialization and deserialization
-        public StandardCue() { }
+        public Cue() { }
         // Cue number should be in the for "major.minor" with major not exceeding 3 digits (1-999) and minor not exceeding 2 digits (0-99)
         [XmlElement("b_number")]
         public required string Number { get; set; }
@@ -31,7 +29,7 @@ namespace AxisLink.Core.Models.Standard
         public int? Stack {  get; set; }
 
         [XmlElement("b_object")]
-        public List<StandardCuePart> CueParts { get; set; } = new();
+        public List<CuePart>? CueParts { get; set; } = [];
 
     }
 }

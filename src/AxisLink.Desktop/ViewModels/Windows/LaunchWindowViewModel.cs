@@ -35,7 +35,7 @@ namespace AxisLink.Desktop.ViewModels.Windows
             FileManager.NewShow();
             windowManager.ShowMainWindow();
 
-            Logger.LogInfo("File -> New Show triggered.");
+            Logger.LogInfo("Splash screen -> New Show triggered.");
         }
         [RelayCommand]
         private async Task OpenShow()

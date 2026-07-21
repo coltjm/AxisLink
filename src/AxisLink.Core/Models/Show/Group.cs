@@ -1,10 +1,9 @@
-﻿using AxisLink.Core.Models.Extended;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Xml.Serialization;
 
-namespace AxisLink.Core.Models.Standard
+namespace AxisLink.Core.Models.Show
 {
     // Enum for group type
     public enum GroupType
@@ -42,8 +41,7 @@ namespace AxisLink.Core.Models.Standard
 
     // Basic Axis model made in accordance with ANSI E1.44-2014 R2024
     [XmlType("b_group")]
-    [XmlInclude(typeof(ExtendedGroup))]
-    public class StandardGroup
+    public class Group
     {
         [XmlAttribute("b_id")]
         public required int Id { get; set; }
@@ -68,10 +66,10 @@ namespace AxisLink.Core.Models.Standard
         public required GroupMasterAxis MasterAxis { get; set; }
 
         [XmlElement("b_axis")]
-        public List<GroupAxis> GroupAxes { get; set; } = new();
+        public List<GroupAxis> GroupAxes { get; set; } = [];
 
         // Parameterless constructor for xml serialization and deserialization
-        public StandardGroup() { }
+        public Group() { }
 
 
     }

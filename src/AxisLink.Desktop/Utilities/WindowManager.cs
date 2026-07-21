@@ -44,15 +44,18 @@ namespace AxisLink.Desktop.Utilities
         {
             if (Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
+                var oldWindow = desktop.MainWindow;
+
                 var mainWindow = new MainWindow
                 {
                     DataContext = serviceProvider.GetRequiredService<MainWindowViewModel>()
                 };
-                var oldWindow = desktop.MainWindow;
+
                 desktop.MainWindow = mainWindow;
                 mainWindow.Show();
-                oldWindow?.Close();
-                
+
+                // Visually remove the window without killing the underlying OS input handle
+                oldWindow?.Hide();
             }
         }
 

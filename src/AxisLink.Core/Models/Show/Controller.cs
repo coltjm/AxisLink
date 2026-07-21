@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using System.Text;
 using System.Xml.Serialization;
 
-namespace AxisLink.Core.Models.Extended
+namespace AxisLink.Core.Models.Show
 {
-    public class ExtendedController
+    public class Controller
     {
         [XmlAttribute("id")]
         public int Id { get; set; }
@@ -17,9 +17,9 @@ namespace AxisLink.Core.Models.Extended
         [XmlElement("connection_config")]
         public ConnectionConfig? Config { get; set; }
 
-        public ExtendedController() { }
+        public Controller() { }
 
-        public ExtendedController(int id, string? name, ConnectionConfig? config)
+        public Controller(int id, string? name, ConnectionConfig? config)
         {
             Id = id;
             Name = name;

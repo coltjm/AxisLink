@@ -1,10 +1,9 @@
-﻿using AxisLink.Core.Models.Extended;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Xml.Serialization;
 
-namespace AxisLink.Core.Models.Standard
+namespace AxisLink.Core.Models.Show
 {
 
     public class SceneryTrims
@@ -19,7 +18,7 @@ namespace AxisLink.Core.Models.Standard
 
         // Saved trim positions
         [XmlElement("b_trim")]
-        public List<SceneryTrim>? Trims { get; set; } = new();
+        public List<SceneryTrim>? Trims { get; set; } = [];
 
         // Parameterless constructor for xml serialization and deserialization
         public SceneryTrims() { }
@@ -61,8 +60,7 @@ namespace AxisLink.Core.Models.Standard
     }
 
     [XmlType("b_scenery_object")]
-    [XmlInclude(typeof(ExtendedScenery))]
-    public class StandardScenery
+    public class Scenery
     {
         [XmlAttribute("b_id")]
         public required int Id { get; set; }
@@ -92,7 +90,7 @@ namespace AxisLink.Core.Models.Standard
         public SceneryTrims? Trims { get; set; }
 
         // Parameterless constructor for xml serialization and deserialization
-        public StandardScenery() { }
+        public Scenery() { }
 
 
     }

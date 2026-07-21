@@ -47,7 +47,7 @@ namespace AxisLink.Desktop
             }
 
             // TEMP TESTING
-            ConsoleTesting.Test(serviceProvider);
+            //ConsoleTesting.Test(serviceProvider);
 
             windowManager.ShowLaunchWindow();
 

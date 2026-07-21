@@ -1,6 +1,6 @@
 ﻿using AxisLink.Core.Interfaces;
 using AxisLink.Core.Management;
-using AxisLink.Core.Models.Extended;
+using AxisLink.Core.Models.Show;
 using AxisLink.Desktop.ViewModels.Windows.ControllerSetup;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -16,7 +16,7 @@ namespace AxisLink.Desktop.ViewModels.Windows.AxisSetup
         private readonly MotionManager motionManager;
         private readonly IConsoleLogger Logger;
         [ObservableProperty]
-        private ExtendedAxis createdAxis;
+        private Axis createdAxis;
 
         public Action? RequestClose { get; set; }
 
@@ -52,7 +52,7 @@ namespace AxisLink.Desktop.ViewModels.Windows.AxisSetup
             FileManager = fileManager;
             motionManager = _motionManager;
             Logger = logger;
-            createdAxis = new ExtendedAxis{ Id = motionManager.nextAxisId };
+            createdAxis = new Axis{ Id = motionManager.nextAxisId };
         }
 
         [RelayCommand]

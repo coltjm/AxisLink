@@ -6,8 +6,8 @@
         xmlns:desktop="using:AxisLink.Desktop"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:modules="using:AxisLink.Desktop.Views.Modules"
-        xmlns:dockFactory="using:Dock.Model.Avalonia"
-        xmlns:dockModel="using:Dock.Model.Avalonia.Controls"
+        xmlns:modvm="using:AxisLink.Desktop.ViewModels.Modules"
+
         mc:Ignorable="d" 
         d:DesignWidth="1200" d:DesignHeight="800"
         x:Class="AxisLink.Desktop.Views.Windows.MainWindow"
@@ -21,9 +21,7 @@
     </Design.DataContext>
 
     
-
-   <DockPanel>
-        
+    <DockPanel>
         <Menu DockPanel.Dock="Top" Background="{DynamicResource KQMenuBackground}" Foreground="{DynamicResource KQText}">
             
             <MenuItem Header="_File">
@@ -70,34 +68,27 @@
             </StackPanel>
         </Border>
 
-        <DockControl InitializeLayout="True" InitializeFactory="True" Margin="5">
-            <DockControl.Factory>
-                <dockFactory:Factory />
-            </DockControl.Factory>
-            
-            <dockModel:RootDock Id="Root" Title="Root">
-                <dockModel:ProportionalDock Id="MainLayout" Orientation="Horizontal">
-            
-                    <dockModel:ToolDock Id="LayoutAnchor" Proportion="0.0" MinWidth="0" MaxWidth="0" CanFloat="False" >
-                        </dockModel:ToolDock>
-            
-                    <dockModel:DocumentDock Id="DocumentsPane" 
-                                            Proportion="1.0"
-                                            CanCreateDocument="False"
-                                            ItemsSource="{Binding #RootWindow.((vm:MainWindowViewModel)DataContext).Workspace.ActiveModules}">
-                
-                        <dockModel:DocumentDock.DocumentTemplate>
-                            <dockModel:DocumentTemplate x:DataType="dockModel:Document">
-                                <ContentControl Content="{Binding Context}" />
-                            </dockModel:DocumentTemplate>
-                        </dockModel:DocumentDock.DocumentTemplate>
-                
-                    </dockModel:DocumentDock>
-            
-                </dockModel:ProportionalDock>
-            </dockModel:RootDock>
-        </DockControl>
+        <DockControl Layout="{Binding Workspace.RootLayout}">
+            <DockControl.Styles>
+        <!-- Explicitly style Document and Tool controls to render their Context -->
+        <Style Selector="DocumentControl">
+            <Setter Property="Content" Value="{Binding Context}" />
+        </Style>
+        <Style Selector="ToolControl">
+            <Setter Property="Content" Value="{Binding Context}" />
+        </Style>
+    </DockControl.Styles>
+            <DockControl.DataTemplates>
         
+        <DataTemplate DataType="modvm:CueListModuleViewModel">
+            <TextBlock Text="CUE LIST VIEW TEST" Background="Red" Foreground="White" FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        </DataTemplate>
+        
+        <DataTemplate DataType="modvm:AxisViewerModuleViewModel">
+            <TextBlock Text="AXIS VIEWER TEST" Background="Blue" Foreground="White" FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        </DataTemplate>
+    </DockControl.DataTemplates>
+</DockControl>
     </DockPanel>
 
     

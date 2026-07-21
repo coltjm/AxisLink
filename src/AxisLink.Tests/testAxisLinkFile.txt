@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-16"?>
 <showfile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <header xsi:type="ExtendedHeader">
-    <show_name>ExtendedTest</show_name>
+  <header>
+    <show_name>Serialization Test</show_name>
     <notes>Unit test for App development</notes>
     <user>Colt McGuire</user>
     <date>
@@ -18,7 +18,7 @@
   </header>
   <b_machinery>
     <b_axes>
-      <b_axis xsi:type="kq_axis" b_id="0">
+      <b_axis b_id="0">
         <b_type xsi:nil="true" />
         <b_length xsi:nil="true" />
         <b_positioning xsi:nil="true" />
@@ -29,26 +29,26 @@
         <b_max_accel xsi:nil="true" />
         <b_max_decel xsi:nil="true" />
         <b_max_load xsi:nil="true" />
-        <controller_id>1</controller_id>
-        <steps_per_rev>200</steps_per_rev>
-        <dist_per_rev>100</dist_per_rev>
-        <sensors>
-          <sensor id="0">
+        <alink_controller_id>1</alink_controller_id>
+        <alink_steps_per_rev>200</alink_steps_per_rev>
+        <alink_dist_per_rev>100</alink_dist_per_rev>
+        <alink_sensors>
+          <alink_sensor id="0">
             <controller_id>0</controller_id>
             <type>home</type>
             <nc>true</nc>
             <hardware_config xsi:type="ModbusSensorConfig">
               <signal_addr>X001</signal_addr>
             </hardware_config>
-          </sensor>
-        </sensors>
-        <hardware_type>modbus</hardware_type>
-        <hardware_config xsi:type="ModbusStepperConfig">
+          </alink_sensor>
+        </alink_sensors>
+        <alink_hardware_type>modbus</alink_hardware_type>
+        <alink_hardware_config xsi:type="ModbusStepperConfig">
           <pulse_addr>Y001</pulse_addr>
           <direction_addr>Y002</direction_addr>
-        </hardware_config>
+        </alink_hardware_config>
       </b_axis>
-      <b_axis xsi:type="kq_axis" b_id="1">
+      <b_axis b_id="1">
         <b_type xsi:nil="true" />
         <b_length xsi:nil="true" />
         <b_positioning xsi:nil="true" />
@@ -59,19 +59,19 @@
         <b_max_accel xsi:nil="true" />
         <b_max_decel xsi:nil="true" />
         <b_max_load xsi:nil="true" />
-        <controller_id>1</controller_id>
-        <steps_per_rev>200</steps_per_rev>
-        <dist_per_rev>100</dist_per_rev>
-        <sensors />
-        <hardware_type>modbus</hardware_type>
-        <hardware_config xsi:type="ModbusStepperConfig">
+        <alink_controller_id>1</alink_controller_id>
+        <alink_steps_per_rev>200</alink_steps_per_rev>
+        <alink_dist_per_rev>100</alink_dist_per_rev>
+        <alink_sensors />
+        <alink_hardware_type>modbus</alink_hardware_type>
+        <alink_hardware_config xsi:type="ModbusStepperConfig">
           <pulse_addr>Y001</pulse_addr>
           <direction_addr>Y002</direction_addr>
-        </hardware_config>
+        </alink_hardware_config>
       </b_axis>
     </b_axes>
     <b_groups>
-      <b_group xsi:type="ExtendedGroup" b_id="0">
+      <b_group b_id="0">
         <b_name>main group</b_name>
         <b_type>free</b_type>
         <b_speed_limit>100</b_speed_limit>
@@ -82,7 +82,7 @@
       </b_group>
     </b_groups>
     <b_scenery>
-      <b_object xsi:type="ExtendedScenery" b_id="0">
+      <b_object b_id="0">
         <b_name>Tree Flyrail</b_name>
         <b_height>400</b_height>
         <b_weight>10</b_weight>
@@ -104,17 +104,17 @@
       </b_object>
     </b_scenery>
     <b_patch>
-      <b_object xsi:type="ExtendedPatch" b_id="0">
+      <b_object b_id="0">
         <b_axis xsi:nil="true" />
         <b_group>0</b_group>
       </b_object>
     </b_patch>
     <b_cues>
-      <b_cue xsi:type="ExtendedCue">
+      <b_cue>
         <b_number>1.23</b_number>
         <b_name>Fly tree in</b_name>
         <b_stack>2</b_stack>
-        <b_object xsi:type="ExtendedCuePart" b_id="0">
+        <b_object b_id="0">
           <b_user>FOH</b_user>
           <b_playback>2</b_playback>
           <b_move_type>linear</b_move_type>
@@ -140,22 +140,22 @@
       </b_cue>
     </b_cues>
   </b_machinery>
-  <controllers>
-    <controller id="0">
+  <alink_controllers>
+    <alink_controller id="0">
       <name>Modbus Controller</name>
       <connection_config xsi:type="ModbusConfig">
         <IpAddress>192.168.1.100</IpAddress>
         <Port>502</Port>
         <EStopAddress>X000</EStopAddress>
       </connection_config>
-    </controller>
-    <controller id="1">
+    </alink_controller>
+    <alink_controller id="1">
       <name>Modbus Controller 2</name>
       <connection_config xsi:type="ModbusConfig">
         <IpAddress>192.168.1.101</IpAddress>
         <Port>502</Port>
         <EStopAddress>X000</EStopAddress>
       </connection_config>
-    </controller>
-  </controllers>
+    </alink_controller>
+  </alink_controllers>
 </showfile>

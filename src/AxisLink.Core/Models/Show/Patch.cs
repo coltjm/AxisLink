@@ -1,16 +1,14 @@
-﻿using AxisLink.Core.Models.Extended;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Xml.Serialization;
 
-namespace AxisLink.Core.Models.Standard
+namespace AxisLink.Core.Models.Show
 {
     // Must be wrapped in "b_patch" with a "b_interactive_decision_point" for entire list (if decision point is needed)
 
     [XmlType("b_patch_object")]
-    [XmlInclude(typeof(ExtendedPatch))]
-    public class StandardPatch
+    public class Patch
     {
         // Id corresponding to a scenery object
         [XmlAttribute("b_id")]
@@ -25,6 +23,6 @@ namespace AxisLink.Core.Models.Standard
         public int? GroupId { get; set; }
 
         // Parameterless constructor for xml serialization and deserialization
-        public StandardPatch() { }
+        public Patch() { }
     }
 }

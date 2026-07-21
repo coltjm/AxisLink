@@ -1,10 +1,9 @@
-﻿using AxisLink.Core.Models.Extended;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Xml.Serialization;
 
-namespace AxisLink.Core.Models.Standard
+namespace AxisLink.Core.Models.Show
 {
     // Defines the types of moves according to E1.44-2014 R2024
     public enum CuePartMoveType
@@ -52,11 +51,10 @@ namespace AxisLink.Core.Models.Standard
     }
 
     [XmlType("b_object")]
-    [XmlInclude(typeof(ExtendedCuePart))]
-    public class StandardCuePart
+    public class CuePart
     {
         // Parameterless constructor for xml serialization and deserialization
-        public StandardCuePart() { }
+        public CuePart() { }
         // Scenery reference ID
         [XmlAttribute("b_id")]
         public required int Id { get; set; }
