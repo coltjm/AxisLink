@@ -19,5 +19,15 @@
             <TextBlock Text="IP Address:"/>
             <TextBox Text="{Binding IpAddress}"/>
         </StackPanel>
+
+      <StackPanel Spacing="5">
+		  <TextBlock Text="Port:"/>
+          <TextBox Text="{Binding Port}"/>
+      </StackPanel>
+
+      <StackPanel Spacing="5">
+		  <TextBlock Text="EStop Address:"/>
+          <TextBox Text="{Binding EstopAddress}"/>
+      </StackPanel>
     </StackPanel>
 </UserControl>

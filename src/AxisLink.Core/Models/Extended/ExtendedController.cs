@@ -18,5 +18,12 @@ namespace AxisLink.Core.Models.Extended
         public ConnectionConfig? Config { get; set; }
 
         public ExtendedController() { }
+
+        public ExtendedController(int id, string? name, ConnectionConfig? config)
+        {
+            Id = id;
+            Name = name;
+            Config = config;
+        }
     }
 }

@@ -125,7 +125,7 @@ namespace AxisLink.Core.Management
             if (controller == null) throw new ArgumentNullException(nameof(controller));
             // Add controller and update show file and next id accordingly
             Controllers.Add(controller);
-            _showFileManager.CurrentShow.Controllers.Add(controller);
+            _showFileManager.CurrentShow.Controllers?.Add(controller); //threw err because controllers is null in a new show. TODO populate if empty
             nextControllerId++;
             // Trigger event to notify listeners of the new controller
             ControllerAdded?.Invoke(controller);

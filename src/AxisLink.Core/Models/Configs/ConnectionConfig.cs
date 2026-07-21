@@ -21,6 +21,14 @@ namespace AxisLink.Core.Models.Configs
     {
         // Parameterless constructor for xml serialization and deserialization
         public ModbusConfig() { }
+
+        public ModbusConfig(string? ipAddress, string? port, string? eStopAddress)
+        {
+            IpAddress = ipAddress;
+            Port = port;
+            EStopAddress = eStopAddress;
+        }
+
         public string? IpAddress { get; set; }
         public string? Port { get; set; }
 

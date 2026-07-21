@@ -13,5 +13,11 @@ namespace AxisLink.Desktop.ViewModels.Windows.ControllerSetup
 
         [ObservableProperty]
         private string _ipAddress = "192.168.1.10";
+
+        [ObservableProperty]
+        private uint _port = 502;
+
+        [ObservableProperty]
+        private string _estopAddress = "X001";
     }
 }
