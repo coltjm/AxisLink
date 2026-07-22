@@ -10,6 +10,8 @@ using AxisLink.Desktop.Views.Windows.ControllerSetup;
 using AxisLink.Desktop.ViewModels.Windows.ControllerSetup;
 using AxisLink.Desktop.Views.Windows.AxisSetup;
 using AxisLink.Desktop.ViewModels.Windows.AxisSetup;
+using Avalonia.Controls;
+using AxisLink.Desktop.ViewModels;
 
 namespace AxisLink.Desktop.Utilities
 {
@@ -58,31 +60,27 @@ namespace AxisLink.Desktop.Utilities
             }
         }
 
-        // Open the controller setup window as a dialog, with the main window as the owner
-        public void ShowControllerSetupWindow()
+        public void ShowWindow<VM, View>() 
+            where VM : ViewModelBase 
+            where View : Window, new()
         {
             if (Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
-                var controllerSetupWindow = new ControllerSetupWindow
+                var window = new View
                 {
-                    DataContext = serviceProvider.GetRequiredService<ControllerSetupViewModel>()
+                    DataContext = serviceProvider.GetRequiredService<VM>()
                 };
-                controllerSetupWindow.ShowDialog(desktop.MainWindow);
+                window.Show();
             }
         }
 
+        // Open the controller setup window as a dialog, with the main window as the owner
+        public void ShowControllerSetupWindow() => ShowWindow<ControllerSetupViewModel, ControllerSetupWindow>();
+
         // Open the axis setup window as a dialog, with the main window as the owner
-        public void ShowAxisSetupWindow()
-        {
-            if (Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
-            {
-                var axisSetupWindow = new AxisSetupWindow
-                {
-                    DataContext = serviceProvider.GetRequiredService<AxisSetupViewModel>()
-                };
-                axisSetupWindow.ShowDialog(desktop.MainWindow);
-            }
-        }
+        public void ShowAxisSetupWindow() => ShowWindow<AxisSetupViewModel, AxisSetupWindow>();
+
+        
 
     }
 }

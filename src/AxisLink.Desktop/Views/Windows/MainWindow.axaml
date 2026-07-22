@@ -37,6 +37,7 @@
             <MenuItem Header="_Edit">
                 <MenuItem Header="Undo" InputGesture="Ctrl+Z"/>
                 <MenuItem Header="Redo" InputGesture="Ctrl+Y"/>
+                <MenuItem Header="New Cue" Command="{Binding OpenNewCueWindowCommand}"/>
                 <Separator/>
                 <MenuItem Header="Cut" InputGesture="Ctrl+X"/>
                 <MenuItem Header="Copy" InputGesture="Ctrl+C"/>

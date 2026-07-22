@@ -12,6 +12,8 @@ using System;
 using System.Diagnostics;
 using System.Windows.Input;
 using System.Threading.Tasks;
+using AxisLink.Desktop.Views.Windows.CueCreation;
+using AxisLink.Desktop.ViewModels.Windows.CueCreation;
 namespace AxisLink.Desktop.ViewModels.Windows
 {
     public partial class MainWindowViewModel : ViewModelBase
@@ -122,6 +124,12 @@ namespace AxisLink.Desktop.ViewModels.Windows
         private void OpenNewAxisWindow()
         {
             windowManager.ShowAxisSetupWindow();
+        }
+
+        [RelayCommand]
+        private void OpenNewCueWindow()
+        {
+            windowManager.ShowWindow<CueCreationWindowViewModel, CueCreationWindow>();
         }
 
         [RelayCommand]

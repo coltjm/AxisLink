@@ -5,6 +5,7 @@ using AxisLink.Desktop.ViewModels.Modules;
 using AxisLink.Desktop.ViewModels.Windows;
 using AxisLink.Desktop.ViewModels.Windows.AxisSetup;
 using AxisLink.Desktop.ViewModels.Windows.ControllerSetup;
+using AxisLink.Desktop.ViewModels.Windows.CueCreation;
 using AxisLink.Infrastructure.Factories;
 using AxisLink.Infrastructure.Loggers;
 using AxisLink.Infrastructure.ShowFileStorage;
@@ -56,6 +57,7 @@ namespace AxisLink.Desktop
             // Windows
             services.AddTransient<ControllerSetupViewModel>();
             services.AddTransient<AxisSetupViewModel>();
+            services.AddTransient<CueCreationWindowViewModel>();
             
 
             return services.BuildServiceProvider();
