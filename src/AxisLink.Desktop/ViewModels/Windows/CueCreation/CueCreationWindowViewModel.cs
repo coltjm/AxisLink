@@ -17,7 +17,7 @@ namespace AxisLink.Desktop.ViewModels.Windows.CueCreation
         [ObservableProperty]
         private CuePart _selectedCuePart;
 
-        public ObservableCollection<CuePart> CueParts { get; }
+        public ObservableCollection<CuePart> CueParts { get; } = new();
 
         public string WindowTitle => string.IsNullOrWhiteSpace(Cue.Number)
             ? "Create New Cue"

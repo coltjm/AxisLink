@@ -33,5 +33,6 @@
     <PackageReference Include="Dock.Serializer.Xml" Version="12.0.0.2" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.10" />
     <PackageReference Include="Tmds.DBus.Protocol" Version="0.94.2" />
+    <PackageReference Include="TreeDataGrid" Version="12.0.0" />
   </ItemGroup>
 </Project>

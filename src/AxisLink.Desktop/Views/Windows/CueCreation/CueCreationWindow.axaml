@@ -5,6 +5,7 @@
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         xmlns:vm="using:AxisLink.Desktop.ViewModels.Windows.CueCreation"
         xmlns:models="using:AxisLink.Core.Models.Standard"
+        xmlns:show="using:AxisLink.Core.Models.Show"
         x:Class="AxisLink.Desktop.Views.Windows.CueCreation.CueCreationWindow"
         x:DataType="vm:CueCreationWindowViewModel"
         WindowStartupLocation="CenterOwner"
@@ -41,9 +42,8 @@
                 </StackPanel>
             </Grid>
         </Border>
-        <Grid Grid.Row="1" ColumnDefinitions="*, 12, 360">
             
-            <Grid Grid.Column="0" RowDefinitions="Auto, *">
+            <Grid Grid.Row="1" Grid.Column="0" RowDefinitions="Auto, *">
                 <DockPanel Grid.Row="0" Margin="0,0,0,8">
                     <TextBlock Text="Scenery Objects / Cue Parts" FontWeight="SemiBold" VerticalAlignment="Center"/>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Spacing="8">
@@ -53,121 +53,24 @@
                     </StackPanel>
                 </DockPanel>
 
-                <DataGrid Grid.Row="1" 
-                          ItemsSource="{Binding CueParts}" 
-                          SelectedItem="{Binding SelectedCuePart}"
-                          AutoGenerateColumns="False" 
+                <TreeDataGrid Grid.Row="1" Grid.ColumnSpan="3"
+                          ItemsSource="{Binding CueParts}"
+                          SelectionMode="Row"
                           CanUserResizeColumns="True"
-                          GridLinesVisibility="All"
                           BorderThickness="1"
                           BorderBrush="{DynamicResource SystemControlForegroundBaseLowBrush}">
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Header="Obj ID" Binding="{Binding Id}" Width="70"/>
-                        <DataGridTextColumn Header="Move Type" Binding="{Binding MoveType}" Width="110"/>
-                        <DataGridTextColumn Header="Start Type" Binding="{Binding Start.Type}" Width="90"/>
-                        <DataGridTextColumn Header="Target Type" Binding="{Binding Target.Type}" Width="90"/>
-                        <DataGridTextColumn Header="Speed" Binding="{Binding Target.Speed, StringFormat={}{0:F2}}" Width="80"/>
-                        <DataGridTextColumn Header="Delay (s)" Binding="{Binding Target.Delay, StringFormat={}{0:F2}}" Width="70"/>
-                        <DataGridTextColumn Header="User" Binding="{Binding User}" Width="80"/>
-                        <DataGridTextColumn Header="PB" Binding="{Binding Playback}" Width="50"/>
-                    </DataGrid.Columns>
-                </DataGrid>
+                        <TreeDataGridTextColumn Header="Obj ID" Binding="{Binding Id, DataType={x:Type show:CuePart}}" Width="70"/>
+                        <TreeDataGridTextColumn Header="Move Type" Binding="{Binding MoveType, DataType={x:Type show:CuePart}}" Width="110"/>
+                        <TreeDataGridTextColumn Header="Start Type" Binding="{Binding Start.Type, DataType={x:Type show:CuePart}}" Width="90"/>
+                        <TreeDataGridTextColumn Header="Target Type" Binding="{Binding Target.Type, DataType={x:Type show:CuePart}}" Width="90"/>
+                        <TreeDataGridTextColumn Header="Speed" Binding="{Binding Target.Speed, StringFormat={}{0:F2}, DataType={x:Type show:CuePart}}" Width="80"/>
+                        <TreeDataGridTextColumn Header="Delay (s)" Binding="{Binding Target.Delay, StringFormat={}{0:F2}, DataType={x:Type show:CuePart}}" Width="70"/>
+                        <TreeDataGridTextColumn Header="User" Binding="{Binding User, DataType={x:Type show:CuePart}}" Width="80"/>
+                        <TreeDataGridTextColumn Header="PB" Binding="{Binding Playback, DataType={x:Type show:CuePart}}" Width="50"/>
+                </TreeDataGrid>
             </Grid>
 
-            <Border Grid.Column="2" Padding="12" CornerRadius="6" 
-                    Background="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}"
-                    IsEnabled="{Binding SelectedCuePart, Converter={x:Static ObjectConverters.IsNotNull}}">
-                <ScrollViewer>
-                    <StackPanel Spacing="12">
-                        <TextBlock Text="Part Inspector" FontWeight="Bold" FontSize="14"/>
-                        
-                        <Grid ColumnDefinitions="*, 8, *" RowDefinitions="Auto, Auto">
-                            <StackPanel Grid.Column="0" Grid.Row="0">
-                                <TextBlock Text="Scenery ID (b_id)" FontSize="11"/>
-                                <NumericUpDown Value="{Binding SelectedCuePart.Id, FallbackValue=0}" Minimum="0"/>
-                            </StackPanel>
-                            <StackPanel Grid.Column="2" Grid.Row="0">
-                                <TextBlock Text="Playback" FontSize="11"/>
-                                <NumericUpDown Value="{Binding SelectedCuePart.Playback}" Minimum="0"/>
-                            </StackPanel>
-                        </Grid>
-
-                        <StackPanel>
-                            <TextBlock Text="Move Type" FontSize="11"/>
-                            <ComboBox ItemsSource="{Binding AvailableMoveTypes}" 
-                                      SelectedItem="{Binding SelectedCuePart.MoveType}" 
-                                      HorizontalAlignment="Stretch"/>
-                        </StackPanel>
-
-                        <Separator Margin="0,4"/>
-
-                        <TextBlock Text="Start Condition" FontWeight="SemiBold"/>
-                        <StackPanel Spacing="6">
-                            <TextBlock Text="Start Type" FontSize="11"/>
-                            <ComboBox ItemsSource="{Binding AvailableStartTypes}" 
-                                      SelectedItem="{Binding SelectedStartType}" 
-                                      HorizontalAlignment="Stretch"/>
-
-                            <StackPanel IsVisible="{Binding IsStartAbsolute}">
-                                <TextBlock Text="Start Position (mm / deg)" FontSize="11"/>
-                                <NumericUpDown Value="{Binding SelectedCuePart.Start.Position}"/>
-                            </StackPanel>
-                            <StackPanel IsVisible="{Binding IsStartLimit}">
-                                <TextBlock Text="Limit Name" FontSize="11"/>
-                                <TextBox Text="{Binding SelectedCuePart.Start.Limit}" Watermark="e.g. lowtrim"/>
-                            </StackPanel>
-                            <StackPanel IsVisible="{Binding IsStartTrim}">
-                                <TextBlock Text="Trim ID" FontSize="11"/>
-                                <NumericUpDown Value="{Binding SelectedCuePart.Start.Trim}"/>
-                            </StackPanel>
-                        </StackPanel>
-
-                        <Separator Margin="0,4"/>
-
-                        <TextBlock Text="Target &amp; Motion Dynamics" FontWeight="SemiBold"/>
-                        <StackPanel Spacing="6">
-                            <TextBlock Text="Target Type" FontSize="11"/>
-                            <ComboBox ItemsSource="{Binding AvailableTargetTypes}" 
-                                      SelectedItem="{Binding SelectedTargetType}" 
-                                      HorizontalAlignment="Stretch"/>
-
-                            <StackPanel IsVisible="{Binding IsTargetAbsolute}">
-                                <TextBlock Text="Target Position (mm / deg)" FontSize="11"/>
-                                <NumericUpDown Value="{Binding SelectedCuePart.Target.Position}"/>
-                            </StackPanel>
-                            <StackPanel IsVisible="{Binding IsTargetRelative}">
-                                <TextBlock Text="Relative Distance" FontSize="11"/>
-                                <NumericUpDown Value="{Binding SelectedCuePart.Target.Distance}"/>
-                            </StackPanel>
-                            <StackPanel IsVisible="{Binding IsTargetLimit}">
-                                <TextBlock Text="Target Limit Name" FontSize="11"/>
-                                <TextBox Text="{Binding SelectedCuePart.Target.Limit}"/>
-                            </StackPanel>
-
-                            <Grid ColumnDefinitions="*, 8, *" RowDefinitions="Auto, Auto" Margin="0,6,0,0">
-                                <StackPanel Grid.Column="0" Grid.Row="0">
-                                    <TextBlock Text="Speed (Req)" FontSize="11"/>
-                                    <NumericUpDown Value="{Binding SelectedCuePart.Target.Speed, FallbackValue=0.0}"/>
-                                </StackPanel>
-                                <StackPanel Grid.Column="2" Grid.Row="0">
-                                    <TextBlock Text="Delay (s)" FontSize="11"/>
-                                    <NumericUpDown Value="{Binding SelectedCuePart.Target.Delay}"/>
-                                </StackPanel>
-                                <StackPanel Grid.Column="0" Grid.Row="1" Margin="0,6,0,0">
-                                    <TextBlock Text="Accel" FontSize="11"/>
-                                    <NumericUpDown Value="{Binding SelectedCuePart.Target.Accel}"/>
-                                </StackPanel>
-                                <StackPanel Grid.Column="2" Grid.Row="1" Margin="0,6,0,0">
-                                    <TextBlock Text="Decel" FontSize="11"/>
-                                    <NumericUpDown Value="{Binding SelectedCuePart.Target.Decel}"/>
-                                </StackPanel>
-                            </Grid>
-                        </StackPanel>
-
-                    </StackPanel>
-                </ScrollViewer>
-            </Border>
-        </Grid>
+            
 
         <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Spacing="12" Margin="0,16,0,0">
             <Button Content="Cancel" Command="{Binding CancelCommand}" IsCancel="True"/>

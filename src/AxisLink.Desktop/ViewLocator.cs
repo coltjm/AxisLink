@@ -18,7 +18,6 @@ namespace AxisLink.Desktop
     {
         public Control? Build(object? param)
         {
-            Debug.WriteLine("-------------------------\n{0}", param);
             if (param is null)
                 return null;
             if (param is IDockable dockable)
@@ -42,7 +41,6 @@ namespace AxisLink.Desktop
 
         public bool Match(object? data)
         {
-            Debug.WriteLine($"[ViewLocator] Match checked: {data?.GetType().Name ?? "null"} with val: {data}");
             return data is ViewModelBase || data is IDockable;
         }
     }
