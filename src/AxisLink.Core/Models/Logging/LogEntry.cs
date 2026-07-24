@@ -1,4 +1,5 @@
 ﻿using AxisLink.Core.Interfaces;
+using AxisLink.Core.Models.Configs;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -6,13 +7,14 @@ using System.Text;
 namespace AxisLink.Core.Models.Logging
 {
 
-    public class KQLogEntry
+    public class LogEntry
     {
         public DateTime Timestamp { get; } = DateTime.Now;
         public LogLevel Severity { get; }
         public string Message { get; }
 
-        public KQLogEntry(LogLevel severity, string message)
+
+        public LogEntry(LogLevel severity, string message)
         {
             Severity = severity;
             Message = message;

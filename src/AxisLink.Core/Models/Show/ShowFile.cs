@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AxisLink.Core.Models.Configs;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Text.Json.Serialization;
@@ -68,14 +69,19 @@ namespace AxisLink.Core.Models.Show
         [XmlArrayItem("alink_controller")]
         public List<Controller>? Controllers { get; set; }
 
+        [XmlElement("alink_project_config")]
+        public ProjectConfig? ProjectConfig { get; set; }
+
         // Parameterless constructor for xml serialization and deserialization
         public ShowFile() { }
 
-        public ShowFile(List<Controller> Controllers, List<Axis> Axes, List<Group> Groups, List<Scenery> Scenery, List<Patch> Patches, List<Cue> Cues)
+        public ShowFile(List<Controller> Controllers, List<Axis> Axes, List<Group> Groups, 
+            List<Scenery> Scenery, List<Patch> Patches, List<Cue> Cues, ProjectConfig? projectConfig)
         {
             this.Machinery = new Machinery(Axes, Groups, Scenery, Patches, Cues);
             this.Header = new Header();
             this.Controllers = Controllers;
+            this.ProjectConfig = projectConfig!=null? projectConfig: new();
         }
 
     }

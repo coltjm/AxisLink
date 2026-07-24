@@ -1,4 +1,5 @@
 ﻿using AxisLink.Core.Interfaces;
+using AxisLink.Core.Management;
 using AxisLink.Core.Models.Logging;
 using Serilog;
 using System;
@@ -11,17 +12,17 @@ namespace AxisLink.Infrastructure.Loggers
     public class ConsoleLogger : IConsoleLogger
     {
         private readonly ILogger _logger;
+        private readonly ShowFileManager _showFileManager;
         // Buffer to hold log entries until the UI is ready
-        private readonly List<KQLogEntry> _historyBuffer = new();
+        private readonly List<LogEntry> _historyBuffer = new();
         // Can open up to user defined in future
         private const int MaxBufferCount = 500;
         // Create lock object to ensure only one thread accesses event at a time
         private readonly object _lock = new();
-        
         // Private backing field for the event to allow for custom add/remove logic
-        private Action<KQLogEntry>? _onLogReceived;
+        private Action<LogEntry>? _onLogReceived;
         // Public event to allow external subscribers to register for log entry notifications
-        public event Action<KQLogEntry>? OnLogReceived
+        public event Action<LogEntry>? OnLogReceived
         {
             add
             {
@@ -50,8 +51,9 @@ namespace AxisLink.Infrastructure.Loggers
             }
         }
 
-        public ConsoleLogger()
+        public ConsoleLogger(ShowFileManager showFileManager)
         {
+            _showFileManager = showFileManager;
             // Set up Serilog to log to a file in the user's AppData directory (or other location as needed)
             string logDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "AxisLink", "logs");
             Directory.CreateDirectory(logDir);
@@ -64,6 +66,7 @@ namespace AxisLink.Infrastructure.Loggers
                 rollingInterval: RollingInterval.Day, 
                 outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff} [{Level:u3}] {Message:lj}{NewLine}{Exception}")
                 .CreateLogger();
+            Log(LogLevel.Info, logPath);
         }
 
         public void Log(LogLevel level, string message, Exception? ex = null)
@@ -72,14 +75,14 @@ namespace AxisLink.Infrastructure.Loggers
             Debug.WriteLine(message);
             // Include exception message in the log entry if an exception is provided
             string cleanMessage = ex != null ? $"{message} | Ex: {ex.Message}" : message;
-            // Create log entry in the KQLogEntry format
-            var entry = new KQLogEntry(level, cleanMessage);
+            // Create log entry in the LogEntry format
+            var entry = new LogEntry(level, cleanMessage);
             // Lock buffer while reading and writing
             lock (_lock)
             {
                 
                 _historyBuffer.Add(entry);
-                if (_historyBuffer.Count > MaxBufferCount)
+                if (_historyBuffer.Count > _showFileManager?.CurrentShow?.ProjectConfig?.LoggerDisplayCap)
                 {
                     _historyBuffer.RemoveAt(0);
                 }

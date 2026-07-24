@@ -1,4 +1,5 @@
 ﻿using AxisLink.Core.Interfaces;
+using AxisLink.Core.Models.Configs;
 using AxisLink.Core.Models.Show;
 using System;
 using System.Collections.Generic;
@@ -52,8 +53,10 @@ namespace AxisLink.Core.Management
             List<Scenery> Scenery = new List<Scenery>();
             List<Patch> Patches = new List<Patch>();
             List<Cue> Cues = new List<Cue>();
+            // In the future, set default project config from user preferences
+            ProjectConfig projectConfig = new ProjectConfig();
 
-            CurrentShow = new ShowFile(controllers, Axes, Groups, Scenery, Patches, Cues);
+            CurrentShow = new ShowFile(controllers, Axes, Groups, Scenery, Patches, Cues, projectConfig);
             
         }
 

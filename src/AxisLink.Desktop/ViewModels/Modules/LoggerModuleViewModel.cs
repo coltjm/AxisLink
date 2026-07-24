@@ -16,7 +16,7 @@ namespace AxisLink.Desktop.ViewModels.Modules
         // Maybe open up to user defined in future
         private const int MaxLogEntries = 1000;
 
-        public ObservableCollection<KQLogEntry> UIEntries { get; } = new();
+        public ObservableCollection<LogEntry> UIEntries { get; } = new();
 
         public LoggerModuleViewModel(IConsoleLogger logger) 
         {
@@ -31,13 +31,13 @@ namespace AxisLink.Desktop.ViewModels.Modules
             // Parameterless constructor for the Avalonia XAML Previewer / Designer
         }
 
-        private void OnLogAppend(KQLogEntry logEntry)
+        private void OnLogAppend(LogEntry logEntry)
         {
             // Update UI using Avalonia's UI thread dispatcher
             Dispatcher.UIThread.Post(() => AddLogEntry(logEntry));
         }
 
-        private void AddLogEntry(KQLogEntry logEntry)
+        private void AddLogEntry(LogEntry logEntry)
         {
             // Add new log entry to the UI collection
             UIEntries.Add(logEntry);

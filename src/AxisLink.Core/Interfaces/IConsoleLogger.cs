@@ -21,7 +21,7 @@ namespace AxisLink.Core.Interfaces
         void Log(LogLevel level, string message, Exception? ex = null);
 
         // Event to notify when a log entry is received
-        event Action<KQLogEntry>? OnLogReceived;
+        event Action<LogEntry>? OnLogReceived;
 
         // Convenience methods for each log level
         void LogError(string message, Exception? ex = null);
