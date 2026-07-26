@@ -1,0 +1,40 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:AxisLink.Desktop.ViewModels.Windows.CueCreation"
+             xmlns:show="using:AxisLink.Core.Models.Show"
+             mc:Ignorable="d" d:DesignWidth="300" d:DesignHeight="400"
+             x:Class="AxisLink.Desktop.Views.Windows.CueCreation.CuePartDetailView"
+             x:DataType="vm:CueCreationWindowViewModel">
+    
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel Spacing="10" IsEnabled="{Binding SelectedCuePart, Converter={x:Static ObjectConverters.IsNotNull}}">
+            <TextBlock Text="Axis / Scenery" FontSize="11" Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"/>
+            <ComboBox ItemsSource="{Binding AvailableAxes}" 
+                      SelectedItem="{Binding SelectedAxis}"
+                      DisplayMemberBinding="{Binding Name}"
+                      
+                      
+                      HorizontalAlignment="Stretch"/>
+
+            <TextBlock Text="Move Type" FontSize="11" Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"/>
+            <ComboBox ItemsSource="{Binding MoveTypeOptions}" 
+                      SelectedItem="{Binding SelectedMoveType}"
+                      DisplayMemberBinding="{Binding Value}"
+                      HorizontalAlignment="Stretch"/>
+
+            <TextBlock Text="Destination" FontSize="11" Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"/>
+            <UnitTextBox Value="{Binding SelectedCuePart.Target.Position}"/>
+
+            <TextBlock Text="Vel" FontSize="11" Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"/>
+            <UnitTextBox Value="{Binding SelectedCuePart.Target.Speed}"/>
+
+            <TextBlock Text="Accel" FontSize="11" Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"/>
+            <UnitTextBox Value="{Binding SelectedCuePart.Target.Accel}"/>
+
+            <TextBlock Text="Decel" FontSize="11" Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"/>
+            <UnitTextBox Value="{Binding SelectedCuePart.Target.Decel}"/>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

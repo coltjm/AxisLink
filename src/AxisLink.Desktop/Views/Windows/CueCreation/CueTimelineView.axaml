@@ -1,0 +1,32 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:AxisLink.Desktop.ViewModels.Windows.CueCreation"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="150"
+             x:Class="AxisLink.Desktop.Views.Windows.CueCreation.CueTimelineView"
+             x:DataType="vm:CueCreationWindowViewModel">
+    
+    <Border BorderThickness="1" 
+            BorderBrush="{DynamicResource SystemControlForegroundBaseLowBrush}" 
+            Background="{DynamicResource SystemControlBackgroundChromeLowBrush}"
+            Padding="8">
+        <Grid RowDefinitions="Auto, *">
+            <TextBlock Grid.Row="0" Text="TIMELINE" FontWeight="Bold" FontSize="11" Margin="0,0,0,8"/>
+            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+                <ItemsControl ItemsSource="{Binding CueParts}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border Height="18" 
+                                    Margin="0,2" 
+                                    HorizontalAlignment="Left" 
+                                    Background="{DynamicResource SystemAccentColor}" 
+                                    CornerRadius="2"
+                                    Width="200"/>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+        </Grid>
+    </Border>
+</UserControl>

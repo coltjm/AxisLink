@@ -29,6 +29,7 @@ namespace AxisLink.Core.Management
         public void OpenShow(string path)
         {
             CurrentShow = _storage.LoadFromFileSystem(path);
+
         }
 
         

@@ -7,6 +7,7 @@ using AxisLink.Core.Interfaces;
 using AxisLink.Core.Management;
 using AxisLink.Core.Models.Configs;
 using AxisLink.Desktop;
+using AxisLink.Desktop.Controls;
 using AxisLink.Desktop.Utilities;
 using AxisLink.Desktop.ViewModels.Windows;
 using AxisLink.Desktop.Views;
@@ -24,14 +25,17 @@ namespace AxisLink.Desktop
         public override void Initialize()
         {
             AvaloniaXamlLoader.Load(this);
+            
         }
+
+
 
         public override void OnFrameworkInitializationCompleted()
         {
             IServiceProvider serviceProvider = Bootstrapper.CreateServiceProvider();
             var windowManager = serviceProvider.GetRequiredService<WindowManager>();
             var logger = serviceProvider.GetRequiredService<IConsoleLogger>();
-
+            UnitTextBox.UnitManager = serviceProvider.GetRequiredService<UnitManager>();
             try
             {
                 // TODO Read theme from config file or user settings, if available. If not, use default theme.

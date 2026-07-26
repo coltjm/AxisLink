@@ -53,6 +53,7 @@ namespace AxisLink.Tests.Models.Extended
             var axis0 = new Axis
             {
                 Id = 0,
+                Name = "Axis0",
                 ControllerId = 1,
                 StepsPerRevolution = 200,
                 DistancePerRevolution = 100,
@@ -75,6 +76,7 @@ namespace AxisLink.Tests.Models.Extended
             var axis1 = new Axis
             {
                 Id = 1,
+                Name = "Axis1",
                 ControllerId = 1,
                 StepsPerRevolution = 200,
                 DistancePerRevolution = 100,
@@ -192,7 +194,8 @@ namespace AxisLink.Tests.Models.Extended
                 new List<Group>() { group0},
                 new List<Scenery>() { scenery0},
                 new List<Patch>() { patch0 },
-                new List<Cue>() { cue0}
+                new List<Cue>() { cue0},
+                new ProjectConfig()
             );
             originalFile.Header = header;
 
@@ -204,7 +207,7 @@ namespace AxisLink.Tests.Models.Extended
             {
                 serializer.Serialize(writer, originalFile);
                 xml = writer.ToString();
-                File.WriteAllText("../../../testAxisLinkFile.txt", xml);
+                File.WriteAllText("../../../testAxisLinkFile.alink", xml);
             }
 
             // Deserialize back to object

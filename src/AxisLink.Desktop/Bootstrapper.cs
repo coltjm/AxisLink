@@ -1,6 +1,7 @@
 ﻿using AxisLink.Core.Interfaces;
 using AxisLink.Core.Management;
 using AxisLink.Desktop.Utilities;
+using AxisLink.Desktop.ViewModels;
 using AxisLink.Desktop.ViewModels.Modules;
 using AxisLink.Desktop.ViewModels.Windows;
 using AxisLink.Desktop.ViewModels.Windows.AxisSetup;
@@ -40,6 +41,7 @@ namespace AxisLink.Desktop
             services.AddSingleton<MotionManager>();
             services.AddSingleton<CueManager>();
             services.AddSingleton<ShowFileManager>();
+            services.AddSingleton<UnitManager>();
             
 
             // Add UI VMs as Transients (new instance created each time requested)
@@ -58,7 +60,9 @@ namespace AxisLink.Desktop
             services.AddTransient<ControllerSetupViewModel>();
             services.AddTransient<AxisSetupViewModel>();
             services.AddTransient<CueCreationWindowViewModel>();
+            services.AddTransient<ProjectPreferencesViewModel>();
             
+
 
             return services.BuildServiceProvider();
             

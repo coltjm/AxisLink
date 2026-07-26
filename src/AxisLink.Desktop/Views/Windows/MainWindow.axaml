@@ -31,6 +31,8 @@
                 <MenuItem Header="_Save" Command="{Binding SaveShowCommand}"/>
                 <MenuItem Header="Save _As..." Command="{Binding SaveAsShowCommand}"/>
                 <Separator/>
+                <MenuItem Header="Project Preferences" Command="{Binding OpenNewProjectPreferencesWindowCommand}"/>
+                <Separator/>
                 <MenuItem Header="_Exit" Command="{Binding ExitApplicationCommand}"/>
             </MenuItem>
 

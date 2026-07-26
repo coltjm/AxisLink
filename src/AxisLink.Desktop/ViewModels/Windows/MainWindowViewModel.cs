@@ -14,6 +14,7 @@ using System.Windows.Input;
 using System.Threading.Tasks;
 using AxisLink.Desktop.Views.Windows.CueCreation;
 using AxisLink.Desktop.ViewModels.Windows.CueCreation;
+using AxisLink.Desktop.Views.Windows.ProjectPreferences;
 namespace AxisLink.Desktop.ViewModels.Windows
 {
     public partial class MainWindowViewModel : ViewModelBase
@@ -80,6 +81,7 @@ namespace AxisLink.Desktop.ViewModels.Windows
 
             }
             Logger.LogInfo("File -> Open Show triggered.");
+            Logger.LogInfo(FileManager.CurrentShow.Machinery.Axes.ToString());
         }
         [RelayCommand]
         private void SaveShow()
@@ -130,6 +132,12 @@ namespace AxisLink.Desktop.ViewModels.Windows
         private void OpenNewCueWindow()
         {
             windowManager.ShowWindow<CueCreationWindowViewModel, CueCreationWindow>();
+        }
+
+        [RelayCommand]
+        private void OpenNewProjectPreferencesWindow()
+        {
+            windowManager.ShowWindow<ProjectPreferencesViewModel, ProjectPreferencesWindow>();
         }
 
         [RelayCommand]

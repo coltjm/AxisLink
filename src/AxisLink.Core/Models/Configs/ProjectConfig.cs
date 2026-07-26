@@ -47,5 +47,9 @@ namespace AxisLink.Core.Models.Configs
 
         [XmlElement("alink_logger_display_cap")]
         public int LoggerDisplayCap = 1000;
+
+        // Allow equations in numerical inputs
+        [XmlElement("alink_math_in_input")]
+        public bool MathInInput = true;
     }
 }

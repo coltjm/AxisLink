@@ -18,11 +18,17 @@ namespace AxisLink.Core.Management
         private readonly IMotionServiceFactory _serviceFactory;
         public readonly List<Axis> Axes;
         public readonly List<Controller> Controllers;
+        public readonly List<Patch> Patches;
+        public readonly List<Scenery> Scenery;
         // Events to notify when axes or controllers are added or removed
         public event Action<Axis>? AxisAdded;
         public event Action<Axis>? AxisRemoved;
         public event Action<Controller>? ControllerAdded;
         public event Action<Controller>? ControllerRemoved;
+        public event Action<Scenery>? SceneryAdded;
+        public event Action<Scenery>? SceneryRemoved;
+        public event Action<Patch>? PatchAdded;
+        public event Action<Patch>? PatchRemoved;
         // Running counters for the next axis and controller IDs
         public int nextAxisId { get; private set; }
         public int nextControllerId { get; private set; }
@@ -105,7 +111,7 @@ namespace AxisLink.Core.Management
             }
         }
         
-        public void AddNewAxis(Axis axis)
+        public void AddNewAxis(Axis axis, Scenery? scenery=null)
         {
             ArgumentNullException.ThrowIfNull(axis);
             // update show file and next id accordingly

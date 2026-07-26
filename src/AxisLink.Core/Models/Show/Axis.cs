@@ -99,7 +99,7 @@ namespace AxisLink.Core.Models.Show
         // High limit position (mm or degrees)
         [XmlElement("b_high_limit")]
         public float? HighLimit { get; set; }
-
+        // Variable or constant speed
         [XmlElement("b_speed_type")]
         public AxisSpeedType? SpeedType { get; set; }
 
@@ -124,8 +124,13 @@ namespace AxisLink.Core.Models.Show
         [XmlElement("alink_controller_id")]
         public int? ControllerId { get; set; }
 
+        // For steppers
         [XmlElement("alink_steps_per_rev")]
         public int? StepsPerRevolution { get; set; }
+
+        // max torque in N*mm
+        [XmlElement("alink_max_torque")]
+        public float? MaxTorque { get; set; }
 
         // Distance the output moves per revolution of motor (circumference of output device typically), in mm or degrees
         // In the future, can auto calc this for some configurations

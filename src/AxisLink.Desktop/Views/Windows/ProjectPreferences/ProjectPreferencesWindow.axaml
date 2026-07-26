@@ -1,0 +1,80 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:AxisLink.Desktop.ViewModels"
+        x:Class="AxisLink.Desktop.Views.Windows.ProjectPreferences.ProjectPreferencesWindow"
+        x:DataType="vm:ProjectPreferencesViewModel"
+        Title="Project Settings"
+        Width="480" Height="520"
+        WindowStartupLocation="CenterOwner"
+        CanResize="False">
+
+    <Grid RowDefinitions="*, Auto" Margin="20">
+        <ScrollViewer Grid.Row="0">
+            <StackPanel Spacing="16">
+                
+                <TextBlock Text="Units &amp; Input" FontWeight="Bold" FontSize="16"/>
+                
+                <Grid ColumnDefinitions="*, 140" RowDefinitions="Auto, Auto, Auto, Auto" RowSpacing="10">
+                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Linear Units" VerticalAlignment="Center"/>
+                    <ComboBox Grid.Row="0" Grid.Column="1" 
+                              ItemsSource="{Binding LinearUnits}"
+                              SelectedItem="{Binding LinearUnit}"
+                              HorizontalAlignment="Stretch"/>
+
+                    <TextBlock Grid.Row="1" Grid.Column="0" Text="mm per Custom Unit" VerticalAlignment="Center"
+                               IsVisible="{Binding IsCustomLinear}"/>
+                    <TextBox Grid.Row="1" Grid.Column="1"
+                             Text="{Binding CustomLinearUnit}"
+                             IsVisible="{Binding IsCustomLinear}"/>
+
+                    <TextBlock Grid.Row="2" Grid.Column="0" Text="Rotational Units" VerticalAlignment="Center"/>
+                    <ComboBox Grid.Row="2" Grid.Column="1" 
+                              ItemsSource="{Binding RotationalUnits}"
+                              SelectedItem="{Binding RotationalUnit}"
+                              HorizontalAlignment="Stretch"/>
+
+                    <TextBlock Grid.Row="3" Grid.Column="0" Text="Degrees per Custom Unit" VerticalAlignment="Center"
+                               IsVisible="{Binding IsCustomRotational}"/>
+                    <TextBox Grid.Row="3" Grid.Column="1"
+                             Text="{Binding CustomRotationalUnit}"
+                             IsVisible="{Binding IsCustomRotational}"/>
+                </Grid>
+
+                <CheckBox IsChecked="{Binding MathInInput}" 
+                          Content="Allow equations in numeric input fields"/>
+
+                <Separator Margin="0,8"/>
+
+                <TextBlock Text="Cueing &amp; Playback" FontWeight="Bold" FontSize="16"/>
+                
+                <Grid ColumnDefinitions="*, 140">
+                    <TextBlock Grid.Column="0" Text="Default Cue Spacing" VerticalAlignment="Center"/>
+                    <NumericUpDown Grid.Column="1" 
+                                   Value="{Binding CueSpacing}" 
+                                   Increment="1" Minimum="0.1"/>
+                </Grid>
+
+                <CheckBox IsChecked="{Binding EnableStacks}" 
+                          Content="Enable multiple cue stacks"/>
+
+                <Separator Margin="0,8"/>
+
+                <TextBlock Text="System Logging" FontWeight="Bold" FontSize="16"/>
+                
+                <Grid ColumnDefinitions="*, 140">
+                    <TextBlock Grid.Column="0" Text="Logger Display Cap" VerticalAlignment="Center"/>
+                    <NumericUpDown Grid.Column="1" 
+                                   Value="{Binding LoggerDisplayCap}" 
+                                   Increment="100" Minimum="100" Maximum="100000"/>
+                </Grid>
+                
+            </StackPanel>
+        </ScrollViewer>
+
+        <!-- Action Buttons -->
+        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" Spacing="10" Margin="0,16,0,0">
+            <Button Content="Cancel" Command="{Binding CancelCommand}"/>
+            <Button Content="Save Settings" Command="{Binding SaveCommand}"/>
+        </StackPanel>
+    </Grid>
+</Window>

@@ -6,6 +6,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Text;
 
 namespace AxisLink.Desktop.ViewModels.Windows.AxisSetup
@@ -17,42 +18,36 @@ namespace AxisLink.Desktop.ViewModels.Windows.AxisSetup
         private readonly IConsoleLogger Logger;
         [ObservableProperty]
         private Axis createdAxis;
-
-        public Action? RequestClose { get; set; }
+        [ObservableProperty]
+        private bool _isOneToOneController = true;
 
         [ObservableProperty]
-        [NotifyPropertyChangedFor(nameof(CanGoBack))]
-        [NotifyPropertyChangedFor(nameof(IsLastPage))]
-        [NotifyPropertyChangedFor(nameof(Page0FontWeight))]
-        [NotifyPropertyChangedFor(nameof(Page1FontWeight))]
-        [NotifyPropertyChangedFor(nameof(Page2FontWeight))]
-        [NotifyPropertyChangedFor(nameof(Page0Foreground))]
-        [NotifyPropertyChangedFor(nameof(Page1Foreground))]
-        [NotifyPropertyChangedFor(nameof(Page2Foreground))]
-        private int _currentPageIndex = 0;
-        public bool CanGoBack => CurrentPageIndex > 0;
-        public bool IsLastPage => CurrentPageIndex == 2;
+        private string _protocolConfigNotes = string.Empty;
 
-        // Visual Status Bar Tracking Computations
-        public string Page0FontWeight => CurrentPageIndex == 0 ? "Bold" : "Normal";
-        public string Page1FontWeight => CurrentPageIndex == 1 ? "Bold" : "Normal";
-        public string Page2FontWeight => CurrentPageIndex == 2 ? "Bold" : "Normal";
-        public string Page0Foreground => CurrentPageIndex == 0 ? "#007ACC" : "Gray";
-        public string Page1Foreground => CurrentPageIndex == 1 ? "#007ACC" : "Gray";
-        public string Page2Foreground => CurrentPageIndex == 2 ? "#007ACC" : "Gray";
+        [ObservableProperty]
+        private float? _homePosition;
 
-        [RelayCommand]
-        private void NextPage() { if (CurrentPageIndex < 2) CurrentPageIndex++; }
+        [ObservableProperty]
+        private object? _selectedController;
 
-        [RelayCommand]
-        private void PreviousPage() { if (CurrentPageIndex > 0) CurrentPageIndex--; }
+        [ObservableProperty]
+        private bool _hasPositioning = true;
+
+        [ObservableProperty]
+        private int _selectedMotorTypeIndex = 0;
+
+        public ObservableCollection<object> AvailableControllers { get; } = new();
+        public ObservableCollection<string> AvailableSensors { get; } = new();
+        public Action? RequestClose { get; set; }
+
+
 
         public AxisSetupViewModel(ShowFileManager fileManager, MotionManager _motionManager, IConsoleLogger logger)
         {
             FileManager = fileManager;
             motionManager = _motionManager;
             Logger = logger;
-            createdAxis = new Axis{ Id = motionManager.nextAxisId };
+            createdAxis = new Axis{ Id = motionManager.nextAxisId, Name=$"Axis {motionManager.nextAxisId}" };
         }
 
         [RelayCommand]
@@ -69,6 +64,19 @@ namespace AxisLink.Desktop.ViewModels.Windows.AxisSetup
             Logger.LogInfo("Added Axis: "+CreatedAxis.Name);
             // Close the window
             RequestClose?.Invoke();
+        }
+
+        [RelayCommand]
+        private void Cancel()
+        {
+            // Close the window
+            RequestClose?.Invoke();
+        }
+
+        [RelayCommand]
+        private void CreateNewSensor()
+        {
+            // Logic to open Sensor Creation modal window
         }
 
     }

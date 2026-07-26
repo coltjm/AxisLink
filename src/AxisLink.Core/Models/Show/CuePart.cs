@@ -9,21 +9,21 @@ namespace AxisLink.Core.Models.Show
     public enum CuePartMoveType
     {
         // a direct move to the target with programmed accel-, velocity and decel-ramps
-        [XmlEnum("linear")] Linear,
+        [XmlEnum("linear")] Linear = 0,
         // for rotary axes a: direct counter clockwise move with programmed accel,- velocity and decal-ramps
-        [XmlEnum("rotary_ccw")] RotaryCCW,
+        [XmlEnum("rotary_ccw")] RotaryCCW = 1,
         // for rotary axes a: direct clockwise move with programmed accel,- velocity and decal-ramps
-        [XmlEnum("rotary_cw")] RotaryCW,
+        [XmlEnum("rotary_cw")] RotaryCW = 2,
         // for rotary axes a: direct move with the shortest angle with programmed accel,- velocity and decal-ramps
-        [XmlEnum("rotary_shortest")] RotaryShortest,
+        [XmlEnum("rotary_shortest")] RotaryShortest = 3,
         // for axes without end-stops (e.g. rotary, conveyer belts): the start of a continuous move in the direction of larger position
         // or degree numbers with programmed accel-ramp and velocity
-        [XmlEnum("continuous_increasing")] ContinuousIncreasing,
+        [XmlEnum("continuous_increasing")] ContinuousIncreasing = 4,
         // for axes without end-stops (e.g. rotary, conveyer belts): the start of a continuous move in the direction of smaller position
         // or degree numbers with programmed accel-ramp and velocity
-        [XmlEnum("continuous_decreasing")] ContinuousDecreasing,
+        [XmlEnum("continuous_decreasing")] ContinuousDecreasing = 5,
         // the scenery object is connected to manual joystick control in this cue.The joystick utilized shall be identified by the “playback” entry
-        [XmlEnum("joystick")] Joystick
+        [XmlEnum("joystick")] Joystick = 6
     }
 
     // What type of position is used as the start position
@@ -76,6 +76,9 @@ namespace AxisLink.Core.Models.Show
         // Required if move type is linear or multitarget
         [XmlElement("b_target")]
         public CuePartTarget? Target { get; set; }
+
+        [XmlElement("alink_children")]
+        public List<CuePart>? Children { get; } = new();
     }
 
     public class CuePartStart

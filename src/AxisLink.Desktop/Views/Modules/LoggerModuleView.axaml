@@ -31,14 +31,14 @@
           <ListBox.ItemTemplate>
               <DataTemplate x:DataType="logging:LogEntry">
 				  <StackPanel Orientation="Horizontal" Spacing="5">
-                <TextBlock Text="{Binding Timestamp, StringFormat='{}{0:HH:mm:ss.fff}'}" 
-                                   Foreground="{DynamicResource ConsoleText}" 
-                                   FontFamily="Courier New"/>
+                    <TextBlock Text="{Binding Timestamp, StringFormat='{}{0:HH:mm:ss.fff}'}" 
+                                        Foreground="{DynamicResource ConsoleText}" 
+                                        FontFamily="Courier New"/>
                         
-                        <TextBlock Text="{Binding Message}" 
-                                   Foreground="{Binding Severity, Converter={StaticResource SeverityToColorConverter}}"
-                                   FontFamily="Courier New"/>
-            </StackPanel>
+                    <TextBlock Text="{Binding Message}" 
+                                Foreground="{Binding Severity, Converter={StaticResource SeverityToColorConverter}}"
+                                FontFamily="Courier New"/>
+                </StackPanel>
               </DataTemplate>
           </ListBox.ItemTemplate>
       </ListBox>

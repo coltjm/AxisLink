@@ -2,79 +2,63 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         xmlns:vm="using:AxisLink.Desktop.ViewModels.Windows.CueCreation"
-        xmlns:models="using:AxisLink.Core.Models.Standard"
         xmlns:show="using:AxisLink.Core.Models.Show"
+        xmlns:local="using:AxisLink.Desktop.Views.Windows.CueCreation"
+        mc:Ignorable="d" d:DesignWidth="900" d:DesignHeight="650"
         x:Class="AxisLink.Desktop.Views.Windows.CueCreation.CueCreationWindow"
         x:DataType="vm:CueCreationWindowViewModel"
         WindowStartupLocation="CenterOwner"
         Title="{Binding WindowTitle}">
-<Grid RowDefinitions="Auto, *, Auto" Margin="16">
+
+    <Grid RowDefinitions="Auto, *, Auto, Auto" Margin="16">
         
-        <Border Grid.Row="0" Margin="0,0,0,16" Padding="12" 
-                CornerRadius="6" Background="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}">
-            <Grid ColumnDefinitions="Auto, 12, *, 12, Auto, 12, Auto" RowDefinitions="Auto, 8, Auto">
-                
-                <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Vertical">
-                    <TextBlock Text="Cue Number" FontSize="11" Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"/>
-                    <TextBox Text="{Binding Cue.Number}" Width="100" Watermark="e.g. 1.0"/>
-                </StackPanel>
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Spacing="16" Margin="0,0,0,16">
+            <StackPanel Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
+                <TextBlock Text="CUE #" FontWeight="Bold" VerticalAlignment="Center"/>
+                <TextBox Text="{Binding Cue.Number}" Width="80"/>
+            </StackPanel>
 
-                <StackPanel Grid.Row="0" Grid.Column="2" Orientation="Vertical">
-                    <TextBlock Text="Cue Name" FontSize="11" Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"/>
-                    <TextBox Text="{Binding Cue.Name}" Watermark="Description / Label"/>
-                </StackPanel>
+            <StackPanel Orientation="Horizontal" Spacing="8" VerticalAlignment="Center" HorizontalAlignment="Stretch">
+                <TextBlock Text="NAME:" FontWeight="Bold" VerticalAlignment="Center"/>
+                <TextBox Text="{Binding Cue.Name}" Width="400"/>
+            </StackPanel>
+        </StackPanel>
 
-                <StackPanel Grid.Row="0" Grid.Column="4" Orientation="Vertical">
-                    <TextBlock Text="Stack ID" FontSize="11" Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"/>
-                    <NumericUpDown Value="{Binding Cue.Stack}" Width="110" Minimum="0" FormatString="N0"/>
-                </StackPanel>
-
-                <StackPanel Grid.Row="0" Grid.Column="6" Orientation="Vertical">
-                    <TextBlock Text="Decision Point ID" FontSize="11" Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"/>
-                    <TextBox Text="{Binding Cue.InteractiveDecisionPoint}" Width="150" Watermark="Optional"/>
-                </StackPanel>
-
-                <StackPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="7" Orientation="Vertical">
-                    <TextBlock Text="Cue Notes" FontSize="11" Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"/>
-                    <TextBox Text="{Binding Cue.Notes}" Height="45" TextWrapping="Wrap"/>
-                </StackPanel>
-            </Grid>
-        </Border>
+        <Grid Grid.Row="1" ColumnDefinitions="*, 16, 260" Margin="0,0,0,16">
             
-            <Grid Grid.Row="1" Grid.Column="0" RowDefinitions="Auto, *">
+            <Grid Grid.Column="0" RowDefinitions="Auto, *">
                 <DockPanel Grid.Row="0" Margin="0,0,0,8">
-                    <TextBlock Text="Scenery Objects / Cue Parts" FontWeight="SemiBold" VerticalAlignment="Center"/>
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Spacing="8">
-                        <Button Content="Add Part" Command="{Binding AddCuePartCommand}"/>
-                        <Button Content="Remove Part" Command="{Binding RemoveCuePartCommand}" 
-                                IsEnabled="{Binding SelectedCuePart, Converter={x:Static ObjectConverters.IsNotNull}}"/>
+                    <TextBlock Text="CUE PARTS" FontWeight="Bold" VerticalAlignment="Center"/>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Spacing="4" Margin="8,0,0,0">
+                        <Button Content="+" Command="{Binding AddCuePartCommand}" Width="30" Padding="0"/>
+                        <Button Content="-" Command="{Binding RemoveCuePartCommand}" 
+                                IsEnabled="{Binding SelectedCuePart, Converter={x:Static ObjectConverters.IsNotNull}}" Width="30" Padding="0"/>
                     </StackPanel>
                 </DockPanel>
 
-                <TreeDataGrid Grid.Row="1" Grid.ColumnSpan="3"
-                          ItemsSource="{Binding CueParts}"
-                          SelectionMode="Row"
-                          CanUserResizeColumns="True"
-                          BorderThickness="1"
-                          BorderBrush="{DynamicResource SystemControlForegroundBaseLowBrush}">
-                        <TreeDataGridTextColumn Header="Obj ID" Binding="{Binding Id, DataType={x:Type show:CuePart}}" Width="70"/>
-                        <TreeDataGridTextColumn Header="Move Type" Binding="{Binding MoveType, DataType={x:Type show:CuePart}}" Width="110"/>
-                        <TreeDataGridTextColumn Header="Start Type" Binding="{Binding Start.Type, DataType={x:Type show:CuePart}}" Width="90"/>
-                        <TreeDataGridTextColumn Header="Target Type" Binding="{Binding Target.Type, DataType={x:Type show:CuePart}}" Width="90"/>
-                        <TreeDataGridTextColumn Header="Speed" Binding="{Binding Target.Speed, StringFormat={}{0:F2}, DataType={x:Type show:CuePart}}" Width="80"/>
-                        <TreeDataGridTextColumn Header="Delay (s)" Binding="{Binding Target.Delay, StringFormat={}{0:F2}, DataType={x:Type show:CuePart}}" Width="70"/>
-                        <TreeDataGridTextColumn Header="User" Binding="{Binding User, DataType={x:Type show:CuePart}}" Width="80"/>
-                        <TreeDataGridTextColumn Header="PB" Binding="{Binding Playback, DataType={x:Type show:CuePart}}" Width="50"/>
-                </TreeDataGrid>
+                <TreeDataGrid Grid.Row="1"
+                              Source="{Binding CuePartsSource}"
+                              SelectionMode="Row"
+                              CanUserResizeColumns="True"
+                              BorderThickness="1"
+                              BorderBrush="{DynamicResource SystemControlForegroundBaseLowBrush}"/>
             </Grid>
 
-            
+            <Border Grid.Column="2" 
+                    BorderThickness="1" 
+                    BorderBrush="{DynamicResource SystemControlForegroundBaseLowBrush}" 
+                    Padding="12" 
+                    CornerRadius="4">
+                <local:CuePartDetailView DataContext="{Binding}"/>
+            </Border>
+        </Grid>
 
-        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Spacing="12" Margin="0,16,0,0">
-            <Button Content="Cancel" Command="{Binding CancelCommand}" IsCancel="True"/>
-            <Button Content="Save Cue" Command="{Binding SaveCommand}" IsDefault="True" Classes="accent"/>
+        <local:CueTimelineView Grid.Row="2" Height="120" Margin="0,0,0,16" DataContext="{Binding}"/>
+
+        <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right" Spacing="12">
+            <Button Content="SAVE" Command="{Binding SaveCommand}" IsDefault="True" Classes="accent" Width="80"/>
+            <Button Content="CANCEL" Command="{Binding CancelCommand}" IsCancel="True" Width="80"/>
         </StackPanel>
         
     </Grid>

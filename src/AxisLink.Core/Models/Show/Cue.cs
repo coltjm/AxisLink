@@ -30,6 +30,8 @@ namespace AxisLink.Core.Models.Show
 
         [XmlElement("b_object")]
         public List<CuePart>? CueParts { get; set; } = [];
+        
+
 
     }
 }

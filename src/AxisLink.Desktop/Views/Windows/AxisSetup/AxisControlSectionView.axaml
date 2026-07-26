@@ -1,0 +1,40 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:AxisLink.Desktop.ViewModels.Windows.AxisSetup"
+             mc:Ignorable="d" d:DesignWidth="600" d:DesignHeight="200"
+             x:Class="AxisLink.Desktop.Views.Windows.AxisSetup.AxisControlSectionView"
+             x:DataType="vm:AxisSetupViewModel">
+
+    <StackPanel Spacing="12">
+        <Grid ColumnDefinitions="Auto, *">
+            <TextBlock Text="AXIS NAME" FontWeight="Bold" VerticalAlignment="Center" Margin="0,0,12,0"/>
+            <TextBox Grid.Column="1" Text="{Binding CreatedAxis.Name}"/>
+        </Grid>
+
+        <CheckBox Content="1:1 Controller Communication" 
+                  IsChecked="{Binding IsOneToOneController}"/>
+
+        <Grid ColumnDefinitions="*, 16, *">
+            <StackPanel Grid.Column="0" Spacing="4" IsVisible="{Binding IsOneToOneController}">
+                <TextBlock Text="1:1 CONTROLLER COMMUNICATION" FontSize="11" Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"/>
+                <ComboBox ItemsSource="{Binding AvailableControllers}" 
+                          SelectedItem="{Binding SelectedController}" 
+                          HorizontalAlignment="Stretch"/>
+            </StackPanel>
+
+            <StackPanel Grid.Column="0" Spacing="4" IsVisible="{Binding !IsOneToOneController}">
+                <TextBlock Text="CONTROL" FontSize="11" Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"/>
+                <ComboBox ItemsSource="{Binding AvailableControllers}" 
+                          SelectedItem="{Binding SelectedController}" 
+                          HorizontalAlignment="Stretch"/>
+            </StackPanel>
+
+            <StackPanel Grid.Column="1" Grid.ColumnSpan="2" Spacing="4">
+                <TextBlock Text="PROTOCOL SPECIFICS / MODBUS COILS" FontSize="11" Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"/>
+                <TextBox Text="{Binding ProtocolConfigNotes}" Watermark="e.g. Coil mapping, registers..."/>
+            </StackPanel>
+        </Grid>
+    </StackPanel>
+</UserControl>
