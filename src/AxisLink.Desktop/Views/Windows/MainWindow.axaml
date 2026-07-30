@@ -20,26 +20,47 @@
         <vm:MainWindowViewModel/>
     </Design.DataContext>
 
-    
+    <Window.KeyBindings>
+        <!-- File Menu -->
+        <KeyBinding Gesture="{Binding Shortcuts.NewShortcut, Converter={StaticResource StringToKeyGestureConverter}}" Command="{Binding NewShowCommand}" />
+        <KeyBinding Gesture="{Binding Shortcuts.OpenShortcut, Converter={StaticResource StringToKeyGestureConverter}}" Command="{Binding OpenShowCommand}" />
+        <KeyBinding Gesture="{Binding Shortcuts.SaveShortcut, Converter={StaticResource StringToKeyGestureConverter}}" Command="{Binding SaveShowCommand}" />
+        <KeyBinding Gesture="{Binding Shortcuts.SaveAsShortcut, Converter={StaticResource StringToKeyGestureConverter}}" Command="{Binding SaveAsShowCommand}" />
+        <KeyBinding Gesture="{Binding Shortcuts.PreferencesShortcut, Converter={StaticResource StringToKeyGestureConverter}}" Command="{Binding OpenNewProjectPreferencesWindowCommand}" />
+
+        <!-- Edit Menu -->
+        <KeyBinding Gesture="{Binding Shortcuts.CueShortcut, Converter={StaticResource StringToKeyGestureConverter}}" Command="{Binding OpenNewCueWindowCommand}" />
+
+        <!-- View Menu -->
+        <KeyBinding Gesture="{Binding Shortcuts.AxisViewerShortcut, Converter={StaticResource StringToKeyGestureConverter}}" Command="{Binding ShowAxisViewerCommand}" />
+        <KeyBinding Gesture="{Binding Shortcuts.CueListViewerShortcut, Converter={StaticResource StringToKeyGestureConverter}}" Command="{Binding ShowCueSheetCommand}" />
+        <KeyBinding Gesture="{Binding Shortcuts.CueRunShortcut, Converter={StaticResource StringToKeyGestureConverter}}" Command="{Binding ShowCueStackCommand}" />
+        <KeyBinding Gesture="{Binding Shortcuts.ControllerViewerShortcut, Converter={StaticResource StringToKeyGestureConverter}}" Command="{Binding ShowControllerViewerCommand}" />
+
+        <!-- Config Menu -->
+        <KeyBinding Gesture="{Binding Shortcuts.ControllerShortcut, Converter={StaticResource StringToKeyGestureConverter}}" Command="{Binding OpenNewControllerWindowCommand}" />
+        <KeyBinding Gesture="{Binding Shortcuts.AxisShortcut, Converter={StaticResource StringToKeyGestureConverter}}" Command="{Binding OpenNewAxisWindowCommand}" />
+    </Window.KeyBindings>
+
     <DockPanel>
         <Menu DockPanel.Dock="Top" Background="{DynamicResource KQMenuBackground}" Foreground="{DynamicResource KQText}">
             
             <MenuItem Header="_File">
-                <MenuItem Header="_New Show" Command="{Binding NewShowCommand}"/>
-                <MenuItem Header="_Open Show..." Command="{Binding OpenShowCommand}"/>
+                <MenuItem Header="_New Show" Command="{Binding NewShowCommand}" InputGesture="{Binding Shortcuts.NewShortcut, Converter={StaticResource StringToKeyGestureConverter}}"/>
+                <MenuItem Header="_Open Show..." Command="{Binding OpenShowCommand}" InputGesture="{Binding Shortcuts.OpenShortcut, Converter={StaticResource StringToKeyGestureConverter}}"/>
                 <Separator/>
-                <MenuItem Header="_Save" Command="{Binding SaveShowCommand}"/>
-                <MenuItem Header="Save _As..." Command="{Binding SaveAsShowCommand}"/>
+                <MenuItem Header="_Save" Command="{Binding SaveShowCommand}" InputGesture="{Binding Shortcuts.SaveShortcut, Converter={StaticResource StringToKeyGestureConverter}}"/>
+                <MenuItem Header="Save _As..." Command="{Binding SaveAsShowCommand}" InputGesture="{Binding Shortcuts.SaveAsShortcut, Converter={StaticResource StringToKeyGestureConverter}}"/>
                 <Separator/>
-                <MenuItem Header="Project Preferences" Command="{Binding OpenNewProjectPreferencesWindowCommand}"/>
+                <MenuItem Header="Project Preferences" Command="{Binding OpenNewProjectPreferencesWindowCommand}" InputGesture="{Binding Shortcuts.PreferencesShortcut, Converter={StaticResource StringToKeyGestureConverter}}"/>
                 <Separator/>
                 <MenuItem Header="_Exit" Command="{Binding ExitApplicationCommand}"/>
             </MenuItem>
 
             <MenuItem Header="_Edit">
-                <MenuItem Header="Undo" InputGesture="Ctrl+Z"/>
+                <MenuItem Header="Undo" InputGesture="Ctrl+Z" />
                 <MenuItem Header="Redo" InputGesture="Ctrl+Y"/>
-                <MenuItem Header="New Cue" Command="{Binding OpenNewCueWindowCommand}"/>
+                <MenuItem Header="New Cue" Command="{Binding OpenNewCueWindowCommand}" InputGesture="{Binding Shortcuts.CueShortcut, Converter={StaticResource StringToKeyGestureConverter}}"/>
                 <Separator/>
                 <MenuItem Header="Cut" InputGesture="Ctrl+X"/>
                 <MenuItem Header="Copy" InputGesture="Ctrl+C"/>
@@ -47,18 +68,18 @@
             </MenuItem>
 
             <MenuItem Header="_View">
-                <MenuItem Header="Open Log Console" IsChecked="{Binding IsLogConsoleVisible, Mode=TwoWay}"/>
-                <MenuItem Header="Open Axis Viewer" Command="{Binding ShowAxisViewerCommand}"/>
-                <MenuItem Header="Open Master Cue Sheet" Command="{Binding ShowCueSheetCommand}"/>
-                <MenuItem Header="Open Cue Stack" Command="{Binding ShowCueStackCommand}"/>
-                <MenuItem Header="Open Controller Viewer" Command="{Binding ShowControllerViewerCommand}"/>
+                <MenuItem Header="Open Log Console" IsChecked="{Binding IsLogConsoleVisible, Mode=TwoWay}" InputGesture="{Binding Shortcuts.LoggerShortcut, Converter={StaticResource StringToKeyGestureConverter}}"/>
+                <MenuItem Header="Open Axis Viewer" Command="{Binding ShowAxisViewerCommand}" InputGesture="{Binding Shortcuts.AxisViewerShortcut, Converter={StaticResource StringToKeyGestureConverter}}"/>
+                <MenuItem Header="Open Master Cue Sheet" Command="{Binding ShowCueSheetCommand}" InputGesture="{Binding Shortcuts.CueListViewerShortcut, Converter={StaticResource StringToKeyGestureConverter}}"/>
+                <MenuItem Header="Open Cue Stack" Command="{Binding ShowCueStackCommand}" InputGesture="{Binding Shortcuts.CueRunShortcut, Converter={StaticResource StringToKeyGestureConverter}}"/>
+                <MenuItem Header="Open Controller Viewer" Command="{Binding ShowControllerViewerCommand}" InputGesture="{Binding Shortcuts.ControllerViewerShortcut, Converter={StaticResource StringToKeyGestureConverter}}"/>
                 <Separator/>
                 <MenuItem Header="Reset Window Layout"/>
             </MenuItem>
 
             <MenuItem Header="_Config">
-                <MenuItem Header="New Controller..." Command="{Binding OpenNewControllerWindowCommand}"/>
-                <MenuItem Header="New Axis..." Command="{Binding OpenNewAxisWindowCommand}"/>
+                <MenuItem Header="New Controller..." Command="{Binding OpenNewControllerWindowCommand}" InputGesture="{Binding Shortcuts.ControllerShortcut, Converter={StaticResource StringToKeyGestureConverter}}"/>
+                <MenuItem Header="New Axis..." Command="{Binding OpenNewAxisWindowCommand}" InputGesture="{Binding Shortcuts.AxisShortcut, Converter={StaticResource StringToKeyGestureConverter}}"/>
                 <MenuItem Header="Network / Modbus Settings..."/>
                 <MenuItem Header="User Preferences..."/>
             </MenuItem>

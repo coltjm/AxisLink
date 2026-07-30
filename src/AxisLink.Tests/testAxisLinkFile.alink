@@ -167,8 +167,9 @@
     <alink_custom_rotational_unit xsi:nil="true" />
     <alink_enable_stacks>true</alink_enable_stacks>
     <alink_logger_display_cap>1000</alink_logger_display_cap>
+    <alink_math_in_input>true</alink_math_in_input>
     <alink_cue_spacing>5</alink_cue_spacing>
-    <alink_linear_unit>mm</alink_linear_unit>
+    <alink_linear_unit>in</alink_linear_unit>
     <alink_rotational_unit>deg</alink_rotational_unit>
   </alink_project_config>
 </showfile>

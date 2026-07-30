@@ -15,6 +15,8 @@ using System.Threading.Tasks;
 using AxisLink.Desktop.Views.Windows.CueCreation;
 using AxisLink.Desktop.ViewModels.Windows.CueCreation;
 using AxisLink.Desktop.Views.Windows.ProjectPreferences;
+using AxisLink.Core.Models.Configs;
+using CommunityToolkit.Mvvm.ComponentModel;
 namespace AxisLink.Desktop.ViewModels.Windows
 {
     public partial class MainWindowViewModel : ViewModelBase
@@ -25,6 +27,8 @@ namespace AxisLink.Desktop.ViewModels.Windows
         private readonly WindowManager windowManager;
         private readonly FileDialogService fileDialogService;
         private readonly IConsoleLogger Logger;
+        [ObservableProperty]
+        private Shortcuts _shortcuts;
 
         // Dynamic properties for menu checking states
         private bool _isLogConsoleVisible = true;
@@ -41,6 +45,8 @@ namespace AxisLink.Desktop.ViewModels.Windows
             FileManager = fileManager;
             windowManager = _windowManager;
             fileDialogService = _fileDialogService;
+            Shortcuts = fileManager.CurrentShow.ProjectConfig.Shortcuts;
+            Logger.LogInfo(Shortcuts.CueShortcut);
         }
 
         // Parameterless constructor for the Avalonia Previewer
@@ -48,6 +54,12 @@ namespace AxisLink.Desktop.ViewModels.Windows
         {
             Workspace = new WorkspaceManager(new ConsoleLogger(null), null, null);
             Logger = new ConsoleLogger(null);
+        }
+
+        public void OnShowFileLoaded()
+        {
+            // Re-bind shortcuts when show file changes
+            Shortcuts = FileManager.CurrentShow.ProjectConfig.Shortcuts;
         }
 
         // --- BACKEND LOGIC ACTIONS ---
