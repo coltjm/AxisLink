@@ -19,25 +19,42 @@ namespace AxisLink.Core.Models.Show
         [XmlEnum("position_reference")] PositionReference
     }
 
+    public class SensorLocation
+    {
+        // Parameterless constructor for xml serialization and deserialization
+        public SensorLocation() { }
+        // See ANSI E1.44-2014 R2024 5.3.1.1 for details on how location is defined
+        // x poisition in mm
+        [XmlElement("x")]
+        public int X { get; set; }
+
+        // y position in mm
+        [XmlElement("y")]
+        public int Y { get; set; }
+    }
+
     [XmlType("sensor")]
     public class Sensor 
     {
         // Parameterless constructor for xml serialization and deserialization
         public Sensor() { }
-        [XmlAttribute("id")]
+        [XmlAttribute("alink_id")]
         public required int Id { get; set; }
         // Sensors might be connected to a different plc than associated axis - I dont recommend but software will allow
-        [XmlElement("controller_id")]
+        [XmlElement("alink_controller_id")]
         public int? ControllerId { get; set; }
 
-        [XmlElement("type")]
-        public SensorTypes SensorType { get; set; }
+        [XmlElement("alink_type")]
+        public SensorTypes? SensorType { get; set; }
 
         // Is the sensor a normally closed sensor?
-        [XmlElement("nc")]
-        public bool NC {  get; set; }
+        [XmlElement("alink_nc")]
+        public bool? NC {  get; set; }
 
-        [XmlElement("hardware_config")]
+        [XmlElement("alink_location")]
+        public SensorLocation? Location { get; set; }
+
+        [XmlElement("alink_hardware_config")]
         public SensorHardwareConfig? Config { get; set; }
     }
 }

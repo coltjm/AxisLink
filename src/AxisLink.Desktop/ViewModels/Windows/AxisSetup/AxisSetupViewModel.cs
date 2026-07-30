@@ -1,7 +1,10 @@
 ﻿using AxisLink.Core.Interfaces;
 using AxisLink.Core.Management;
 using AxisLink.Core.Models.Show;
+using AxisLink.Desktop.Utilities;
 using AxisLink.Desktop.ViewModels.Windows.ControllerSetup;
+using AxisLink.Desktop.ViewModels.Windows.SensorsWindow;
+using AxisLink.Desktop.Views.Windows.SensorWindow;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System;
@@ -15,6 +18,7 @@ namespace AxisLink.Desktop.ViewModels.Windows.AxisSetup
     {
         private readonly ShowFileManager FileManager;
         private readonly MotionManager motionManager;
+        private readonly WindowManager windowManager;
         private readonly IConsoleLogger Logger;
         [ObservableProperty]
         private Axis createdAxis;
@@ -42,10 +46,11 @@ namespace AxisLink.Desktop.ViewModels.Windows.AxisSetup
 
 
 
-        public AxisSetupViewModel(ShowFileManager fileManager, MotionManager _motionManager, IConsoleLogger logger)
+        public AxisSetupViewModel(ShowFileManager fileManager, MotionManager _motionManager, IConsoleLogger logger, WindowManager _windowManager)
         {
             FileManager = fileManager;
             motionManager = _motionManager;
+            windowManager = _windowManager;
             Logger = logger;
             createdAxis = new Axis{ Id = motionManager.nextAxisId, Name=$"Axis {motionManager.nextAxisId}" };
         }
@@ -76,6 +81,7 @@ namespace AxisLink.Desktop.ViewModels.Windows.AxisSetup
         [RelayCommand]
         private void CreateNewSensor()
         {
+            windowManager.ShowWindow<SensorWindowViewModel, SensorWindow>();
             // Logic to open Sensor Creation modal window
         }
 

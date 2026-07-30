@@ -49,6 +49,7 @@ namespace AxisLink.Core.Management
             // Prompt user to save current show if it has unsaved changes (not implemented here)
             // create empty collections to avoid null reference exceptions
             List<Controller> controllers = new List<Controller>();
+            List<Sensor> sensors = new List<Sensor>();
             List<Axis> Axes = new List<Axis>();
             List<Group> Groups = new List<Group>();
             List<Scenery> Scenery = new List<Scenery>();
@@ -57,7 +58,9 @@ namespace AxisLink.Core.Management
             // In the future, set default project config from user preferences
             ProjectConfig projectConfig = new ProjectConfig();
 
-            CurrentShow = new ShowFile(controllers, Axes, Groups, Scenery, Patches, Cues, projectConfig);
+            CurrentShow = new ShowFile(Controllers: controllers, Sensors:sensors, Axes: Axes, 
+                Groups:Groups, Scenery:Scenery, Patches:Patches, 
+                Cues:Cues, projectConfig: projectConfig );
             
         }
 

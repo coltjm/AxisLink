@@ -36,19 +36,19 @@ namespace AxisLink.Core.Models.Show
         [XmlArrayItem("b_object")]
         public List<Scenery>? Scenery { get; set; }
         [XmlElement("b_patch")]
-        public PatchList? Patches { get; set; }
+        public PatchList? PatchList { get; set; }
         [XmlArray("b_cues")]
         public List<Cue>? Cues { get; set; }
 
         // Parameterless constructor for xml serialization and deserialization
         public Machinery() { }
 
-        public Machinery(List<Axis> Axes, List<Group> Groups, List<Scenery> Scenery, List<Patch> Patches, List<Cue> Cues)
+        public Machinery(List<Axis> Axes, List<Group> Groups, List<Scenery> Scenery, List<Patch> PatchList, List<Cue> Cues)
         { 
             this.Axes = Axes;
             this.Groups = Groups;
             this.Scenery = Scenery;
-            this.Patches = new PatchList(Patches);
+            this.PatchList = new PatchList(PatchList);
             this.Cues = Cues;
         }
 
@@ -69,18 +69,23 @@ namespace AxisLink.Core.Models.Show
         [XmlArrayItem("alink_controller")]
         public List<Controller>? Controllers { get; set; }
 
+        [XmlArray("alink_sensors")]
+        [XmlArrayItem("alink_sensor")]
+        public List<Sensor>? Sensors { get; set; } = [];
+
         [XmlElement("alink_project_config")]
         public ProjectConfig? ProjectConfig { get; set; }
 
         // Parameterless constructor for xml serialization and deserialization
         public ShowFile() { }
 
-        public ShowFile(List<Controller> Controllers, List<Axis> Axes, List<Group> Groups, 
+        public ShowFile(List<Controller> Controllers, List<Sensor> Sensors, List<Axis> Axes, List<Group> Groups, 
             List<Scenery> Scenery, List<Patch> Patches, List<Cue> Cues, ProjectConfig? projectConfig)
         {
             this.Machinery = new Machinery(Axes, Groups, Scenery, Patches, Cues);
             this.Header = new Header();
             this.Controllers = Controllers;
+            this.Sensors = Sensors;
             this.ProjectConfig = projectConfig!=null? projectConfig: new();
         }
 

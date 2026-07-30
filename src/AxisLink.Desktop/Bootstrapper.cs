@@ -5,16 +5,19 @@ using AxisLink.Desktop.ViewModels;
 using AxisLink.Desktop.ViewModels.Modules;
 using AxisLink.Desktop.ViewModels.Windows;
 using AxisLink.Desktop.ViewModels.Windows.AxisSetup;
+using AxisLink.Desktop.ViewModels.Windows.ControllerCommunication;
 using AxisLink.Desktop.ViewModels.Windows.ControllerSetup;
 using AxisLink.Desktop.ViewModels.Windows.CueCreation;
+using AxisLink.Desktop.ViewModels.Windows.GroupsWindow;
+using AxisLink.Desktop.ViewModels.Windows.JogWindow;
+using AxisLink.Desktop.ViewModels.Windows.PatchWindow;
+using AxisLink.Desktop.ViewModels.Windows.SensorsWindow;
 using AxisLink.Infrastructure.Factories;
 using AxisLink.Infrastructure.Loggers;
 using AxisLink.Infrastructure.ShowFileStorage;
 using Dock.Model.Core;
 using Microsoft.Extensions.DependencyInjection;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 
 
@@ -42,6 +45,7 @@ namespace AxisLink.Desktop
             services.AddSingleton<CueManager>();
             services.AddSingleton<ShowFileManager>();
             services.AddSingleton<UnitManager>();
+            services.AddSingleton<NetworkManager>();
             
 
             // Add UI VMs as Transients (new instance created each time requested)
@@ -57,12 +61,15 @@ namespace AxisLink.Desktop
             services.AddTransient<ControllerViewerModuleViewModel>();
 
             // Windows
-            services.AddTransient<ControllerSetupViewModel>();
             services.AddTransient<AxisSetupViewModel>();
+            services.AddTransient<ControllerCommunicationViewModel>();
+            services.AddTransient<ControllerSetupViewModel>();
             services.AddTransient<CueCreationWindowViewModel>();
+            services.AddTransient<GroupsWindowViewModel>();
+            services.AddTransient<JogWindowViewModel>();
+            services.AddTransient<PatchWindowViewModel>();
             services.AddTransient<ProjectPreferencesViewModel>();
-            
-
+            services.AddTransient<SensorWindowViewModel>();
 
             return services.BuildServiceProvider();
             

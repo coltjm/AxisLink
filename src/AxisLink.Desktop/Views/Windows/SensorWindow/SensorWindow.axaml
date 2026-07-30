@@ -1,0 +1,56 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="using:AxisLink.Desktop.ViewModels.Windows.SensorsWindow"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="AxisLink.Desktop.Views.Windows.SensorWindow.SensorWindow"
+        x:DataType="vm:SensorWindowViewModel"
+        Title="SensorWindowView">
+  <Grid RowDefinitions="*, Auto" Margin="16">
+        <ScrollViewer Grid.Row="0" VerticalScrollBarVisibility="Auto">
+            <StackPanel Spacing="16">
+                
+
+                <Rectangle Height="1" Fill="{DynamicResource SystemControlForegroundBaseLowBrush}"/>
+
+                <Grid ColumnDefinitions="*, 16, *">
+
+                    <StackPanel Grid.Column="2" Spacing="4">
+                        <TextBlock Text="SESOR TYPE" FontWeight="Bold"/>
+                        <ComboBox SelectedIndex="{Binding SelectedSensorTypeIndex}" HorizontalAlignment="Stretch">
+                            <ComboBoxItem Content="Constant Speed"/>
+                            <ComboBoxItem Content="VFD (Variable Frequency Drive)"/>
+                            <ComboBoxItem Content="Stepper Motor"/>
+                        </ComboBox>
+                    </StackPanel>
+                </Grid>
+
+                <Grid ColumnDefinitions="*, 16, *">
+                    <StackPanel Grid.Column="0" Spacing="4">
+                        <TextBlock Text="LOCATION" FontWeight="Bold"/>
+                        <Grid ColumnDefinitions="Auto, *, 8, Auto, *">
+                            <TextBlock Text="X:" VerticalAlignment="Center"/>
+                            <UnitTextBox Grid.Column="1" Value="{Binding CreatedSensor.Location.X}" Mode="Linear"/>
+                            <TextBlock Grid.Column="3" Text="Y:" VerticalAlignment="Center"/>
+                            <UnitTextBox Grid.Column="4" Value="{Binding CreatedSensor.Location.Y}" Mode="Linear"/>
+                        </Grid>
+                    </StackPanel>
+
+                </Grid>
+
+                <Rectangle Height="1" Fill="{DynamicResource SystemControlForegroundBaseLowBrush}"/>
+
+
+                <Rectangle Height="1" Fill="{DynamicResource SystemControlForegroundBaseLowBrush}"/>
+
+
+            </StackPanel>
+        </ScrollViewer>
+
+        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" Spacing="12" Margin="0,16,0,0">
+            <Button Content="CANCEL" Command="{Binding CancelCommand}" IsCancel="True" Width="80"/>
+            <Button Content="SAVE AXIS" Command="{Binding SaveSensorCommand}" IsDefault="True" Classes="accent" Width="100"/>
+        </StackPanel>
+    </Grid>
+</Window>

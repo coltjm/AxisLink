@@ -20,6 +20,7 @@ namespace AxisLink.Core.Management
         public readonly List<Controller> Controllers;
         public readonly List<Patch> Patches;
         public readonly List<Scenery> Scenery;
+        public readonly List<Sensor> Sensors;
         // Events to notify when axes or controllers are added or removed
         public event Action<Axis>? AxisAdded;
         public event Action<Axis>? AxisRemoved;
@@ -29,9 +30,14 @@ namespace AxisLink.Core.Management
         public event Action<Scenery>? SceneryRemoved;
         public event Action<Patch>? PatchAdded;
         public event Action<Patch>? PatchRemoved;
+        public event Action<Sensor>? SensorAdded;
+        public event Action<Sensor>? SensorRemoved;
         // Running counters for the next axis and controller IDs
         public int nextAxisId { get; private set; }
         public int nextControllerId { get; private set; }
+        public int nextPatchId { get; private set; }
+        public int nextSceneryId { get; private set; }
+        public int nextSensorId { get; private set; }
         public MotionManager(ShowFileManager showFileManager, IMotionServiceFactory serviceFactory)
         {
             // Initialize the ShowFileManager and MotionServiceFactory from dependency injection
@@ -39,9 +45,15 @@ namespace AxisLink.Core.Management
             _serviceFactory = serviceFactory;
             Axes = _showFileManager?.CurrentShow?.Machinery?.Axes;
             Controllers = _showFileManager?.CurrentShow?.Controllers;
+            Patches = _showFileManager?.CurrentShow?.Machinery?.PatchList.Patches;
+            Scenery = _showFileManager?.CurrentShow?.Machinery.Scenery;
+            Sensors = _showFileManager?.CurrentShow?.Sensors;
             // Set the next IDs based on the maximum existing IDs in the lists, or start from 1 if the lists are empty
-            nextAxisId = showFileManager?.CurrentShow?.Machinery.Axes.Count != 0 ? Axes.Max(a => a.Id) + 1 : 1;
+            nextAxisId = _showFileManager?.CurrentShow?.Machinery.Axes.Count != 0 ? Axes.Max(a => a.Id) + 1 : 1;
             nextControllerId = Controllers?.Count != 0 ? Controllers.Max(c => c.Id) + 1 : 1;
+            nextPatchId = _showFileManager?.CurrentShow?.Machinery.PatchList.Patches.Count != 0? Patches.Max(p => p.Id)+1:1;
+            nextSceneryId = _showFileManager.CurrentShow.Machinery.Scenery.Count != 0? Scenery.Max(s => s.Id)+1:1;
+            nextSensorId = _showFileManager.CurrentShow.Sensors.Count != 0? Sensors.Max(s => s.Id)+1:1;
         }
 
         // Startup motion services for all controllers in the show file

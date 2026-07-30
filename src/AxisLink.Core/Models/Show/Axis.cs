@@ -137,9 +137,10 @@ namespace AxisLink.Core.Models.Show
         [XmlElement("alink_dist_per_rev")]
         public float? DistancePerRevolution { get; set; }
 
+        // Refernece id of sensors to allow multiple uses per sensor
         [XmlArray("alink_sensors")]
         [XmlArrayItem("alink_sensor")]
-        public List<Sensor>? Sensors { get; set; } = [];
+        public List<int>? Sensors { get; set; } = [];
 
         // Type of interface. Currently only modbus is supported
         [XmlElement("alink_hardware_type")]
