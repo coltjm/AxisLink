@@ -2,8 +2,6 @@
 using Avalonia.Media;
 using AxisLink.Core.Models.Configs;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace AxisLink.Desktop.Utilities
 {
@@ -11,68 +9,120 @@ namespace AxisLink.Desktop.Utilities
     {
         public static void ApplyCustomTheme(AppThemeConfig config)
         {
-            var resources = Application.Current!.Resources;
+            if (Application.Current?.Resources == null) return;
+            var resources = Application.Current.Resources;
 
-            var accentBrush = new SolidColorBrush(Color.Parse(config.AppAccent));
-            var bgBrush = new SolidColorBrush(Color.Parse(config.AppBackground));
-            var textBrush = new SolidColorBrush(Color.Parse(config.AppText));
+            // --- PARSE CONFIG COLORS ---
+            var accentColor = Color.Parse(config.AppAccent);
+            var accentTextColor = Color.Parse(config.AppAccentText);
+            var baseBgColor = Color.Parse(config.AppBackground);
+            var surfaceColor = Color.Parse(config.AppSurface);
+            var surfaceInputColor = Color.Parse(config.AppSurfaceInput);
+            var borderColor = Color.Parse(config.AppBorder);
+            var textColor = Color.Parse(config.AppText);
+            var secondaryTextColor = Color.Parse(config.AppTextSecondary);
 
-            //----------------APP-------------------------------
+            // --- BRUSHES ---
+            var accentBrush = new SolidColorBrush(accentColor);
+            var accentTextBrush = new SolidColorBrush(accentTextColor);
+            var bgBrush = new SolidColorBrush(baseBgColor);
+            var surfaceBrush = new SolidColorBrush(surfaceColor);
+            var inputBgBrush = new SolidColorBrush(surfaceInputColor);
+            var borderBrush = new SolidColorBrush(borderColor);
+            var textBrush = new SolidColorBrush(textColor);
+            var secondaryTextBrush = new SolidColorBrush(secondaryTextColor);
+            var menuBgBrush = new SolidColorBrush(Color.Parse(config.AppMenuBackground));
+
+            // Status Colors
+            var statusFaultColor = Color.Parse(config.StatusFault);
+            var statusFaultBrush = new SolidColorBrush(statusFaultColor);
+
+            // Adaptive interaction tints
+            var subtleHoverBrush = new SolidColorBrush(Color.FromArgb(24, textColor.R, textColor.G, textColor.B));
+            var buttonHoverBrush = new SolidColorBrush(Color.FromArgb(40, textColor.R, textColor.G, textColor.B));
+
+            // AXISLINK CORE DESIGN TOKENS
             resources["AppAccent"] = accentBrush;
+            resources["AppAccentText"] = accentTextBrush;
             resources["AppBackground"] = bgBrush;
+            resources["AppSurface"] = surfaceBrush;
+            resources["AppSurfaceInput"] = inputBgBrush;
+            resources["AppBorder"] = borderBrush;
             resources["AppText"] = textBrush;
-            resources["AppMenuBackground"] = new SolidColorBrush(Color.Parse(config.AppMenuBackground));
+            resources["AppTextSecondary"] = secondaryTextBrush;
+            resources["AppMenuBackground"] = menuBgBrush;
 
-            // --- GLOBAL WINDOW & PANEL BASES ---
-            resources["SystemControlBackgroundAltHighBrush"] = bgBrush; // Window Backgrounds
-            resources["SystemControlBackgroundBaseLowBrush"] = new SolidColorBrush(Color.Parse(config.ConsoleBackground)); // Inner panels / TextBoxes
+            // Machinery Status Badges
+            resources["StatusEnabled"] = new SolidColorBrush(Color.Parse(config.StatusEnabled));
+            resources["StatusFault"] = statusFaultBrush;
+            resources["StatusWarning"] = new SolidColorBrush(Color.Parse(config.StatusWarning));
+            resources["StatusMoving"] = new SolidColorBrush(Color.Parse(config.StatusMoving));
 
-            // --- GLOBAL TEXT / FOREGROUNDS ---
-            resources["SystemControlForegroundBaseHighBrush"] = textBrush; // Primary Labels & Content
-            resources["SystemControlForegroundBaseMediumBrush"] = textBrush; // Subheaders / Watermarks
+            // AVALONIA SYSTEM CONTROLS (TextBox, ComboBox, Lists)
+            resources["SystemControlBackgroundAltHighBrush"] = bgBrush;
+            resources["SystemControlBackgroundBaseLowBrush"] = surfaceBrush;
+            resources["SystemControlForegroundBaseHighBrush"] = textBrush;
+            resources["SystemControlForegroundBaseMediumBrush"] = secondaryTextBrush;
+            resources["SystemControlHighlightAccentBrush"] = accentBrush;
+            resources["SystemControlHighlightListLowBrush"] = new SolidColorBrush(Color.FromArgb(40, accentColor.R, accentColor.G, accentColor.B));
 
-            // --- GLOBAL ACCENTS & INTERACTIONS ---
-            resources["SystemControlHighlightAccentBrush"] = accentBrush; // Checked States / Sliders
-            resources["SystemControlHighlightListLowBrush"] = accentBrush; // List Selection Hover
-            // MENU ITEMS
+            // TextBoxes & Input Surfaces
+            resources["TextControlBackground"] = inputBgBrush;
+            resources["TextControlBackgroundPointerOver"] = inputBgBrush;
+            resources["TextControlBackgroundFocused"] = inputBgBrush;
+            resources["TextControlBorderBrush"] = borderBrush;
+            resources["TextControlBorderBrushPointerOver"] = accentBrush;
+            resources["TextControlBorderBrushFocused"] = accentBrush;
+            resources["TextControlForeground"] = textBrush;
+            resources["TextControlPlaceholderForeground"] = secondaryTextBrush;
+
+            // MENUS & FLYOUTS
             resources["MenuForeground"] = textBrush;
-
-                // Dropdown Menu Item Text Colors
             resources["MenuFlyoutItemForeground"] = textBrush;
             resources["MenuFlyoutItemForegroundPointerOver"] = textBrush;
             resources["MenuFlyoutItemForegroundSubMenuOpen"] = textBrush;
-
-                // Dropdown Menu Item Backgrounds
-            resources["MenuFlyoutItemBackground"] = new SolidColorBrush(Color.Parse(config.AppMenuBackground));
+            resources["MenuFlyoutItemBackground"] = menuBgBrush;
             resources["MenuFlyoutItemBackgroundPointerOver"] = accentBrush;
-            // DOCK
-            resources["DockApplicationAccentBrushLow"] = accentBrush;
-            resources["DockApplicationAccentBrushMed"] = accentBrush;
-            resources["DockApplicationAccentBrushHigh"] = accentBrush;
-            resources["DockApplicationAccentForegroundBrush"] = textBrush;
-            resources["DockApplicationAccentBrushIndicator"] = accentBrush;
 
+            // DOCK.AVALONIA TOKENS
             resources["DockThemeBackgroundBrush"] = bgBrush;
             resources["DockThemeForegroundBrush"] = textBrush;
-            resources["DockThemeControlBackgroundBrush"] = bgBrush;
-
             resources["DockSurfaceWorkbenchBrush"] = bgBrush;
-            resources["DockSurfaceSidebarBrush"] = bgBrush;
-            resources["DockSurfaceEditorBrush"] = bgBrush;
-            resources["DockSurfacePanelBrush"] = bgBrush;
+            resources["DockSurfaceSidebarBrush"] = surfaceBrush;
+            resources["DockSurfaceEditorBrush"] = surfaceBrush;
+            resources["DockSurfacePanelBrush"] = surfaceBrush;
+            resources["DockSurfaceHeaderBrush"] = surfaceBrush;
+            resources["DockSurfaceHeaderActiveBrush"] = surfaceBrush;
 
-                    // Tab Headers & Chrome Selections
-            resources["DockTabActiveBackgroundBrush"] = accentBrush;
-            resources["DockTabActiveIndicatorBrush"] = accentBrush;
-            resources["DockTabSelectedForegroundBrush"] = accentBrush;
-            resources["DockTabActiveForegroundBrush"] = textBrush;
-            resources["DockDocumentTabSelectedForegroundBrush"] = textBrush;
-
-                    // Splitters and Target Blue Highlight Boxes
+            // Structure & Borders
+            resources["DockBorderSubtleBrush"] = borderBrush;
+            resources["DockBorderStrongBrush"] = borderBrush;
+            resources["DockSplitterIdleBrush"] = borderBrush;
             resources["DockSplitterHoverBrush"] = accentBrush;
             resources["DockSplitterDragBrush"] = accentBrush;
             resources["DockTargetIndicatorBrush"] = accentBrush;
-            //-----------------CONSOLE-------------------------------
+
+            // Chrome / Close Button Icons & Hover
+            resources["DockToolChromeIconBrush"] = secondaryTextBrush;
+            resources["DockChromeButtonForegroundBrush"] = secondaryTextBrush;
+            resources["DockChromeButtonHoverBackgroundBrush"] = buttonHoverBrush;
+            resources["DockChromeButtonDangerHoverBrush"] = statusFaultBrush;
+
+            // Unselected tab strip background (flat & transparent)
+            resources["DockTabBackgroundBrush"] = new SolidColorBrush(Colors.Transparent);
+            resources["DockDocumentTabStripBackgroundBrush"] = new SolidColorBrush(Colors.Transparent);
+            resources["DockTabForegroundBrush"] = secondaryTextBrush;
+            resources["DockTabHoverBackgroundBrush"] = subtleHoverBrush;
+
+            // Active tab background & text
+            resources["DockTabActiveBackgroundBrush"] = surfaceBrush;
+            resources["DockTabActiveForegroundBrush"] = textBrush;
+            resources["DockTabSelectedForegroundBrush"] = textBrush;
+
+            // Tab Active Indicator Accent Line
+            resources["DockTabActiveIndicatorBrush"] = accentBrush;
+
+            // SYSTEM CONSOLE / LOGGING
             resources["ConsoleBackground"] = new SolidColorBrush(Color.Parse(config.ConsoleBackground));
             resources["ConsoleHeaderBackground"] = new SolidColorBrush(Color.Parse(config.ConsoleHeaderBackground));
             resources["ConsoleText"] = new SolidColorBrush(Color.Parse(config.ConsoleText));

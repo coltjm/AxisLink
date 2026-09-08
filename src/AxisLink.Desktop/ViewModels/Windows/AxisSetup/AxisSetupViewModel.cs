@@ -40,6 +40,27 @@ namespace AxisLink.Desktop.ViewModels.Windows.AxisSetup
         [ObservableProperty]
         private int _selectedMotorTypeIndex = 0;
 
+        [ObservableProperty]
+        private bool _autoCreateScenery = true;
+
+        [ObservableProperty]
+        private string _sceneryName = string.Empty;
+
+        [ObservableProperty]
+        private int? _sceneryWeight;
+
+        [ObservableProperty]
+        private float? _scenerySpeedLimit;
+
+        // Auto-sync the scenery name with the axis name until changed manually
+        partial void OnCreatedAxisChanged(Axis value)
+        {
+            if (string.IsNullOrWhiteSpace(SceneryName) && value != null)
+            {
+                SceneryName = value.Name ?? string.Empty;
+            }
+        }
+
         public ObservableCollection<object> AvailableControllers { get; } = new();
         public ObservableCollection<string> AvailableSensors { get; } = new();
         public Action? RequestClose { get; set; }

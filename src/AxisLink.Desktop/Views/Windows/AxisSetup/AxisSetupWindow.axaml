@@ -4,87 +4,167 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="using:AxisLink.Desktop.ViewModels.Windows.AxisSetup"
         xmlns:local="using:AxisLink.Desktop.Views.Windows.AxisSetup"
-        mc:Ignorable="d" d:DesignWidth="650" d:DesignHeight="800"
+        mc:Ignorable="d" d:DesignWidth="700" d:DesignHeight="880"
+        Width="720" Height="900"
+        WindowStartupLocation="CenterOwner"
         x:Class="AxisLink.Desktop.Views.Windows.AxisSetup.AxisSetupWindow"
         x:DataType="vm:AxisSetupViewModel"
-        Title="Axis Configuration">
+        Background="{DynamicResource AppBackground}"
+        Title="Axis &amp; Machine Configuration">
 
-    <Grid RowDefinitions="*, Auto" Margin="16">
-        <ScrollViewer Grid.Row="0" VerticalScrollBarVisibility="Auto">
+    <Grid RowDefinitions="*, Auto" Margin="20">
+        <!-- HorizontalScrollBarVisibility="Disabled" and Padding="0,0,16,0" keep the scrollbar outside the card bounds -->
+        <ScrollViewer Grid.Row="0" 
+                      VerticalScrollBarVisibility="Auto" 
+                      HorizontalScrollBarVisibility="Disabled"
+                      Padding="0,0,16,0">
             <StackPanel Spacing="16">
                 
+                <!--IDENTITY & COMMUNICATION -->
                 <local:AxisControlSectionView DataContext="{Binding}"/>
 
-                <Rectangle Height="1" Fill="{DynamicResource SystemControlForegroundBaseLowBrush}"/>
+                <!-- SCENERY PROVISIONING -->
+                <Border Background="{DynamicResource AppSurface}" 
+                        BorderBrush="{DynamicResource AppBorder}" 
+                        BorderThickness="1" 
+                        CornerRadius="6" 
+                        Padding="16">
+                    <StackPanel Spacing="12">
+                        <Grid ColumnDefinitions="*, Auto">
+                            <StackPanel Grid.Column="0" Spacing="2">
+                                <TextBlock Text="SCENERY PROVISIONING (CUE TARGET)" 
+                                           FontWeight="Bold" 
+                                           FontSize="12" 
+                                           Foreground="{DynamicResource AppAccent}"/>
+                            </StackPanel>
+                            <CheckBox Grid.Column="1" 
+                                      Content="Auto-Create Scenery" 
+                                      IsChecked="{Binding AutoCreateScenery}" 
+                                      VerticalAlignment="Center"/>
+                        </Grid>
 
-                <Grid ColumnDefinitions="*, 16, *">
-                    <StackPanel Grid.Column="0" Spacing="4">
-                        <TextBlock Text="MOTION TYPE" FontWeight="Bold"/>
-                        <ComboBox SelectedIndex="{Binding CreatedAxis.Type, FallbackValue=0}" HorizontalAlignment="Stretch">
-                            <ComboBoxItem Content="Cross-Stage Line Set"/>
-                            <ComboBoxItem Content="Up-Down Line Set"/>
-                            <ComboBoxItem Content="Point Hoist"/>
-                            <ComboBoxItem Content="Rotary"/>
-                            <ComboBoxItem Content="Other"/>
-                        </ComboBox>
+                        <!-- Expandable options enabled when AutoCreateScenery is true -->
+                        <StackPanel Spacing="10" IsVisible="{Binding AutoCreateScenery}">
+                            <Rectangle Height="1" Fill="{DynamicResource AppBorder}" Margin="0,4"/>
+
+                            <Grid ColumnDefinitions="*, 16, 140, 16, 140">
+                                <StackPanel Grid.Column="0" Spacing="4">
+                                    <TextBlock Text="Scenery Object Name" FontSize="11" Foreground="{DynamicResource AppTextSecondary}"/>
+                                    <TextBox Text="{Binding SceneryName}" Watermark="e.g. Downstage Traveler" Height="32"/>
+                                </StackPanel>
+
+                                <StackPanel Grid.Column="2" Spacing="4">
+                                    <TextBlock Text="Weight (kg)" FontSize="11" Foreground="{DynamicResource AppTextSecondary}"/>
+                                    <TextBox Text="{Binding SceneryWeight}" Watermark="0 kg" Height="32"/>
+                                </StackPanel>
+
+                                <StackPanel Grid.Column="4" Spacing="4">
+                                    <TextBlock Text="Speed Limit" FontSize="11" Foreground="{DynamicResource AppTextSecondary}"/>
+                                    <TextBox Text="{Binding ScenerySpeedLimit}" Watermark="Default" Height="32"/>
+                                </StackPanel>
+                            </Grid>
+                        </StackPanel>
                     </StackPanel>
+                </Border>
 
-                    <StackPanel Grid.Column="2" Spacing="4">
-                        <TextBlock Text="MOTOR TYPE" FontWeight="Bold"/>
-                        <ComboBox SelectedIndex="{Binding SelectedMotorTypeIndex}" HorizontalAlignment="Stretch">
-                            <ComboBoxItem Content="Constant Speed"/>
-                            <ComboBoxItem Content="VFD (Variable Frequency Drive)"/>
-                            <ComboBoxItem Content="Stepper Motor"/>
-                        </ComboBox>
-                    </StackPanel>
-                </Grid>
+                <!-- TOPOLOGY & LOCATION -->
+                <Border Background="{DynamicResource AppSurface}" 
+                        BorderBrush="{DynamicResource AppBorder}" 
+                        BorderThickness="1" 
+                        CornerRadius="6" 
+                        Padding="16">
+                    <StackPanel Spacing="12">
+                        <TextBlock Text="MECHANICAL TOPOLOGY &amp; PLACEMENT" 
+                                   FontWeight="Bold" 
+                                   FontSize="12" 
+                                   Foreground="{DynamicResource AppAccent}"/>
 
-                <Grid ColumnDefinitions="*, 16, *">
-                    <StackPanel Grid.Column="0" Spacing="4">
-                        <TextBlock Text="LOCATION" FontWeight="Bold"/>
-                        <Grid ColumnDefinitions="Auto, *, 8, Auto, *">
-                            <TextBlock Text="X:" VerticalAlignment="Center"/>
-                            <UnitTextBox Grid.Column="1" Value="{Binding CreatedAxis.Location.X}" Mode="Linear"/>
-                            <TextBlock Grid.Column="3" Text="Y:" VerticalAlignment="Center"/>
-                            <UnitTextBox Grid.Column="4" Value="{Binding CreatedAxis.Location.Y}" Mode="Linear"/>
+                        <Grid ColumnDefinitions="*, 16, *">
+                            <StackPanel Grid.Column="0" Spacing="4">
+                                <TextBlock Text="Motion Type" FontSize="11" Foreground="{DynamicResource AppTextSecondary}"/>
+                                <ComboBox SelectedIndex="{Binding CreatedAxis.Type, FallbackValue=0}" 
+                                          HorizontalAlignment="Stretch" 
+                                          Height="32">
+                                    <ComboBoxItem Content="Cross-Stage Line Set"/>
+                                    <ComboBoxItem Content="Up-Down Line Set"/>
+                                    <ComboBoxItem Content="Point Hoist"/>
+                                    <ComboBoxItem Content="Rotary"/>
+                                    <ComboBoxItem Content="Other"/>
+                                </ComboBox>
+                            </StackPanel>
+
+                            <StackPanel Grid.Column="2" Spacing="4">
+                                <TextBlock Text="Motor Type" FontSize="11" Foreground="{DynamicResource AppTextSecondary}"/>
+                                <ComboBox SelectedIndex="{Binding SelectedMotorTypeIndex}" 
+                                          HorizontalAlignment="Stretch" 
+                                          Height="32">
+                                    <ComboBoxItem Content="Constant Speed"/>
+                                    <ComboBoxItem Content="VFD (Variable Frequency Drive)"/>
+                                    <ComboBoxItem Content="Stepper Motor"/>
+                                </ComboBox>
+                            </StackPanel>
+                        </Grid>
+
+                        <Grid ColumnDefinitions="*, 16, *">
+                            <StackPanel Grid.Column="0" Spacing="4">
+                                <TextBlock Text="Stage Coordinates (X / Y)" FontSize="11" Foreground="{DynamicResource AppTextSecondary}"/>
+                                <Grid ColumnDefinitions="Auto, *, 12, Auto, *">
+                                    <TextBlock Text="X:" VerticalAlignment="Center" Foreground="{DynamicResource AppTextSecondary}" Margin="0,0,4,0"/>
+                                    <UnitTextBox Grid.Column="1" Value="{Binding CreatedAxis.Location.X}" Mode="Linear" Height="32"/>
+                                    <TextBlock Grid.Column="3" Text="Y:" VerticalAlignment="Center" Foreground="{DynamicResource AppTextSecondary}" Margin="0,0,4,0"/>
+                                    <UnitTextBox Grid.Column="4" Value="{Binding CreatedAxis.Location.Y}" Mode="Linear" Height="32"/>
+                                </Grid>
+                            </StackPanel>
+
+                            <StackPanel Grid.Column="2" VerticalAlignment="Bottom">
+                                <CheckBox Content="Has Positioning (Encoder Attached)" 
+                                          IsChecked="{Binding HasPositioning}"
+                                          Height="32"/>
+                            </StackPanel>
                         </Grid>
                     </StackPanel>
+                </Border>
 
-                    <StackPanel Grid.Column="2" VerticalAlignment="Bottom">
-                        <CheckBox Content="Has Positioning (Encoder Attached)" 
-                                  IsChecked="{Binding HasPositioning}"/>
-                    </StackPanel>
-                </Grid>
-
-                <Rectangle Height="1" Fill="{DynamicResource SystemControlForegroundBaseLowBrush}"/>
-
+                <!-- LIMITS & SENSORS -->
                 <local:AxisLimitsSectionView DataContext="{Binding}"/>
 
-                <Rectangle Height="1" Fill="{DynamicResource SystemControlForegroundBaseLowBrush}"/>
+                <!-- DYNAMIC LIMITS & CAPS-->
+                <Border Background="{DynamicResource AppSurface}" 
+                        BorderBrush="{DynamicResource AppBorder}" 
+                        BorderThickness="1" 
+                        CornerRadius="6" 
+                        Padding="16">
+                    <StackPanel Spacing="12">
+                        <TextBlock Text="DYNAMIC LIMITS &amp; CAPS" 
+                                   FontWeight="Bold" 
+                                   FontSize="12" 
+                                   Foreground="{DynamicResource AppAccent}"/>
 
-                <StackPanel Spacing="8">
-                    <TextBlock Text="MAXIMUMS" FontWeight="Bold"/>
-                    <Grid RowDefinitions="Auto, Auto, Auto, Auto" ColumnDefinitions="120, *">
-                        <TextBlock Grid.Row="0" Text="MAX SPEED" VerticalAlignment="Center"/>
-                        <UnitTextBox Grid.Row="0" Grid.Column="1" Value="{Binding CreatedAxis.MaxSpeed}" Mode="LinearSpeed" Margin="0,2"/>
+                        <Grid RowDefinitions="Auto, Auto, Auto, Auto" ColumnDefinitions="130, *">
+                            <TextBlock Grid.Row="0" Text="MAX SPEED" VerticalAlignment="Center" FontSize="11" Foreground="{DynamicResource AppTextSecondary}"/>
+                            <UnitTextBox Grid.Row="0" Grid.Column="1" Value="{Binding CreatedAxis.MaxSpeed}" Mode="LinearSpeed" Margin="0,4" Height="32"/>
 
-                        <TextBlock Grid.Row="1" Text="MAX ACCEL" VerticalAlignment="Center"/>
-                        <UnitTextBox Grid.Row="1" Grid.Column="1" Value="{Binding CreatedAxis.MaxAccel}" Mode="LinearAccel" Margin="0,2"/>
+                            <TextBlock Grid.Row="1" Text="MAX ACCEL" VerticalAlignment="Center" FontSize="11" Foreground="{DynamicResource AppTextSecondary}"/>
+                            <UnitTextBox Grid.Row="1" Grid.Column="1" Value="{Binding CreatedAxis.MaxAccel}" Mode="LinearAccel" Margin="0,4" Height="32"/>
 
-                        <TextBlock Grid.Row="2" Text="MAX DECEL" VerticalAlignment="Center"/>
-                        <UnitTextBox Grid.Row="2" Grid.Column="1" Value="{Binding CreatedAxis.MaxDecel}" Mode="LinearAccel" Margin="0,2"/>
+                            <TextBlock Grid.Row="2" Text="MAX DECEL" VerticalAlignment="Center" FontSize="11" Foreground="{DynamicResource AppTextSecondary}"/>
+                            <UnitTextBox Grid.Row="2" Grid.Column="1" Value="{Binding CreatedAxis.MaxDecel}" Mode="LinearAccel" Margin="0,4" Height="32"/>
 
-                        <TextBlock Grid.Row="3" Text="MAX TORQUE" VerticalAlignment="Center"/>
-                        <UnitTextBox Grid.Row="3" Grid.Column="1" Value="{Binding CreatedAxis.MaxTorque}" Mode="Percentage" Margin="0,2"/>
-                    </Grid>
-                </StackPanel>
+                            <TextBlock Grid.Row="3" Text="MAX TORQUE" VerticalAlignment="Center" FontSize="11" Foreground="{DynamicResource AppTextSecondary}"/>
+                            <UnitTextBox Grid.Row="3" Grid.Column="1" Value="{Binding CreatedAxis.MaxTorque}" Mode="Percentage" Margin="0,4" Height="32"/>
+                        </Grid>
+                    </StackPanel>
+                </Border>
 
             </StackPanel>
         </ScrollViewer>
 
-        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" Spacing="12" Margin="0,16,0,0">
-            <Button Content="CANCEL" Command="{Binding CancelCommand}" IsCancel="True" Width="80"/>
-            <Button Content="SAVE AXIS" Command="{Binding SaveAxisCommand}" IsDefault="True" Classes="accent" Width="100"/>
-        </StackPanel>
+        <!-- FOOTER ACTIONS -->
+        <Border Grid.Row="1" BorderThickness="0,1,0,0" BorderBrush="{DynamicResource AppBorder}" Padding="0,16,0,0">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Spacing="12">
+                <Button Content="CANCEL" Command="{Binding CancelCommand}" IsCancel="True" Width="90" Height="34" HorizontalContentAlignment="Center"/>
+                <Button Content="SAVE AXIS" Command="{Binding SaveAxisCommand}" IsDefault="True" Classes="accent" Width="110" Height="34" FontWeight="SemiBold" HorizontalContentAlignment="Center"/>
+            </StackPanel>
+        </Border>
     </Grid>
 </Window>

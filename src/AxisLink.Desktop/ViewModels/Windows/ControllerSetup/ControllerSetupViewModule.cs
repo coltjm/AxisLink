@@ -27,13 +27,13 @@ namespace AxisLink.Desktop.ViewModels.Windows.ControllerSetup
             try
             {
                 // TODO: Set connection config based on the selected controller type
-                ConnectionConfig connectionConfig = new ModbusConfig(ModbusControllerSetupViewModel.IpAddress,
-                    ModbusControllerSetupViewModel.Port.ToString(),
-                    ModbusControllerSetupViewModel.EstopAddress);
                 Controller controller = new Controller(
                     id: motionManager.nextControllerId,
                     name: ModbusControllerSetupViewModel.ControllerName,
-                    config: connectionConfig);
+                    protocol: Core.Models.Sprockets.TransportProtocol.ModbusTcp,
+                    ipAddress: ModbusControllerSetupViewModel.IpAddress,
+                    port: (int)ModbusControllerSetupViewModel.Port
+                );
                 motionManager.AddNewController(controller);
                 // Close the window
                 RequestClose?.Invoke();

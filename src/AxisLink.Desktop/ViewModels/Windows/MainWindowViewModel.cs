@@ -14,6 +14,8 @@ using System.Windows.Input;
 using System.Threading.Tasks;
 using AxisLink.Desktop.Views.Windows.CueCreation;
 using AxisLink.Desktop.ViewModels.Windows.CueCreation;
+using AxisLink.Desktop.Views.Windows.ScenerySetup;
+using AxisLink.Desktop.ViewModels.Windows.ScenerySetup;
 using AxisLink.Desktop.Views.Windows.ProjectPreferences;
 using AxisLink.Core.Models.Configs;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -47,6 +49,7 @@ namespace AxisLink.Desktop.ViewModels.Windows
             fileDialogService = _fileDialogService;
             Shortcuts = fileManager.CurrentShow.ProjectConfig.Shortcuts;
             Logger.LogInfo(Shortcuts.CueShortcut);
+            DynamicThemeEngine.ApplyCustomTheme(fileManager.CurrentShow.ProjectConfig.Theme);
         }
 
         // Parameterless constructor for the Avalonia Previewer
@@ -144,6 +147,12 @@ namespace AxisLink.Desktop.ViewModels.Windows
         private void OpenNewCueWindow()
         {
             windowManager.ShowWindow<CueCreationWindowViewModel, CueCreationWindow>();
+        }
+
+        [RelayCommand]
+        private void OpenNewSceneryWindow()
+        {
+            windowManager.ShowWindow<ScenerySetupViewModel, ScenerySetupWindow>();
         }
 
         [RelayCommand]

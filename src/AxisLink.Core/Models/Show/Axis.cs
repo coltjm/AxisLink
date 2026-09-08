@@ -1,18 +1,10 @@
-﻿using AxisLink.Core.Models.Configs;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Data.Common;
 using System.Text;
 using System.Xml.Serialization;
 
 namespace AxisLink.Core.Models.Show
 {
-    // AxisLink supported hardware types
-    public enum HardwareType
-    {
-        [XmlEnum("modbus")] Modbus
-    }
-
     // Location subclass specific to Axes in E1.44-2014 R2024
     public class AxisLocation
     {
@@ -123,10 +115,12 @@ namespace AxisLink.Core.Models.Show
         // ------------------AXISLINK SPECIFIC PROPERTIES------------------------------
         [XmlElement("alink_controller_id")]
         public int? ControllerId { get; set; }
-
-        // For steppers
-        [XmlElement("alink_steps_per_rev")]
-        public int? StepsPerRevolution { get; set; }
+        // Channel is the index of the motor on the controller, starting at 1. This is used to map the axis to a specific motor on a controller if multiple exist on one controller
+        [XmlElement("alink_channel")]
+        public int? Channel { get; set; } = 1;
+        // For steppers this is the steps per revolution, for all other motors this allows for any adjustment if scaling is needed
+        [XmlElement("alink_drive_scale_factor")]
+        public float? DriveScaleFactor { get; set; }
 
         // max torque in N*mm
         [XmlElement("alink_max_torque")]
@@ -137,19 +131,13 @@ namespace AxisLink.Core.Models.Show
         [XmlElement("alink_dist_per_rev")]
         public float? DistancePerRevolution { get; set; }
 
-        // Refernece id of sensors to allow multiple uses per sensor
+        // Reference id of sensors to allow multiple uses per sensor
         [XmlArray("alink_sensors")]
         [XmlArrayItem("alink_sensor")]
         public List<int>? Sensors { get; set; } = [];
-
-        // Type of interface. Currently only modbus is supported
-        [XmlElement("alink_hardware_type")]
-        public HardwareType? HardwareType { get; set; }
-
-        // Config is polymorphic and can function for different motor/connection types
-        [XmlElement("alink_hardware_config")]
-        public AxisHardwareConfig? Config { get; set; }
-
+        // Reference id of the sprocket config this motor uses
+        [XmlElement("alink_sprocket_id")]
+        public string? SprocketId { get; set; }
         [XmlIgnore]
         public bool? IsEnabled { get; set; }
 

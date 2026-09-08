@@ -1,0 +1,219 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="using:AxisLink.Desktop.ViewModels.Windows.ScenerySetup"
+        xmlns:controls="using:AxisLink.Desktop.Controls"
+        mc:Ignorable="d" d:DesignWidth="620" d:DesignHeight="820"
+        Width="640" Height="860"
+        WindowStartupLocation="CenterOwner"
+        CanResize="True"
+        x:Class="AxisLink.Desktop.Views.Windows.ScenerySetup.ScenerySetupWindow"
+        x:DataType="vm:ScenerySetupViewModel"
+        Title="{Binding WindowTitle}"
+        Background="{DynamicResource AppBackground}">
+
+    <Grid RowDefinitions="*, Auto" Margin="20">
+        
+        <!-- MAIN SCROLLABLE FORM -->
+        <ScrollViewer Grid.Row="0" VerticalScrollBarVisibility="Auto" 
+                      HorizontalScrollBarVisibility="Disabled"
+                      Padding="0,0,16,0">
+            <StackPanel Spacing="16">
+
+                <!-- SCENERY IDENTITY & SPECIFICATIONS -->
+                <Border Background="{DynamicResource AppSurface}"
+                        BorderBrush="{DynamicResource AppBorder}"
+                        BorderThickness="1"
+                        CornerRadius="{DynamicResource ControlCornerRadius}"
+                        Padding="16">
+                    <StackPanel Spacing="12">
+                        <TextBlock Text="1. SCENERY IDENTITY &amp; SPECIFICATIONS" 
+                                   FontWeight="Bold" 
+                                   FontSize="12" 
+                                   Foreground="{DynamicResource AppAccentText}"/>
+
+                        <StackPanel Spacing="4">
+                            <TextBlock Text="Scenery Name" FontSize="11" Foreground="{DynamicResource AppTextSecondary}"/>
+                            <TextBox Text="{Binding SceneryName}" Watermark="e.g. Main Traveler, Electric 3, Revolve" HorizontalAlignment="Stretch"/>
+                        </StackPanel>
+
+                        <StackPanel Spacing="4">
+                            <TextBlock Text="Motion Classification" FontSize="11" Foreground="{DynamicResource AppTextSecondary}"/>
+                            <ComboBox SelectedIndex="{Binding SelectedSceneryTypeIndex}" HorizontalAlignment="Stretch">
+                                <ComboBoxItem Content="Line Set / Batten (Linear)"/>
+                                <ComboBoxItem Content="Point Hoist (Linear)"/>
+                                <ComboBoxItem Content="Turntable / Revolve (Rotational)"/>
+                                <ComboBoxItem Content="Telescoping Lift (Linear)"/>
+                                <ComboBoxItem Content="Generic Moveable Element"/>
+                            </ComboBox>
+                        </StackPanel>
+
+                        <Grid ColumnDefinitions="*, 16, *">
+                            <StackPanel Grid.Column="0" Spacing="4">
+                                <TextBlock Text="Total Weight (kg)" FontSize="11" Foreground="{DynamicResource AppTextSecondary}"/>
+                                <NumericUpDown Value="{Binding WeightKgs}" Minimum="0" FormatString="0" HorizontalAlignment="Stretch"/>
+                            </StackPanel>
+                            <StackPanel Grid.Column="2" Spacing="4">
+                                <TextBlock Text="Max Allowed Velocity" FontSize="11" Foreground="{DynamicResource AppTextSecondary}"/>
+                                <controls:UnitTextBox Value="{Binding MaxSpeed}" Mode="LinearSpeed" HorizontalAlignment="Stretch"/>
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+                <!-- STAGE TRIMS & TRAVEL LIMITS (COLLAPSIBLE) -->
+                <Expander IsExpanded="True" 
+                          Background="{DynamicResource AppSurface}"
+                          BorderBrush="{DynamicResource AppBorder}"
+                          BorderThickness="1"
+                          CornerRadius="{DynamicResource ControlCornerRadius}"
+                          HorizontalAlignment="Stretch">
+                    <Expander.Header>
+                        <TextBlock Text="2. STAGE TRIMS &amp; TRAVEL LIMITS" 
+                                   FontWeight="Bold" 
+                                   FontSize="12" 
+                                   Foreground="{DynamicResource AppAccentText}"/>
+                    </Expander.Header>
+
+                    <StackPanel Spacing="14" Margin="0,8,0,0">
+                        <!-- High Trim / Low Trim -->
+                        <Grid ColumnDefinitions="*, 16, *">
+                            <StackPanel Grid.Column="0" Spacing="6">
+                                <TextBlock Text="High Trim / Out Limit" FontSize="11" Foreground="{DynamicResource AppTextSecondary}"/>
+                                <controls:UnitTextBox Value="{Binding HighTrim}" Mode="Linear" HorizontalAlignment="Stretch"/>
+                                <TextBox Text="{Binding HighTrimLabel}" Watermark="Label (e.g. Full Out / Fly Loft)" HorizontalAlignment="Stretch"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Column="2" Spacing="6">
+                                <TextBlock Text="Low Trim / In Limit" FontSize="11" Foreground="{DynamicResource AppTextSecondary}"/>
+                                <controls:UnitTextBox Value="{Binding LowTrim}" Mode="Linear" HorizontalAlignment="Stretch"/>
+                                <TextBox Text="{Binding LowTrimLabel}" Watermark="Label (e.g. Deck In / Storage)" HorizontalAlignment="Stretch"/>
+                            </StackPanel>
+                        </Grid>
+
+                        <!-- Optional Mid / Working Trim -->
+                        <Grid ColumnDefinitions="*, 16, *">
+                            <StackPanel Grid.Column="0" Spacing="6">
+                                <TextBlock Text="Working / Mid Trim" FontSize="11" Foreground="{DynamicResource AppTextSecondary}"/>
+                                <controls:UnitTextBox Value="{Binding WorkingTrim}" Mode="Linear" HorizontalAlignment="Stretch"/>
+                            </StackPanel>
+                            <StackPanel Grid.Column="2" Spacing="6">
+                                <TextBlock Text="Working Trim Label" FontSize="11" Foreground="{DynamicResource AppTextSecondary}"/>
+                                <TextBox Text="{Binding WorkingTrimLabel}" Watermark="e.g. Performance Trim" HorizontalAlignment="Stretch"/>
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+                </Expander>
+
+                <!-- HARDWARE & DRIVE PROVISIONING -->
+                <Expander IsExpanded="True"
+                          Background="{DynamicResource AppSurface}"
+                          BorderBrush="{DynamicResource AppBorder}"
+                          BorderThickness="1"
+                          CornerRadius="{DynamicResource ControlCornerRadius}"
+                          HorizontalAlignment="Stretch">
+                    <Expander.Header>
+                        <TextBlock Text="3. HARDWARE &amp; DRIVE PROVISIONING" 
+                                   FontWeight="Bold" 
+                                   FontSize="12" 
+                                   Foreground="{DynamicResource AppAccentText}"/>
+                    </Expander.Header>
+
+                    <StackPanel Spacing="14" Margin="0,8,0,0">
+                        
+                        <CheckBox IsChecked="{Binding IsOneToOneSceneryToAxis}" 
+                                  Content="Auto-provision 1:1 dedicated motor Axis for this Scenery"/>
+
+                        <StackPanel Spacing="12" IsVisible="{Binding IsOneToOneSceneryToAxis}">
+                            
+
+                            <Border Background="{DynamicResource AppBackground}" 
+                                    BorderBrush="{DynamicResource AppBorder}" 
+                                    BorderThickness="1" 
+                                    CornerRadius="4" 
+                                    Padding="12" 
+                                    Margin="8,0,0,0">
+                                <StackPanel Spacing="12">
+                                    
+                                    <Grid ColumnDefinitions="*, 16, *">
+                                        <StackPanel Grid.Column="0" Spacing="4">
+                                            <TextBlock Text="New Controller IP Address" FontSize="11" Foreground="{DynamicResource AppTextSecondary}"/>
+                                            <TextBox Text="{Binding NewControllerIp}" Watermark="192.168.0.10" HorizontalAlignment="Stretch"/>
+                                        </StackPanel>
+                                        <StackPanel Grid.Column="2" Spacing="4">
+                                            <TextBlock Text="Port" FontSize="11" Foreground="{DynamicResource AppTextSecondary}"/>
+                                            <NumericUpDown Value="{Binding NewControllerPort}" Minimum="1" Maximum="65535" FormatString="0" HorizontalAlignment="Stretch"/>
+                                        </StackPanel>
+                                    </Grid>
+
+                                    <!-- The Hardware Profile / Sprocket Selector -->
+                                    <StackPanel Spacing="4">
+                                        <TextBlock Text="Hardware Profile / Drive Type" FontSize="11" Foreground="{DynamicResource AppTextSecondary}"/>
+                                        <ComboBox ItemsSource="{Binding AvailableHardwareProfiles}" 
+                                                  SelectedItem="{Binding SelectedHardwareProfile}" 
+                                                  DisplayMemberBinding="{Binding DisplayName}"
+                                                  HorizontalAlignment="Stretch"/>
+                                    </StackPanel>
+
+                                    <!-- Station / Channel ID -->
+                                    <StackPanel Spacing="4">
+                                        <TextBlock Text="Drive Channel / Output Station (1 for Single Axis Controller)" FontSize="11" Foreground="{DynamicResource AppTextSecondary}"/>
+                                        <NumericUpDown Value="{Binding DriveChannel}" Minimum="1" Maximum="255" FormatString="0" HorizontalAlignment="Stretch"/>
+                                    </StackPanel>
+
+                                    <!-- Mechanical Scaling Constants -->
+                                    <Grid ColumnDefinitions="*">
+                                        <StackPanel Grid.Column="0" Spacing="4">
+                                            <TextBlock Text="Distance / Rev" FontSize="11" Foreground="{DynamicResource AppTextSecondary}"/>
+                                            <controls:UnitTextBox Value="{Binding DistancePerRevolution}" Mode="Linear" HorizontalAlignment="Stretch"/>
+                                        </StackPanel>
+                                    </Grid>
+
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+
+                        <Border Background="#2D1515" 
+                                BorderBrush="#752222" 
+                                BorderThickness="1" 
+                                CornerRadius="4" 
+                                Padding="12" 
+                                IsVisible="{Binding !IsOneToOneSceneryToAxis}">
+                            <StackPanel Spacing="6">
+                                <TextBlock Text="Custom Scenery Group / Multi-Axis Mode" FontWeight="Bold" Foreground="#FF8585"/>
+                                <TextBlock Text="Non 1:1 scenic objects link to existing axes or motorized groups. Create the physical axes first under Config → New Axis, then assign them via the Patch Matrix." 
+                                           FontSize="11" 
+                                           TextWrapping="Wrap" 
+                                           Foreground="#CCCCCC"/>
+                            </StackPanel>
+                        </Border>
+
+                    </StackPanel>
+                </Expander>
+
+            </StackPanel>
+        </ScrollViewer>
+
+        <!-- DIALOG FOOTER -->
+        <Border Grid.Row="1" 
+                Padding="0,16,0,0" 
+                BorderBrush="{DynamicResource AppBorder}" 
+                BorderThickness="0,1,0,0">
+            <Grid ColumnDefinitions="*, Auto, 8, Auto">
+                <Button Grid.Column="1" 
+                        Content="Cancel" 
+                        Command="{Binding CancelCommand}" 
+                        IsCancel="True" 
+                        Width="100"/>
+                <Button Grid.Column="3" 
+                        Content="Save Scenery" 
+                        Command="{Binding SaveSceneryCommand}" 
+                        IsDefault="True" 
+                        Classes="accent" 
+                        Width="140"/>
+            </Grid>
+        </Border>
+
+    </Grid>
+</Window>

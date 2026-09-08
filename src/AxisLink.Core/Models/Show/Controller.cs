@@ -1,4 +1,5 @@
 ﻿using AxisLink.Core.Models.Configs;
+using AxisLink.Core.Models.Sprockets;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -14,16 +15,28 @@ namespace AxisLink.Core.Models.Show
         [XmlElement("name")]
         public string? Name { get; set; }
 
-        [XmlElement("connection_config")]
-        public ConnectionConfig? Config { get; set; }
+        [XmlElement("ip_address")]
+        public string IpAddress { get; set; } = "127.0.0.1";
+
+        [XmlElement("port")]
+        public int Port { get; set; } = 502;
+
+        [XmlElement("protocol")]
+        public TransportProtocol Protocol { get; set; } = TransportProtocol.ModbusTcp;
+
+        // Optional timeout in milliseconds
+        [XmlElement("timeout_ms")]
+        public int TimeoutMs { get; set; } = 1000;
 
         public Controller() { }
 
-        public Controller(int id, string? name, ConnectionConfig? config)
+        public Controller(int id, string? name, string ipAddress, int port, TransportProtocol protocol)
         {
             Id = id;
             Name = name;
-            Config = config;
+            IpAddress = ipAddress;
+            Port = port;
+            Protocol = protocol;
         }
     }
 }

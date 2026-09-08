@@ -20,6 +20,7 @@ namespace AxisLink.Core.Management
         public readonly List<Controller> Controllers;
         public readonly List<Patch> Patches;
         public readonly List<Scenery> Scenery;
+        public readonly List<Group> Groups;
         public readonly List<Sensor> Sensors;
         // Events to notify when axes or controllers are added or removed
         public event Action<Axis>? AxisAdded;
@@ -30,6 +31,8 @@ namespace AxisLink.Core.Management
         public event Action<Scenery>? SceneryRemoved;
         public event Action<Patch>? PatchAdded;
         public event Action<Patch>? PatchRemoved;
+        public event Action<Group>? GroupAdded;
+        public event Action<Group?> GroupRemoved;
         public event Action<Sensor>? SensorAdded;
         public event Action<Sensor>? SensorRemoved;
         // Running counters for the next axis and controller IDs
@@ -37,6 +40,7 @@ namespace AxisLink.Core.Management
         public int nextControllerId { get; private set; }
         public int nextPatchId { get; private set; }
         public int nextSceneryId { get; private set; }
+        public int nextGroupId { get; private set; }
         public int nextSensorId { get; private set; }
         public MotionManager(ShowFileManager showFileManager, IMotionServiceFactory serviceFactory)
         {
@@ -48,11 +52,12 @@ namespace AxisLink.Core.Management
             Patches = _showFileManager?.CurrentShow?.Machinery?.PatchList.Patches;
             Scenery = _showFileManager?.CurrentShow?.Machinery.Scenery;
             Sensors = _showFileManager?.CurrentShow?.Sensors;
+            Groups = _showFileManager?.CurrentShow?.Machinery.Groups;
             // Set the next IDs based on the maximum existing IDs in the lists, or start from 1 if the lists are empty
             nextAxisId = _showFileManager?.CurrentShow?.Machinery.Axes.Count != 0 ? Axes.Max(a => a.Id) + 1 : 1;
             nextControllerId = Controllers?.Count != 0 ? Controllers.Max(c => c.Id) + 1 : 1;
-            nextPatchId = _showFileManager?.CurrentShow?.Machinery.PatchList.Patches.Count != 0? Patches.Max(p => p.Id)+1:1;
             nextSceneryId = _showFileManager.CurrentShow.Machinery.Scenery.Count != 0? Scenery.Max(s => s.Id)+1:1;
+            nextGroupId = _showFileManager.CurrentShow.Machinery.Groups.Count != 0 ? _showFileManager.CurrentShow.Machinery.Groups.Max(g => g.Id) + 1 : 1;
             nextSensorId = _showFileManager.CurrentShow.Sensors.Count != 0? Sensors.Max(s => s.Id)+1:1;
         }
 
@@ -68,7 +73,7 @@ namespace AxisLink.Core.Management
                 try
                 {
                     // Create appropriate motion service for the controller based on its configuration
-                    IMotionService service = _serviceFactory.CreateService(controller.Config);
+                    IMotionService service = _serviceFactory.CreateService(controller);
 
                     // Use controller id as key for dictionary
                     int key = controller.Id;
@@ -111,7 +116,7 @@ namespace AxisLink.Core.Management
                 {
                     try
                     {
-                        IMotionService service = _serviceFactory.CreateService(controller.Config);
+                        IMotionService service = _serviceFactory.CreateService(controller);
                         _services.Add(controller.Id, service);
                         await service.ConnectAsync();
                     }
@@ -141,6 +146,33 @@ namespace AxisLink.Core.Management
             // Trigger event to notify listeners of the new controller
             ControllerAdded?.Invoke(controller);
         }
+        public void AddNewGroup(Group group)
+        {
+            ArgumentNullException.ThrowIfNull(group);
+            // Add group and update show file and next id accordingly
+            Groups.Add(group);
+            nextGroupId++;
+            // Trigger event to notify listeners of the new group
+            GroupAdded?.Invoke(group);
+        }
+        
+        public void AddNewScenery(Scenery scenery)
+        {
+            ArgumentNullException.ThrowIfNull(scenery);
+            // Add scenery and update show file and next id accordingly
+            Scenery.Add(scenery);
+            nextSceneryId++;
+            // Trigger event to notify listeners of the new scenery
+            SceneryAdded?.Invoke(scenery);
+        }
+        public void AddNewPatch(Patch patch)
+        {
+            ArgumentNullException.ThrowIfNull(patch);
+            // Add patch and update show file and next id accordingly
+            Patches.Add(patch);
+            // Trigger event to notify listeners of the new patch
+            PatchAdded?.Invoke(patch);
+        }
 
         public void RemoveController(Controller controller) {
             ArgumentNullException.ThrowIfNull(controller);
@@ -159,6 +191,41 @@ namespace AxisLink.Core.Management
             Axes.Remove(axis);
             // Trigger event to notify listeners of the removed axis
             AxisRemoved?.Invoke(axis);
+        }
+    
+        public void RemoveGroup(Group group)
+        {
+            ArgumentNullException.ThrowIfNull(group);
+            // Remove group and update show file accordingly
+            // Do not update next id, skip over any removed ids to avoid conflicts
+            Groups.Remove(group);
+            // Trigger event to notify listeners of the removed group
+            GroupRemoved?.Invoke(group);
+        }
+
+        public void RemoveScenery(Scenery scenery)
+        {
+            ArgumentNullException.ThrowIfNull(scenery);
+            // Remove scenery and update show file accordingly
+            // Do not update next id, skip over any removed ids to avoid conflicts
+            Scenery.Remove(scenery);
+            // Trigger event to notify listeners of the removed scenery
+            SceneryRemoved?.Invoke(scenery);
+        }
+
+        public void RemovePatch(Patch patch)
+        {
+            ArgumentNullException.ThrowIfNull(patch);
+            // Remove patch and update show file accordingly
+            // Do not update next id, skip over any removed ids to avoid conflicts
+            Patches.Remove(patch);
+            // Trigger event to notify listeners of the removed patch
+            PatchRemoved?.Invoke(patch);
+        }
+
+        public async Task RunCuePart(CuePart cuePart)
+        {
+
         }
     }
 }
