@@ -57,9 +57,9 @@ namespace AxisLink.Tests.Models.Extended
                 ControllerId = 1,
                 StepsPerRevolution = 200,
                 DistancePerRevolution = 100,
-                Sensors = new List<Sensor>
+                Sensors = new List<int>
                 {
-                    sensor0
+                    0
                 },
                 HardwareType = HardwareType.Modbus,
                 Config = new ModbusStepperConfig
@@ -190,6 +190,7 @@ namespace AxisLink.Tests.Models.Extended
             
             var originalFile = new ShowFile(
                 new List<Controller>() { controller0, controller1 },
+                new List<Sensor>() { sensor0 },
                 new List<Axis>() { axis0, axis1}, 
                 new List<Group>() { group0},
                 new List<Scenery>() { scenery0},
