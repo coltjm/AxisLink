@@ -42,6 +42,8 @@ namespace AxisLink.Core.Models.Configs
         // Windows
         [XmlElement("alink_cue_shortcut")]
         public string CueShortcut { get; set; } = "Ctrl+U";
+        [XmlElement("alink_scenery_shortcut")]
+        public string SceneryShortcut { get; set; } = "Ctrl+Y";
         [XmlElement("alink_axis_shortcut")]
         public string AxisShortcut { get; set; } = "Ctrl+A";
         [XmlElement("alink_controller_shortcut")]
@@ -73,6 +75,9 @@ namespace AxisLink.Core.Models.Configs
     public class ProjectConfig
     {
         public ProjectConfig() { }
+
+        [XmlElement("alink_theme")]
+        public AppThemeConfig? Theme { get; set; } = AppThemeConfig.DefaultDark();
 
         // Default jump between consecutive cues
         [XmlElement("alink_cue_spacing")]

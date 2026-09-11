@@ -1,7 +1,9 @@
 ﻿using Avalonia.Controls;
 using Avalonia.Controls.Models.TreeDataGrid;
+using AxisLink.Core.Interfaces;
 using AxisLink.Core.Management;
 using AxisLink.Core.Models.Show;
+using AxisLink.Infrastructure.Loggers;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using SkiaSharp;
@@ -18,6 +20,7 @@ namespace AxisLink.Desktop.ViewModels.Windows.CueCreation
     {
         private readonly MotionManager motionManager;
         private readonly CueManager cueManager;
+        private readonly IConsoleLogger logger;
         public ObservableCollection<Axis> AvailableAxes { get; }
         [ObservableProperty]
         private Cue _cue;
@@ -85,7 +88,7 @@ namespace AxisLink.Desktop.ViewModels.Windows.CueCreation
             }
         }
 
-        public CueCreationWindowViewModel(CueManager _cueManager, MotionManager _motionManager, Cue? existingCue = null)
+        public CueCreationWindowViewModel(CueManager _cueManager, MotionManager _motionManager, Cue? existingCue = null, IConsoleLogger? _logger = null)
         {
             _cue = existingCue ?? new Cue { Number = "1.0", Name = "New Cue" };
             CueParts = new ObservableCollection<CuePart>(Cue.CueParts);
@@ -100,6 +103,7 @@ namespace AxisLink.Desktop.ViewModels.Windows.CueCreation
             motionManager = _motionManager;
             MoveTypeOptions = moveTypeNames;
             AvailableAxes = new ObservableCollection<Axis>(_motionManager.Axes);
+            logger = _logger;
         }
 
         [RelayCommand]
@@ -170,6 +174,10 @@ namespace AxisLink.Desktop.ViewModels.Windows.CueCreation
         [RelayCommand]
         private void Save()
         {
+            logger.LogInfo($"Saving Cue {Cue.Number} with {CueParts.Count} parts.");
+            logger.LogInfo($"Cue Name: {Cue.Name}, Notes: {Cue.Notes}, Stack: {Cue.Stack}");
+            logger.LogInfo($"Cue Parts: {string.Join(", ", CueParts.Select(p => $"ID: {p.Id}, MoveType: {p.MoveType}, Start: {p.Start?.Position}, Target: {p.Target?.Position}, Velocity: {p.Target?.Speed}, Deceleration: {p.Target?.Decel}, Acceleration: {p.Target?.Accel}"))}");
+
             //Cue.CueParts = CueParts.ToList();
             // TODO: Signal back to Window/DialogResult or EventBus
         }

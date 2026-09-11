@@ -35,14 +35,7 @@
         <alink_max_torque xsi:nil="true" />
         <alink_dist_per_rev>100</alink_dist_per_rev>
         <alink_sensors>
-          <alink_sensor id="0">
-            <controller_id>0</controller_id>
-            <type>home</type>
-            <nc>true</nc>
-            <hardware_config xsi:type="ModbusSensorConfig">
-              <signal_addr>X001</signal_addr>
-            </hardware_config>
-          </alink_sensor>
+          <alink_sensor>0</alink_sensor>
         </alink_sensors>
         <alink_hardware_type>modbus</alink_hardware_type>
         <alink_hardware_config xsi:type="ModbusStepperConfig">
@@ -162,14 +155,44 @@
       </connection_config>
     </alink_controller>
   </alink_controllers>
+  <alink_sensors>
+    <alink_sensor alink_id="0">
+      <alink_controller_id>0</alink_controller_id>
+      <alink_type>home</alink_type>
+      <alink_nc>true</alink_nc>
+      <alink_hardware_config xsi:type="ModbusSensorConfig">
+        <signal_addr>X001</signal_addr>
+      </alink_hardware_config>
+    </alink_sensor>
+  </alink_sensors>
   <alink_project_config>
+    <alink_cue_spacing>5</alink_cue_spacing>
+    <alink_linear_unit>mm</alink_linear_unit>
     <alink_custom_linear_unit xsi:nil="true" />
+    <alink_rotational_unit>deg</alink_rotational_unit>
     <alink_custom_rotational_unit xsi:nil="true" />
     <alink_enable_stacks>true</alink_enable_stacks>
     <alink_logger_display_cap>1000</alink_logger_display_cap>
     <alink_math_in_input>true</alink_math_in_input>
-    <alink_cue_spacing>5</alink_cue_spacing>
-    <alink_linear_unit>in</alink_linear_unit>
-    <alink_rotational_unit>deg</alink_rotational_unit>
+    <alink_shortcuts>
+      <alink_save_shortcut>Ctrl+S</alink_save_shortcut>
+      <alink_save_as_shortcut>Ctrl+Shift+S</alink_save_as_shortcut>
+      <alink_open_shortcut>Ctrl+O</alink_open_shortcut>
+      <alink_new_shortcut>Ctrl+N</alink_new_shortcut>
+      <alink_preferences_shortcut>Ctrl+,</alink_preferences_shortcut>
+      <alink_cue_shortcut>Ctrl+U</alink_cue_shortcut>
+      <alink_axis_shortcut>Ctrl+A</alink_axis_shortcut>
+      <alink_controller_shortcut>Ctrl+D</alink_controller_shortcut>
+      <alink_talk_shortcut>Ctrl+T</alink_talk_shortcut>
+      <alink_patch_shortcut>Ctrl+P</alink_patch_shortcut>
+      <alink_jog_shortcut>Ctrl+J</alink_jog_shortcut>
+      <alink_group_shortcut>Ctrl+G</alink_group_shortcut>
+      <alink_sensor_shortcut>Ctrl+I</alink_sensor_shortcut>
+      <alink_logger_shortcut>Ctrl+Shift+L</alink_logger_shortcut>
+      <alink_axis_viewer_shortcut>Ctrl+Shift+A</alink_axis_viewer_shortcut>
+      <alink_controller_viewer_shortcut>Ctrl+Shift+D</alink_controller_viewer_shortcut>
+      <alink_cue_list_shortcut>Ctrl+Shift+U</alink_cue_list_shortcut>
+      <alink_cue_run_shortcut>Ctrl+Shift+R</alink_cue_run_shortcut>
+    </alink_shortcuts>
   </alink_project_config>
 </showfile>

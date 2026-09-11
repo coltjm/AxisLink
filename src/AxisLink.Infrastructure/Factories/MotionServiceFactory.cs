@@ -1,5 +1,7 @@
 ﻿using AxisLink.Core.Interfaces;
 using AxisLink.Core.Models.Configs;
+using AxisLink.Core.Models.Show;
+using AxisLink.Core.Models.Sprockets;
 using AxisLink.Infrastructure.Services;
 using AxisLink.Infrastructure.Utils;
 using System;
@@ -11,13 +13,13 @@ namespace AxisLink.Infrastructure.Factories
     public class MotionServiceFactory : IMotionServiceFactory
     {
         // Takes motion type and creates relevant services
-        public IMotionService CreateService(ConnectionConfig config)
+        public IMotionService CreateService(Controller controller)
         {
-            return config switch
+            return controller.Protocol switch
             {
-                ModbusConfig modbus => new ModbusMotionService(modbus.IpAddress, modbus.Port),
+                TransportProtocol.ModbusTcp => new ModbusMotionService(controller.IpAddress, controller.Port.ToString()),
                 // BeckhoffConfig beckhoff => new BeckhoffAdsService(beckhoff.AmsNetId),
-                _ => throw new NotSupportedException($"Unknown config type: {config.GetType().Name}")
+                _ => throw new NotSupportedException($"Unknown config type: {controller.Protocol.ToString()}")
             };
         }
     }

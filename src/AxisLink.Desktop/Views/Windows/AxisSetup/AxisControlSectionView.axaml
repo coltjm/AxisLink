@@ -3,38 +3,49 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="using:AxisLink.Desktop.ViewModels.Windows.AxisSetup"
-             mc:Ignorable="d" d:DesignWidth="600" d:DesignHeight="200"
+             mc:Ignorable="d" d:DesignWidth="650" d:DesignHeight="220"
              x:Class="AxisLink.Desktop.Views.Windows.AxisSetup.AxisControlSectionView"
              x:DataType="vm:AxisSetupViewModel">
 
-    <StackPanel Spacing="12">
-        <Grid ColumnDefinitions="Auto, *">
-            <TextBlock Text="AXIS NAME" FontWeight="Bold" VerticalAlignment="Center" Margin="0,0,12,0"/>
-            <TextBox Grid.Column="1" Text="{Binding CreatedAxis.Name}"/>
-        </Grid>
+    <Border Background="{DynamicResource AppSurface}" 
+            BorderBrush="{DynamicResource AppBorder}" 
+            BorderThickness="1" 
+            CornerRadius="6" 
+            Padding="16">
+        <StackPanel Spacing="12">
+            
+            <TextBlock Text="IDENTITY &amp; COMMUNICATION" 
+                       FontWeight="Bold" 
+                       FontSize="12" 
+                       Foreground="{DynamicResource AppAccent}"/>
 
-        <CheckBox Content="1:1 Controller Communication" 
-                  IsChecked="{Binding IsOneToOneController}"/>
+            <Grid ColumnDefinitions="120, *">
+                <TextBlock Text="AXIS NAME" VerticalAlignment="Center" FontSize="11" Foreground="{DynamicResource AppTextSecondary}"/>
+                <TextBox Grid.Column="1" Text="{Binding CreatedAxis.Name}" Height="32"/>
+            </Grid>
 
-        <Grid ColumnDefinitions="*, 16, *">
-            <StackPanel Grid.Column="0" Spacing="4" IsVisible="{Binding IsOneToOneController}">
-                <TextBlock Text="1:1 CONTROLLER COMMUNICATION" FontSize="11" Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"/>
-                <ComboBox ItemsSource="{Binding AvailableControllers}" 
-                          SelectedItem="{Binding SelectedController}" 
-                          HorizontalAlignment="Stretch"/>
-            </StackPanel>
+            <CheckBox Content="1:1 Controller Communication" 
+                      IsChecked="{Binding IsOneToOneController}"/>
 
-            <StackPanel Grid.Column="0" Spacing="4" IsVisible="{Binding !IsOneToOneController}">
-                <TextBlock Text="CONTROL" FontSize="11" Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"/>
-                <ComboBox ItemsSource="{Binding AvailableControllers}" 
-                          SelectedItem="{Binding SelectedController}" 
-                          HorizontalAlignment="Stretch"/>
-            </StackPanel>
+            <Grid ColumnDefinitions="*, 16, *">
+                <StackPanel Grid.Column="0" Spacing="4">
+                    <TextBlock Text="{Binding IsOneToOneController, Converter={x:Static ObjectConverters.IsNull}, FallbackValue='CONTROLLER ASSIGNMENT'}" 
+                               FontSize="11" Foreground="{DynamicResource AppTextSecondary}"/>
+                    <ComboBox ItemsSource="{Binding AvailableControllers}" 
+                              SelectedItem="{Binding SelectedController}" 
+                              HorizontalAlignment="Stretch"
+                              Height="32"/>
+                </StackPanel>
 
-            <StackPanel Grid.Column="1" Grid.ColumnSpan="2" Spacing="4">
-                <TextBlock Text="PROTOCOL SPECIFICS / MODBUS COILS" FontSize="11" Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"/>
-                <TextBox Text="{Binding ProtocolConfigNotes}" Watermark="e.g. Coil mapping, registers..."/>
-            </StackPanel>
-        </Grid>
-    </StackPanel>
+                <StackPanel Grid.Column="2" Spacing="4">
+                    <TextBlock Text="PROTOCOL SPECIFICS / MODBUS REGISTERS" 
+                               FontSize="11" Foreground="{DynamicResource AppTextSecondary}"/>
+                    <TextBox Text="{Binding ProtocolConfigNotes}" 
+                             Watermark="e.g. Coil mapping, node ID..." 
+                             Height="32"/>
+                </StackPanel>
+            </Grid>
+
+        </StackPanel>
+    </Border>
 </UserControl>

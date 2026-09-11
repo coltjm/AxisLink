@@ -2,26 +2,138 @@
              xmlns:local="using:AxisLink.Desktop"
              xmlns:utilities="using:AxisLink.Desktop.Utilities"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:vm-modules="using:AxisLink.Desktop.ViewModels.Modules"
-             xmlns:v-modules="using:AxisLink.Desktop.Views.Modules"
              x:Class="AxisLink.Desktop.App"
              RequestedThemeVariant="Default">
-             <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
-
 
     <Application.Resources>
         <utilities:StringToKeyGestureConverter x:Key="StringToKeyGestureConverter"/>
+        <CornerRadius x:Key="OverlayCornerRadius">8</CornerRadius>
+        <CornerRadius x:Key="ControlCornerRadius">6</CornerRadius>
+        <CornerRadius x:Key="ButtonCornerRadius">6</CornerRadius>
+
+        <x:Boolean x:Key="DockDocumentTabStripSeparatorVisible">False</x:Boolean>
+        <x:Double x:Key="DockDocumentTabStripSeparatorSize">0</x:Double>
     </Application.Resources>
 
     <Application.DataTemplates>
         <local:ViewLocator/>
     </Application.DataTemplates>
-  
-    
 
     <Application.Styles>
         <DockFluentTheme />
         <FluentTheme />
         <StyleInclude Source="avares://Avalonia.Controls.TreeDataGrid/Themes/Fluent.axaml"/>
+
+        <!-- STANDARD APPLICATION CONTROLS -->
+        <Style Selector="Button">
+            <Setter Property="CornerRadius" Value="{DynamicResource ControlCornerRadius}"/>
+            <Setter Property="Background" Value="{DynamicResource AppSurface}"/>
+            <Setter Property="Foreground" Value="{DynamicResource AppText}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource AppBorder}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="14,8"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        </Style>
+
+        <Style Selector="Button:pointerover /template/ ContentPresenter">
+            <Setter Property="Background" Value="{DynamicResource AppBorder}"/>
+            <Setter Property="Foreground" Value="{DynamicResource AppText}"/>
+        </Style>
+
+        <Style Selector="Button.accent">
+            <Setter Property="Background" Value="{DynamicResource AppAccent}"/>
+            <Setter Property="Foreground" Value="#FFFFFF"/>
+            <Setter Property="BorderThickness" Value="0"/>
+        </Style>
+
+        <Style Selector="Button.danger">
+            <Setter Property="Background" Value="#381515"/>
+            <Setter Property="Foreground" Value="{DynamicResource StatusFault}"/>
+            <Setter Property="BorderBrush" Value="#5C1D1D"/>
+            <Setter Property="BorderThickness" Value="1"/>
+        </Style>
+
+        <Style Selector="TextBox, ComboBox">
+            <Setter Property="CornerRadius" Value="{DynamicResource ControlCornerRadius}"/>
+            <Setter Property="Height" Value="34"/>
+        </Style>
+
+        <!-- DOCK CONTROLS -->
+        <Style Selector="DocumentControl /template/ Border#PART_Border">
+            <Setter Property="Background" Value="{DynamicResource AppSurface}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource AppBorder}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="0,6,6,6"/>
+            <Setter Property="ClipToBounds" Value="True"/>
+        </Style>
+
+        <Style Selector="ToolControl /template/ Border#PART_Border">
+            <Setter Property="Background" Value="{DynamicResource AppSurface}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource AppBorder}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="6"/>
+            <Setter Property="ClipToBounds" Value="True"/>
+        </Style>
+
+        <Style Selector="ToolChromeControl /template/ Border#PART_Border">
+            <Setter Property="Background" Value="{DynamicResource AppSurface}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource AppBorder}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="6"/>
+            <Setter Property="ClipToBounds" Value="True"/>
+        </Style>
+
+        <Style Selector="DocumentTabStripItem Button, ToolTabStripItem Button, ToolChromeControl Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Width" Value="16"/>
+            <Setter Property="Height" Value="16"/>
+            <Setter Property="Margin" Value="4,0,0,0"/>
+            <Setter Property="CornerRadius" Value="4"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+        </Style>
+
+        <Style Selector="DocumentTabStripItem">
+            <Setter Property="CornerRadius" Value="6,6,0,0"/>
+            <Setter Property="Margin" Value="0,2,2,0"/> 
+            <Setter Property="Padding" Value="8,3"/> 
+            <Setter Property="ClipToBounds" Value="True"/>
+        </Style>
+
+        <Style Selector="DocumentTabStripItem /template/ Border">
+            <Setter Property="CornerRadius" Value="6,6,0,0"/>
+            <Setter Property="ClipToBounds" Value="True"/>
+        </Style>
+
+        <Style Selector="DocumentTabStripItem:selected">
+            <Setter Property="Background" Value="{DynamicResource AppSurface}"/>
+            <Setter Property="Foreground" Value="{DynamicResource AppText}"/>
+            <Setter Property="BorderThickness" Value="0"/>
+        </Style>
+
+        <Style Selector="DocumentTabStripItem:selected /template/ Border">
+            <Setter Property="CornerRadius" Value="6,6,0,0"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource AppBorder}"/>
+            <Setter Property="BorderThickness" Value="1,1,1,0"/>
+        </Style>
+
+        <Style Selector="DocumentTabStripItem:pointerover /template/ Border">
+            <Setter Property="CornerRadius" Value="6,6,0,0"/>
+            <Setter Property="Background" Value="#25252A"/>
+        </Style>
+
+        <Style Selector="DocumentTabStripItem Button">
+            <Setter Property="CornerRadius" Value="4"/>
+        </Style>
+        
+        <Style Selector="DocumentTabStripItem Button:pointerover /template/ ContentPresenter, 
+                         ToolTabStripItem Button:pointerover /template/ ContentPresenter,
+                         ToolChromeControl Button:pointerover /template/ ContentPresenter">
+            <Setter Property="Background" Value="#3F3F46"/>
+        </Style>
     </Application.Styles>
 </Application>

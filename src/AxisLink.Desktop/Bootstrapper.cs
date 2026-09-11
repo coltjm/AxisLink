@@ -11,10 +11,12 @@ using AxisLink.Desktop.ViewModels.Windows.CueCreation;
 using AxisLink.Desktop.ViewModels.Windows.GroupsWindow;
 using AxisLink.Desktop.ViewModels.Windows.JogWindow;
 using AxisLink.Desktop.ViewModels.Windows.PatchWindow;
+using AxisLink.Desktop.ViewModels.Windows.ScenerySetup;
 using AxisLink.Desktop.ViewModels.Windows.SensorsWindow;
 using AxisLink.Infrastructure.Factories;
 using AxisLink.Infrastructure.Loggers;
 using AxisLink.Infrastructure.ShowFileStorage;
+using AxisLink.Infrastructure.Sprockets;
 using Dock.Model.Core;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -40,6 +42,7 @@ namespace AxisLink.Desktop
             services.AddSingleton<WindowManager>();
             services.AddSingleton<WorkspaceManager>();
             services.AddSingleton<IFactory, DockFactory>();
+            services.AddSingleton<ISprocketProvider, SprocketProvider>();
             // Set up managers
             services.AddSingleton<MotionManager>();
             services.AddSingleton<CueManager>();
@@ -61,6 +64,7 @@ namespace AxisLink.Desktop
             services.AddTransient<ControllerViewerModuleViewModel>();
 
             // Windows
+            services.AddTransient<ScenerySetupViewModel>();
             services.AddTransient<AxisSetupViewModel>();
             services.AddTransient<ControllerCommunicationViewModel>();
             services.AddTransient<ControllerSetupViewModel>();

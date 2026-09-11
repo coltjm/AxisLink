@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Text.Json.Serialization;
 using System.Xml.Serialization;
+using AxisLink.Core.Models.Sprockets;
 
 namespace AxisLink.Core.Models.Show
 {
@@ -76,16 +77,21 @@ namespace AxisLink.Core.Models.Show
         [XmlElement("alink_project_config")]
         public ProjectConfig? ProjectConfig { get; set; }
 
+        [XmlArray("alink_embedded_sprockets")]
+        [XmlArrayItem("alink_sprocket_payload")]
+        public List<string>? EmbeddedSprockets { get; set; }
+
         // Parameterless constructor for xml serialization and deserialization
         public ShowFile() { }
 
         public ShowFile(List<Controller> Controllers, List<Sensor> Sensors, List<Axis> Axes, List<Group> Groups, 
-            List<Scenery> Scenery, List<Patch> Patches, List<Cue> Cues, ProjectConfig? projectConfig)
+            List<Scenery> Scenery, List<Patch> Patches, List<Cue> Cues, ProjectConfig? projectConfig, List<string>? embeddedSprockets = null)
         {
             this.Machinery = new Machinery(Axes, Groups, Scenery, Patches, Cues);
             this.Header = new Header();
             this.Controllers = Controllers;
             this.Sensors = Sensors;
+            this.EmbeddedSprockets = embeddedSprockets;
             this.ProjectConfig = projectConfig!=null? projectConfig: new();
         }
 

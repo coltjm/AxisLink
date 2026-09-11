@@ -37,7 +37,7 @@ namespace AxisLink.Desktop
                 {
                     logger.LogError($"[Background ERROR] Connection failed: {ex.Message}");
                 }
-                ShowNetworkInterfaces(logger);
+                //ShowNetworkInterfaces(logger);
             });
 
             

@@ -33,11 +33,11 @@
 				  <StackPanel Orientation="Horizontal" Spacing="5">
                     <TextBlock Text="{Binding Timestamp, StringFormat='{}{0:HH:mm:ss.fff}'}" 
                                         Foreground="{DynamicResource ConsoleText}" 
-                                        FontFamily="Courier New"/>
+                                        FontFamily="Cascadia Mono, Consolas, Menlo, monospace"/>
                         
                     <TextBlock Text="{Binding Message}" 
                                 Foreground="{Binding Severity, Converter={StaticResource SeverityToColorConverter}}"
-                                FontFamily="Courier New"/>
+                                FontFamily="Cascadia Mono, Consolas, Menlo, monospace"/>
                 </StackPanel>
               </DataTemplate>
           </ListBox.ItemTemplate>
