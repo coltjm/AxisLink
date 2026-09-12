@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 using FluentAssertions;
+using AxisLink.Core.Models.Sprockets;
 
 namespace AxisLink.Tests.Models.Extended
 {
@@ -19,24 +20,14 @@ namespace AxisLink.Tests.Models.Extended
             {
                 Id = 0,
                 Name = "Modbus Controller",
-                Config = new ModbusConfig
-                {
-                    IpAddress = "192.168.1.100",
-                    Port = "502",
-                    EStopAddress = "X000"
-                }
+                Protocol = TransportProtocol.ModbusTcp,
 
             };
             var controller1 = new Controller
             {
                 Id = 1,
                 Name = "Modbus Controller 2",
-                Config = new ModbusConfig
-                {
-                    IpAddress = "192.168.1.101",
-                    Port = "502",
-                    EStopAddress = "X000"
-                }
+                Protocol = TransportProtocol.ModbusTcp,
 
             };
             var sensor0 = new Sensor
@@ -55,18 +46,13 @@ namespace AxisLink.Tests.Models.Extended
                 Id = 0,
                 Name = "Axis0",
                 ControllerId = 1,
-                StepsPerRevolution = 200,
+                DriveScaleFactor = 200,
                 DistancePerRevolution = 100,
                 Sensors = new List<int>
                 {
                     0
                 },
-                HardwareType = HardwareType.Modbus,
-                Config = new ModbusStepperConfig
-                {
-                    PulseAddress = "Y001",
-                    DirectionAddress = "Y002"
-                },
+                SprocketId = "click_plus_plc_stepper_v1",
                 IsEnabled = false,
                 HasAlarm = false,
                 CurrentPos = 100,
@@ -78,15 +64,10 @@ namespace AxisLink.Tests.Models.Extended
                 Id = 1,
                 Name = "Axis1",
                 ControllerId = 1,
-                StepsPerRevolution = 200,
+                DriveScaleFactor = 200,
                 DistancePerRevolution = 100,
                 Sensors = new(),
-                HardwareType = HardwareType.Modbus,
-                Config = new ModbusStepperConfig
-                {
-                    PulseAddress = "Y001",
-                    DirectionAddress = "Y002"
-                },
+                SprocketId = "click_plus_plc_stepper_v1",
                 IsEnabled = false,
                 HasAlarm = false,
                 CurrentPos = 300,

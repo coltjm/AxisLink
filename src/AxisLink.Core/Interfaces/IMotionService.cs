@@ -17,7 +17,7 @@ namespace AxisLink.Core.Interfaces
 
         
         Task UpdateAllStatesAsync(IEnumerable<Axis> axes);
-        Task ExecuteMoveAsync(Axis axis, float targetPosition);
+        Task ExecuteMoveAsync(Axis axis, float targetPosition, float velocity, float acceleration, float deceleration);
         Task StopAxisAsync(Axis axis);
         Task JogAsync(Axis axis, float velocity);
     }

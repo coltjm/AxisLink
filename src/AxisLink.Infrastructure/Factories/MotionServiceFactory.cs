@@ -12,15 +12,27 @@ namespace AxisLink.Infrastructure.Factories
 {
     public class MotionServiceFactory : IMotionServiceFactory
     {
+
+        // Modbus Tcp uses slave ids in addition to IP to identify devices for some header information
+        // Stored in Infrastructure layer to keep protocol specific information out of Core layer
+        public int nextModbusTcpSlaveId { get; private set; }
+
+        public MotionServiceFactory()
+        {
+            nextModbusTcpSlaveId = 1;
+        }
+
         // Takes motion type and creates relevant services
         public IMotionService CreateService(Controller controller)
         {
             return controller.Protocol switch
             {
-                TransportProtocol.ModbusTcp => new ModbusMotionService(controller.IpAddress, controller.Port.ToString()),
+                TransportProtocol.ModbusTcp => new ModbusMotionService(controller.IpAddress, controller.Port, nextModbusTcpSlaveId++),
+                //TransportProtocol.AsciiTcp => new AsciiTcpMotionService(controller.IpAddress, controller.Port.ToString()),
                 // BeckhoffConfig beckhoff => new BeckhoffAdsService(beckhoff.AmsNetId),
                 _ => throw new NotSupportedException($"Unknown config type: {controller.Protocol.ToString()}")
             };
+
         }
     }
 }

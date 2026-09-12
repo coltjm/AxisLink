@@ -14,6 +14,7 @@ namespace AxisLink.Core.Management
         private readonly Dictionary<int, IMotionService> _services = [];
         // ShowFileManager to manage the current show file and its machinery
         private readonly ShowFileManager _showFileManager;
+        private readonly IConsoleLogger _consoleLogger;
         // MotionServiceFactory to create motion services based on controller configurations
         private readonly IMotionServiceFactory _serviceFactory;
         public readonly List<Axis> Axes;
@@ -35,18 +36,21 @@ namespace AxisLink.Core.Management
         public event Action<Group?> GroupRemoved;
         public event Action<Sensor>? SensorAdded;
         public event Action<Sensor>? SensorRemoved;
-        // Running counters for the next axis and controller IDs
+        // Running counters for the next IDs
         public int nextAxisId { get; private set; }
         public int nextControllerId { get; private set; }
         public int nextPatchId { get; private set; }
         public int nextSceneryId { get; private set; }
         public int nextGroupId { get; private set; }
         public int nextSensorId { get; private set; }
-        public MotionManager(ShowFileManager showFileManager, IMotionServiceFactory serviceFactory)
+        
+
+        public MotionManager(ShowFileManager showFileManager, IMotionServiceFactory serviceFactory, IConsoleLogger consoleLogger)
         {
             // Initialize the ShowFileManager and MotionServiceFactory from dependency injection
             _showFileManager = showFileManager;
             _serviceFactory = serviceFactory;
+            _consoleLogger = consoleLogger;
             Axes = _showFileManager?.CurrentShow?.Machinery?.Axes;
             Controllers = _showFileManager?.CurrentShow?.Controllers;
             Patches = _showFileManager?.CurrentShow?.Machinery?.PatchList.Patches;
@@ -59,6 +63,7 @@ namespace AxisLink.Core.Management
             nextSceneryId = _showFileManager.CurrentShow.Machinery.Scenery.Count != 0? Scenery.Max(s => s.Id)+1:1;
             nextGroupId = _showFileManager.CurrentShow.Machinery.Groups.Count != 0 ? _showFileManager.CurrentShow.Machinery.Groups.Max(g => g.Id) + 1 : 1;
             nextSensorId = _showFileManager.CurrentShow.Sensors.Count != 0? Sensors.Max(s => s.Id)+1:1;
+           
         }
 
         // Startup motion services for all controllers in the show file
@@ -81,11 +86,20 @@ namespace AxisLink.Core.Management
                     // Add the service to the dictionary and connect
                     _services.Add(key, service);
                     await service.ConnectAsync();
+                    if (service.IsConnected)
+                    {
+                        _consoleLogger.LogInfo($"Successfully connected to controller {controller.Id} at {controller.IpAddress}:{controller.Port}");
+                    }
+                    else
+                    {
+                        _consoleLogger.LogError($"Failed to connect to controller {controller.Id} at {controller.IpAddress}:{controller.Port}");
+                        throw new TimeoutException();
+                    }
                 }
                 catch (Exception ex)
                 {
                     // Log error and continue
-                    System.Diagnostics.Debug.WriteLine($"Failed to load controller {controller.Id}: {ex.Message}");
+                    _consoleLogger.LogError($"Failed to load controller {controller.Id}: {ex.Message}");
                 }
             }
         }
@@ -128,6 +142,23 @@ namespace AxisLink.Core.Management
             }
         }
         
+        public async Task StartSingleAsync(Controller controller)
+        {
+            try
+            {
+                IMotionService service = _serviceFactory.CreateService(controller);
+                _services.Add(controller.Id, service);
+                await service.ConnectAsync();
+                // Trigger event to notify listeners of the new controller
+                ControllerAdded?.Invoke(controller);
+                _consoleLogger.LogInfo($"Successfully connected to controller {controller.Id} at {controller.IpAddress}:{controller.Port}");
+            }
+            catch (Exception ex)
+            {
+                _consoleLogger.LogError($"Failed to dynamically add controller {controller.Id}: {ex.Message}");
+            }
+        }
+
         public void AddNewAxis(Axis axis, Scenery? scenery=null)
         {
             ArgumentNullException.ThrowIfNull(axis);
@@ -143,8 +174,9 @@ namespace AxisLink.Core.Management
             // Add controller and update show file and next id accordingly
             Controllers.Add(controller);
             nextControllerId++;
-            // Trigger event to notify listeners of the new controller
-            ControllerAdded?.Invoke(controller);
+            StartSingleAsync(controller);
+            // Notify listeners within the startup to ensure controller is connected before notifying listeners
+
         }
         public void AddNewGroup(Group group)
         {

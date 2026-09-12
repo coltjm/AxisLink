@@ -37,7 +37,7 @@ namespace AxisLink.Infrastructure.MotionServices
         }
 
         // needs to include things like expected start, accel, vel, decel, etc.
-        public async Task ExecuteMoveAsync(Axis axis, float targetPosition)
+        public async Task ExecuteMoveAsync(Axis axis, float targetPosition, float acceleration, float velocity, float deceleration)
         {
             Debug.WriteLine($"Moving Axis {axis.Name} to position: {targetPosition}");
             if (axis.CurrentPos <  targetPosition) 
