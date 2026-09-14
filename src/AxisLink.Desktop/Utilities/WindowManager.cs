@@ -1,17 +1,22 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Controls.ApplicationLifetimes;
+using AxisLink.Core.Management;
+using AxisLink.Core.Models.Show;
+using AxisLink.Desktop.ViewModels;
+using AxisLink.Desktop.ViewModels.Windows;
+using AxisLink.Desktop.ViewModels.Windows.AxisSetup;
+using AxisLink.Desktop.ViewModels.Windows.ControllerSetup;
+using AxisLink.Desktop.Views.Windows;
+using AxisLink.Desktop.Views.Windows.AxisSetup;
+using AxisLink.Desktop.ViewModels.Windows.JogWindow;
+using AxisLink.Desktop.Views.Windows.ControllerSetup;
+using AxisLink.Desktop.Views.Windows.JogWindow;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Text;
-using AxisLink.Desktop.Views.Windows;
-using Avalonia;
-using Avalonia.Controls.ApplicationLifetimes;
-using AxisLink.Desktop.ViewModels.Windows;
-using AxisLink.Desktop.Views.Windows.ControllerSetup;
-using AxisLink.Desktop.ViewModels.Windows.ControllerSetup;
-using AxisLink.Desktop.Views.Windows.AxisSetup;
-using AxisLink.Desktop.ViewModels.Windows.AxisSetup;
-using Avalonia.Controls;
-using AxisLink.Desktop.ViewModels;
 
 namespace AxisLink.Desktop.Utilities
 {
@@ -80,7 +85,19 @@ namespace AxisLink.Desktop.Utilities
         // Open the axis setup window as a dialog, with the main window as the owner
         public void ShowAxisSetupWindow() => ShowWindow<AxisSetupViewModel, AxisSetupWindow>();
 
-        
+        public void ShowJogWindow(int sceneryId)
+        {
+            if (Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+            {
+                var fileManager = serviceProvider.GetRequiredService<ShowFileManager>();
+                var motionManager = serviceProvider.GetRequiredService<MotionManager>();
+
+                var vm = new JogWindowViewModel(sceneryId, fileManager, motionManager);
+                var window = new JogWindow { DataContext = vm };
+
+                window.Show(desktop.MainWindow);
+            }
+        }
 
     }
 }

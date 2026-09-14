@@ -47,20 +47,19 @@ namespace AxisLink.Desktop.Utilities
             cueListModule.Title = cueListVm.Title;
             cueListModule.Context = cueListVm;
 
-
-            var axisViewerVm = _serviceProvider.GetRequiredService<AxisViewerModuleViewModel>();
-            axisViewerVm.Title = "Axis Viewer - Velocity";
-            var axisViewerModule = _dockFactory.CreateDocument();
-            axisViewerModule.Id = "AxisViewerVelocity";
-            axisViewerModule.Title = axisViewerVm.Title;
-            axisViewerModule.Context = axisViewerVm;
-
             var controllerViewerVm = _serviceProvider.GetRequiredService<ControllerViewerModuleViewModel>();
             controllerViewerVm.Title = "Controller Viewer - Master";
             var controllerViewerModule = _dockFactory.CreateDocument();
             controllerViewerModule.Id = "ControllerViewerMaster";
             controllerViewerModule.Title = controllerViewerVm.Title;
             controllerViewerModule.Context = controllerViewerVm;
+
+            var sceneryViewerVm = _serviceProvider.GetRequiredService<SceneryViewerModuleViewModel>();
+            sceneryViewerVm.Title = "Scenery Viewer";
+            var sceneryViewerModule = _dockFactory.CreateDocument();
+            sceneryViewerModule.Id = "SceneryViewerMaster";
+            sceneryViewerModule.Title = sceneryViewerVm.Title;
+            sceneryViewerModule.Context = sceneryViewerVm;
 
             var loggerVm = _serviceProvider.GetRequiredService<LoggerModuleViewModel>();
             loggerVm.Title = "Logger Console";
@@ -73,12 +72,12 @@ namespace AxisLink.Desktop.Utilities
             mainDocumentDock.Id = "MainDocuments";
             mainDocumentDock.IsCollapsable = false;
             mainDocumentDock.ActiveDockable = cueListModule;
-            mainDocumentDock.VisibleDockables = _dockFactory.CreateList<IDockable>(cueListModule, axisViewerModule);
+            mainDocumentDock.VisibleDockables = _dockFactory.CreateList<IDockable>(cueListModule);
 
             var rightDocumentDock = _dockFactory.CreateDocumentDock();
             rightDocumentDock.Id = "RightTools";
-            rightDocumentDock.ActiveDockable = controllerViewerModule;
-            rightDocumentDock.VisibleDockables = _dockFactory.CreateList<IDockable>(controllerViewerModule);
+            rightDocumentDock.ActiveDockable = sceneryViewerModule;
+            rightDocumentDock.VisibleDockables = _dockFactory.CreateList<IDockable>(sceneryViewerModule);
 
             var bottomDocumentDock = _dockFactory.CreateDocumentDock();
             bottomDocumentDock.Id = "BottomTools";
@@ -111,7 +110,7 @@ namespace AxisLink.Desktop.Utilities
             _dockFactory.ContextLocator = new Dictionary<string, Func<object>>
             {
                 [cueListModule.Id] = () => cueListVm,
-                [axisViewerModule.Id] = () => axisViewerVm,
+                [sceneryViewerModule.Id] = () => sceneryViewerVm,
                 [controllerViewerModule.Id] = () => controllerViewerVm,
                 [loggerModule.Id] = () => loggerVm
             };
@@ -127,10 +126,6 @@ namespace AxisLink.Desktop.Utilities
             return root;
         }
 
-        /// <summary>
-        /// Always resolves a new transient instance from DI and appends it to the central document panel,
-        /// enabling duplicate views (e.g., multiple AxisViewers).
-        /// </summary>
         public void SpawnNewModuleTab<T>(string? customTitle = null) where T : ModuleViewModelBase
         {
             if (_dockFactory.FindDockable(RootLayout, d => d.Id == "MainDocuments") is not IDocumentDock documentDock)
@@ -156,6 +151,7 @@ namespace AxisLink.Desktop.Utilities
         }
 
         public void ShowAxisViewer() => SpawnNewModuleTab<AxisViewerModuleViewModel>("Axis Viewer");
+        public void ShowSceneryViewer() => SpawnNewModuleTab<SceneryViewerModuleViewModel>("Scenery Viewer");
         public void ShowCueList() => SpawnNewModuleTab<CueListModuleViewModel>("Cue List");
         public void ShowControllerViewer() => SpawnNewModuleTab<ControllerViewerModuleViewModel>("Controllers");
         public void ShowCueStack() => SpawnNewModuleTab<CueStackModuleViewModel>("Cue Stack");

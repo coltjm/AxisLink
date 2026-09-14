@@ -17,6 +17,8 @@ using AxisLink.Desktop.ViewModels.Windows.CueCreation;
 using AxisLink.Desktop.Views.Windows.ScenerySetup;
 using AxisLink.Desktop.ViewModels.Windows.ScenerySetup;
 using AxisLink.Desktop.Views.Windows.ProjectPreferences;
+using AxisLink.Desktop.Views.Dev;
+using AxisLink.Desktop.ViewModels.Dev;
 using AxisLink.Core.Models.Configs;
 using CommunityToolkit.Mvvm.ComponentModel;
 namespace AxisLink.Desktop.ViewModels.Windows
@@ -162,6 +164,12 @@ namespace AxisLink.Desktop.ViewModels.Windows
         }
 
         [RelayCommand]
+        private void OpenSimulatedAxisDevWindow()
+        {
+            windowManager.ShowWindow<SimulatedAxisDevWindowViewModel, SimulatedAxisDevWindow>();
+        }
+
+        [RelayCommand]
         private void ShowAxisViewer()
         {
             Logger.LogInfo("Showing Axis Viewer.");
@@ -172,6 +180,13 @@ namespace AxisLink.Desktop.ViewModels.Windows
         {
             Logger.LogInfo("Showing Cue Sheet.");
             Workspace.ShowCueList();
+        }
+
+        [RelayCommand]
+        private void ShowSceneryViewer()
+        {
+            Logger.LogInfo("Showing Scenery Viewer.");
+            Workspace.ShowSceneryViewer();
         }
 
         [RelayCommand]

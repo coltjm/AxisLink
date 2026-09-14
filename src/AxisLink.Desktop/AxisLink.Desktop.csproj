@@ -38,7 +38,6 @@
 
   <ItemGroup>
     <Folder Include="Views\Windows\ControllerCommunication\" />
-    <Folder Include="Views\Windows\JogWindow\" />
     <Folder Include="Views\Windows\GroupsWindow\" />
     <Folder Include="Views\Windows\PatchWindow\" />
   </ItemGroup>

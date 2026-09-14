@@ -30,6 +30,7 @@
 
         <!-- View Menu -->
         <KeyBinding Gesture="{Binding Shortcuts.AxisViewerShortcut, Converter={StaticResource StringToKeyGestureConverter}}" Command="{Binding ShowAxisViewerCommand}" />
+        <KeyBinding Gesture="{Binding Shortcuts.SceneryViewerShortcut, Converter={StaticResource StringToKeyGestureConverter}}" Command="{Binding ShowSceneryViewerCommand}" />
         <KeyBinding Gesture="{Binding Shortcuts.CueListViewerShortcut, Converter={StaticResource StringToKeyGestureConverter}}" Command="{Binding ShowCueSheetCommand}" />
         <KeyBinding Gesture="{Binding Shortcuts.CueRunShortcut, Converter={StaticResource StringToKeyGestureConverter}}" Command="{Binding ShowCueStackCommand}" />
         <KeyBinding Gesture="{Binding Shortcuts.ControllerViewerShortcut, Converter={StaticResource StringToKeyGestureConverter}}" Command="{Binding ShowControllerViewerCommand}" />
@@ -70,6 +71,7 @@
 
             <MenuItem Header="_View">
                 <MenuItem Header="Open Log Console" IsChecked="{Binding IsLogConsoleVisible, Mode=TwoWay}" InputGesture="{Binding Shortcuts.LoggerShortcut, Converter={StaticResource StringToKeyGestureConverter}}"/>
+                <MenuItem Header="Open Scenery Viewer" Command="{Binding ShowSceneryViewerCommand}" InputGesture="{Binding Shortcuts.SceneryViewerShortcut, Converter={StaticResource StringToKeyGestureConverter}}"/>
                 <MenuItem Header="Open Axis Viewer" Command="{Binding ShowAxisViewerCommand}" InputGesture="{Binding Shortcuts.AxisViewerShortcut, Converter={StaticResource StringToKeyGestureConverter}}"/>
                 <MenuItem Header="Open Master Cue Sheet" Command="{Binding ShowCueSheetCommand}" InputGesture="{Binding Shortcuts.CueListViewerShortcut, Converter={StaticResource StringToKeyGestureConverter}}"/>
                 <MenuItem Header="Open Cue Stack" Command="{Binding ShowCueStackCommand}" InputGesture="{Binding Shortcuts.CueRunShortcut, Converter={StaticResource StringToKeyGestureConverter}}"/>
@@ -84,6 +86,10 @@
                 <MenuItem Header="New Axis..." Command="{Binding OpenNewAxisWindowCommand}" InputGesture="{Binding Shortcuts.AxisShortcut, Converter={StaticResource StringToKeyGestureConverter}}"/>
                 <MenuItem Header="Network / Modbus Settings..."/>
                 <MenuItem Header="User Preferences..."/>
+            </MenuItem>
+
+            <MenuItem Header="_Dev">
+                <MenuItem Header="Open Simulation Window" Command="{Binding OpenSimulatedAxisDevWindowCommand}"/>
             </MenuItem>
         </Menu>
 

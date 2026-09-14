@@ -1,0 +1,128 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:modules="using:AxisLink.Desktop.ViewModels.Modules"
+             xmlns:show="using:AxisLink.Core.Models.Show"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="AxisLink.Desktop.Views.Modules.SceneryViewerModuleView"
+             x:DataType="modules:SceneryViewerModuleViewModel">
+
+    <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+        <ItemsControl ItemsSource="{Binding DisplayScenery}" Margin="15">
+            
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <UniformGrid Columns="3" HorizontalAlignment="Stretch"/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+
+            <ItemsControl.ItemTemplate>
+                <DataTemplate x:DataType="modules:SceneryCardViewModel">
+                    <Border Margin="8" 
+                            Padding="15" 
+                            Background="{DynamicResource AppSurface}" 
+                            BorderBrush="{DynamicResource AppBorder}"
+                            BorderThickness="1"
+                            CornerRadius="4">
+                        <Grid RowDefinitions="Auto, Auto, Auto, *, Auto">
+                            
+                            <!-- Header: Scenery Name & ID -->
+                            <Grid Grid.Row="0" ColumnDefinitions="*, Auto" Margin="0,0,0,8">
+                                <TextBlock Grid.Column="0" 
+                                           Text="{Binding Scenery.Name}" 
+                                           FontSize="16" 
+                                           FontWeight="SemiBold" 
+                                           Foreground="{DynamicResource AppText}"/>
+                                <TextBlock Grid.Column="1" 
+                                           Text="{Binding Scenery.Id, StringFormat='ID: {0}'}" 
+                                           FontSize="11" 
+                                           Foreground="{DynamicResource AppTextSecondary}" 
+                                           VerticalAlignment="Center"/>
+                            </Grid>
+
+                            <!-- Scenery Trims (Operational Limits) -->
+                            <Grid Grid.Row="1" ColumnDefinitions="*, *" Margin="0,0,0,10">
+                                <TextBlock Grid.Column="0" 
+                                           Text="{Binding Scenery.Trims.LowTrim.Position, StringFormat='Low: {0:F1} mm', FallbackValue='Low: --'}" 
+                                           FontSize="11" 
+                                           Foreground="{DynamicResource AppTextSecondary}"/>
+                                <TextBlock Grid.Column="1" 
+                                           Text="{Binding Scenery.Trims.HighTrim.Position, StringFormat='High: {0:F1} mm', FallbackValue='High: --'}" 
+                                           FontSize="11" 
+                                           HorizontalAlignment="Right"
+                                           Foreground="{DynamicResource AppTextSecondary}"/>
+                            </Grid>
+
+                            <Rectangle Grid.Row="2" Height="1" Fill="{DynamicResource AppBorder}" Margin="0,0,0,10"/>
+
+                            <!-- Attached Axis / Axes List -->
+                            <ItemsControl Grid.Row="3" ItemsSource="{Binding AttachedAxes}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate x:DataType="show:Axis">
+                                        <StackPanel Spacing="6" Margin="0,0,0,12">
+                                            <!-- Axis Identification & Status -->
+                                            <Grid ColumnDefinitions="*, Auto">
+                                                <TextBlock Grid.Column="0" 
+                                                           Text="{Binding Name, StringFormat='Motor: {0}'}" 
+                                                           FontSize="12" 
+                                                           FontWeight="SemiBold" 
+                                                           Foreground="{DynamicResource AppTextSecondary}"/>
+                                                
+                                                <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="4">
+                                                    <Border Background="#4A1515" BorderBrush="{DynamicResource StatusFault}" BorderThickness="1" CornerRadius="3" Padding="4,1"
+                                                            IsVisible="{Binding HasAlarm}">
+                                                        <TextBlock Text="FLT" FontSize="9" Foreground="{DynamicResource StatusFault}" FontWeight="Bold"/>
+                                                    </Border>
+                                                    
+                                                    <Border Background="#153A15" BorderBrush="{DynamicResource StatusEnabled}" BorderThickness="1" CornerRadius="3" Padding="4,1"
+                                                            IsVisible="{Binding IsEnabled}">
+                                                        <TextBlock Text="EN" FontSize="9" Foreground="{DynamicResource StatusEnabled}" FontWeight="Bold"/>
+                                                    </Border>
+                                                </StackPanel>
+                                            </Grid>
+
+                                            <!-- Telemetry: Position & Velocity -->
+                                            <Grid ColumnDefinitions="*, Auto">
+                                                <TextBlock Grid.Column="0" Text="Current Position" FontSize="12" Foreground="{DynamicResource AppTextSecondary}" VerticalAlignment="Bottom"/>
+                                                <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Bottom">
+                                                    <TextBlock Text="{Binding CurrentPos, StringFormat='{}{0:F2}'}" FontSize="22" FontWeight="Bold" Foreground="{DynamicResource AppAccentText}"/>
+                                                    <TextBlock Text=" mm" FontSize="12" Foreground="{DynamicResource AppTextSecondary}" VerticalAlignment="Bottom" Margin="2,0,0,2"/>
+                                                </StackPanel>
+                                            </Grid>
+
+                                            <Grid ColumnDefinitions="*, Auto">
+                                                <TextBlock Grid.Column="0" Text="Current Velocity" FontSize="11" Foreground="{DynamicResource AppTextSecondary}"/>
+                                                <TextBlock Grid.Column="1" Text="{Binding CurrentVel, StringFormat='{}{0:F1} mm/s'}" FontSize="11" Foreground="{DynamicResource AppText}"/>
+                                            </Grid>
+
+                                            <!-- Travel Limit Bar -->
+                                            <ProgressBar Value="{Binding CurrentPos}" 
+                                                         Minimum="{Binding LowLimit, FallbackValue=0}" 
+                                                         Maximum="{Binding HighLimit, FallbackValue=1000}" 
+                                                         Height="4" 
+                                                         Background="{DynamicResource AppSurfaceInput}" 
+                                                         Foreground="{DynamicResource AppAccent}"/>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+
+                            <!-- Footer: External Jog Launcher Button -->
+                            <Button Grid.Row="4" 
+                                    Content="JOG ELEMENT" 
+                                    Command="{Binding OpenJogCommand}" 
+                                    HorizontalAlignment="Stretch" 
+                                    HorizontalContentAlignment="Center" 
+                                    Height="30" 
+                                    FontSize="11" 
+                                    FontWeight="SemiBold"
+                                    Margin="0,4,0,0"/>
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+            
+        </ItemsControl>
+    </ScrollViewer>
+</UserControl>

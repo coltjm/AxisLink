@@ -8,7 +8,7 @@ using System.Text;
 
 namespace AxisLink.Infrastructure.MotionServices
 {
-    public class SimulatedMotionService : IMotionService
+    public class SimulatedMotionService //: IMotionService
     {
         public bool IsConnected { get; private set; } = false;
         public bool IsJogging { get; private set; } = false;
@@ -37,7 +37,7 @@ namespace AxisLink.Infrastructure.MotionServices
         }
 
         // needs to include things like expected start, accel, vel, decel, etc.
-        public async Task ExecuteMoveAsync(Axis axis, float targetPosition, float acceleration, float velocity, float deceleration)
+        public async Task ExecuteMoveAsync(Axis axis, float targetPosition, float acceleration, float velocity, float deceleration, CancellationToken cancellationToken = default)
         {
             Debug.WriteLine($"Moving Axis {axis.Name} to position: {targetPosition}");
             if (axis.CurrentPos <  targetPosition) 
@@ -59,7 +59,7 @@ namespace AxisLink.Infrastructure.MotionServices
             Debug.WriteLine($"Axis Move Complete. Axis Position: {axis.CurrentPos}");
         }
 
-        public async Task JogAsync(Axis axis, float velocity)
+        public async Task JogAsync(Axis axis, float velocity, float acceleration, float deceleration, CancellationToken cancellationToken = default)
         {
             Debug.WriteLine($"Jogging Axis {axis.Name} with velocity: {velocity}");
             while (IsJogging)

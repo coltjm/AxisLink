@@ -32,6 +32,21 @@ public enum ResponseDataType
     Float,
     Boolean
 }
+
+public enum ModbusDataType
+{
+    Coil,
+    Register16,
+    Register32,
+    Unassigned
+}
+
+public class SprocketModbusTarget
+{
+    public required string Address { get; set; }
+    public ModbusDataType ModbusDataType { get; set; }
+}
+
 public class SprocketStep
 {
     // Command template for ASCII to format and transmit (e.g. "D{Target.PositionPulses}").
@@ -43,11 +58,13 @@ public class SprocketStep
     // Expression to evaluate (e.g. "{Target.PositionPulses}" or "1").
     public string? Value { get; set; }
 
-    // Delay in ms before moving to the next step.
+    // Delay in ms before executing this step.
     public int DelayMs { get; set; } = 0;
 
     // If > 0, signals a pulse operation (e.g. set high, wait pulse_ms, set low).
     public int PulseMs { get; set; } = 0;
+    // Value to reset to for a pulse
+    public string? PulseLowValue { get; set; }
 }
 
 public class SprocketShortcut
@@ -93,7 +110,7 @@ public class Sprocket
     public float DefaultDriveScaleFactor { get; set; } = 1;
 
     // Modbus register address aliases (optional for pure ASCII devices)
-    public Dictionary<string, string> Registers { get; set; } = new();
+    public Dictionary<string, SprocketModbusTarget> AddressAliases { get; set; } = new();
 
     // The sequence executed when the axis comes online
     public List<SprocketStep> InitSequence { get; set; } = new();

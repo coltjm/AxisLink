@@ -31,6 +31,7 @@ namespace AxisLink.Infrastructure.Sprockets
 
             //Add compiled built-in sprockets
             dict[BuiltInSprockets.ClickPlcStepper.Id] = BuiltInSprockets.ClickPlcStepper;
+            dict[BuiltInSprockets.SimulatedAxis.Id] = BuiltInSprockets.SimulatedAxis;
 
             // TODO: Add local disk files from user folder (when JSON reader is ready)
 
@@ -64,5 +65,6 @@ namespace AxisLink.Infrastructure.Sprockets
         {
             return GetAvailableSprockets().FirstOrDefault(s => s.Id == id);
         }
+      
     }
 }

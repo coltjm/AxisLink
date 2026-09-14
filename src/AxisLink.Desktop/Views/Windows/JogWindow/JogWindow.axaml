@@ -1,0 +1,93 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:AxisLink.Desktop.ViewModels.Windows.JogWindow"
+        x:Class="AxisLink.Desktop.Views.Windows.JogWindow.JogWindow"
+        x:DataType="vm:JogWindowViewModel"
+        Title="{Binding WindowTitle}"
+        Width="440" Height="500"
+        WindowStartupLocation="CenterOwner"
+        CanResize="False"
+        Background="#18181B">
+
+    <Grid RowDefinitions="Auto, *, Auto, Auto" Margin="20">
+        
+        <!-- Header: Target Scenery Name -->
+        <Border Grid.Row="0" Background="#242428" Padding="14,10" CornerRadius="6" BorderBrush="#333338" BorderThickness="1">
+            <Grid ColumnDefinitions="*, Auto">
+                <StackPanel Grid.Column="0">
+                    <TextBlock Text="{Binding Scenery.Name}" FontWeight="Bold" FontSize="16" Foreground="#F0F0F0"/>
+                    <TextBlock Text="Manual Scenic Jog Controller" FontSize="11" Foreground="#9E9E9E"/>
+                </StackPanel>
+                <Border Grid.Column="1" Background="#3B2A10" BorderBrush="#D97706" BorderThickness="1" CornerRadius="4" Padding="6,2" VerticalAlignment="Center">
+                    <TextBlock Text="LIVE JOG MODE" FontSize="10" FontWeight="Bold" Foreground="#FBBF24"/>
+                </Border>
+            </Grid>
+        </Border>
+
+        <!-- Readouts for Connected Axes -->
+        <ScrollViewer Grid.Row="1" Margin="0,12" VerticalScrollBarVisibility="Auto">
+            <ItemsControl ItemsSource="{Binding AttachedAxes}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border Margin="0,3" Padding="8,6" Background="#202024" CornerRadius="4" BorderBrush="#2C2C32" BorderThickness="1">
+                            <Grid ColumnDefinitions="*, Auto, Auto">
+                                <TextBlock Grid.Column="0" Text="{Binding Name}" Foreground="#E0E0E0" VerticalAlignment="Center" FontSize="12"/>
+                                <TextBlock Grid.Column="1" Text="{Binding CurrentPos, StringFormat='{}{0:F2} mm'}" FontWeight="Bold" Foreground="#38BDF8" Margin="10,0" VerticalAlignment="Center"/>
+                                <TextBlock Grid.Column="2" Text="{Binding CurrentVel, StringFormat='{}{0:F1} mm/s'}" Foreground="#A0A0A0" FontSize="11" VerticalAlignment="Center"/>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+
+        <!-- Jog Velocity Slider Controls -->
+        <Border Grid.Row="2" Background="#202024" Padding="14,10" CornerRadius="6" Margin="0,0,0,16">
+            <StackPanel Spacing="6">
+                <Grid ColumnDefinitions="*, Auto">
+                    <TextBlock Grid.Column="0" Text="JOG VELOCITY" FontSize="11" FontWeight="SemiBold" Foreground="#888888"/>
+                    <TextBlock Grid.Column="1" Text="{Binding JogVelocity, StringFormat='{}{0:F0} mm/s'}" FontSize="12" FontWeight="Bold" Foreground="#38BDF8"/>
+                </Grid>
+                <Slider Minimum="5" Maximum="250" Value="{Binding JogVelocity}" SmallChange="1" LargeChange="10"/>
+            </StackPanel>
+        </Border>
+
+        <!-- Deadman / Motion Controls -->
+        <Grid Grid.Row="3" RowDefinitions="Auto, 10, Auto">
+            <Grid Grid.Row="0" ColumnDefinitions="*, 10, *">
+                <RepeatButton Grid.Column="0" 
+                              Content="◀ REVERSE" 
+                              Command="{Binding JogReverseCommand}" 
+                              Height="55" 
+                              FontSize="13" 
+                              FontWeight="Bold" 
+                              Background="#2D3038" 
+                              HorizontalAlignment="Stretch" 
+                              HorizontalContentAlignment="Center"/>
+
+                <RepeatButton Grid.Column="2" 
+                              Content="FORWARD ▶" 
+                              Command="{Binding JogForwardCommand}" 
+                              Height="55" 
+                              FontSize="13" 
+                              FontWeight="Bold" 
+                              Background="#2D3038" 
+                              HorizontalAlignment="Stretch" 
+                              HorizontalContentAlignment="Center"/>
+            </Grid>
+
+            <!-- Prominent STOP / All-Halt Button -->
+            <Button Grid.Row="2" 
+                    Content="HALT / STOP" 
+                    Command="{Binding StopCommand}" 
+                    Height="42" 
+                    FontSize="12" 
+                    FontWeight="Bold" 
+                    Background="#5E1B1B" 
+                    Foreground="#FFA8A8" 
+                    HorizontalAlignment="Stretch" 
+                    HorizontalContentAlignment="Center"/>
+        </Grid>
+
+    </Grid>
+</Window>

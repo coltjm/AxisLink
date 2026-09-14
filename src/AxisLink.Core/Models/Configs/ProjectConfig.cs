@@ -64,6 +64,8 @@ namespace AxisLink.Core.Models.Configs
         public string LoggerShortcut { get; set; } = "Ctrl+Shift+L";
         [XmlElement("alink_axis_viewer_shortcut")]
         public string AxisViewerShortcut { get; set; } = "Ctrl+Shift+A";
+        [XmlElement("alink_scenery_viewer_shortcut")]
+        public string SceneryViewerShortcut { get; set; } = "Ctrl+Shift+Y";
         [XmlElement("alink_controller_viewer_shortcut")]
         public string ControllerViewerShortcut { get; set; } = "Ctrl+Shift+D";
         [XmlElement("alink_cue_list_shortcut")]

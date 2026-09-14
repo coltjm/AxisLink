@@ -13,6 +13,7 @@ using AxisLink.Desktop.ViewModels.Windows.JogWindow;
 using AxisLink.Desktop.ViewModels.Windows.PatchWindow;
 using AxisLink.Desktop.ViewModels.Windows.ScenerySetup;
 using AxisLink.Desktop.ViewModels.Windows.SensorsWindow;
+using AxisLink.Desktop.ViewModels.Dev;
 using AxisLink.Infrastructure.Factories;
 using AxisLink.Infrastructure.Loggers;
 using AxisLink.Infrastructure.ShowFileStorage;
@@ -33,7 +34,7 @@ namespace AxisLink.Desktop
             // Create a new service collection
             var services = new ServiceCollection();
 
-            // Create file storage singleton
+            // Create singletons
             services.AddSingleton<IShowFileStorage, XmlShowFileStorage>();
             services.AddSingleton<IMotionServiceFactory, MotionServiceFactory>();
             services.AddSingleton<IConsoleLogger, ConsoleLogger>();
@@ -61,6 +62,7 @@ namespace AxisLink.Desktop
             services.AddTransient<CueListModuleViewModel>();
             services.AddTransient<CueStackModuleViewModel>();
             services.AddTransient<AxisViewerModuleViewModel>();
+            services.AddTransient<SceneryViewerModuleViewModel>();
             services.AddTransient<ControllerViewerModuleViewModel>();
 
             // Windows
@@ -74,6 +76,9 @@ namespace AxisLink.Desktop
             services.AddTransient<PatchWindowViewModel>();
             services.AddTransient<ProjectPreferencesViewModel>();
             services.AddTransient<SensorWindowViewModel>();
+
+            // Dev
+            services.AddTransient<SimulatedAxisDevWindowViewModel>();
 
             return services.BuildServiceProvider();
             

@@ -2,6 +2,7 @@
 using AxisLink.Core.Models.Configs;
 using AxisLink.Core.Models.Show;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
@@ -15,8 +16,13 @@ namespace AxisLink.Core.Management
         // ShowFileManager to manage the current show file and its machinery
         private readonly ShowFileManager _showFileManager;
         private readonly IConsoleLogger _consoleLogger;
+
+        public readonly ISprocketProvider _sprocketProvider;
         // MotionServiceFactory to create motion services based on controller configurations
         private readonly IMotionServiceFactory _serviceFactory;
+
+        private readonly ConcurrentDictionary<int, CancellationTokenSource> _activeMotionTokens = new();
+
         public readonly List<Axis> Axes;
         public readonly List<Controller> Controllers;
         public readonly List<Patch> Patches;
@@ -45,12 +51,13 @@ namespace AxisLink.Core.Management
         public int nextSensorId { get; private set; }
         
 
-        public MotionManager(ShowFileManager showFileManager, IMotionServiceFactory serviceFactory, IConsoleLogger consoleLogger)
+        public MotionManager(ShowFileManager showFileManager, IMotionServiceFactory serviceFactory, IConsoleLogger consoleLogger, ISprocketProvider sprocketProvider)
         {
             // Initialize the ShowFileManager and MotionServiceFactory from dependency injection
             _showFileManager = showFileManager;
             _serviceFactory = serviceFactory;
             _consoleLogger = consoleLogger;
+            _sprocketProvider = sprocketProvider;
             Axes = _showFileManager?.CurrentShow?.Machinery?.Axes;
             Controllers = _showFileManager?.CurrentShow?.Controllers;
             Patches = _showFileManager?.CurrentShow?.Machinery?.PatchList.Patches;
@@ -78,7 +85,7 @@ namespace AxisLink.Core.Management
                 try
                 {
                     // Create appropriate motion service for the controller based on its configuration
-                    IMotionService service = _serviceFactory.CreateService(controller);
+                    IMotionService service = _serviceFactory.CreateService(controller, this);
 
                     // Use controller id as key for dictionary
                     int key = controller.Id;
@@ -130,7 +137,7 @@ namespace AxisLink.Core.Management
                 {
                     try
                     {
-                        IMotionService service = _serviceFactory.CreateService(controller);
+                        IMotionService service = _serviceFactory.CreateService(controller, this);
                         _services.Add(controller.Id, service);
                         await service.ConnectAsync();
                     }
@@ -146,7 +153,7 @@ namespace AxisLink.Core.Management
         {
             try
             {
-                IMotionService service = _serviceFactory.CreateService(controller);
+                IMotionService service = _serviceFactory.CreateService(controller, this);
                 _services.Add(controller.Id, service);
                 await service.ConnectAsync();
                 // Trigger event to notify listeners of the new controller
@@ -167,6 +174,19 @@ namespace AxisLink.Core.Management
             nextAxisId++;
             // Trigger event to notify listeners of the new axis
             AxisAdded?.Invoke(axis);
+            // Update the service's internal dictionary
+            if (!axis.ControllerId.HasValue)
+            { 
+                _consoleLogger.LogError("Axis has no controller assigned");
+                return;
+            }
+            int controllerId = axis.ControllerId.Value;
+            if (!_services.TryGetValue(controllerId, out var service))
+            {
+                _consoleLogger.LogError($"No motion service for controller {controllerId}");
+                return;
+            }
+            service.AddAxis(axis);
         }
         public void AddNewController(Controller controller)
         {
@@ -186,8 +206,7 @@ namespace AxisLink.Core.Management
             nextGroupId++;
             // Trigger event to notify listeners of the new group
             GroupAdded?.Invoke(group);
-        }
-        
+        } 
         public void AddNewScenery(Scenery scenery)
         {
             ArgumentNullException.ThrowIfNull(scenery);
@@ -205,7 +224,6 @@ namespace AxisLink.Core.Management
             // Trigger event to notify listeners of the new patch
             PatchAdded?.Invoke(patch);
         }
-
         public void RemoveController(Controller controller) {
             ArgumentNullException.ThrowIfNull(controller);
             // Remove controller and update show file accordingly
@@ -214,7 +232,6 @@ namespace AxisLink.Core.Management
             // Trigger event to notify listeners of the removed controller
             ControllerRemoved?.Invoke(controller);  
         }
-
         public void RemoveAxis(Axis axis)
         {
             ArgumentNullException.ThrowIfNull(axis);
@@ -223,8 +240,20 @@ namespace AxisLink.Core.Management
             Axes.Remove(axis);
             // Trigger event to notify listeners of the removed axis
             AxisRemoved?.Invoke(axis);
-        }
-    
+            // Update the service's internal dictionary
+            if (!axis.ControllerId.HasValue)
+            {
+                _consoleLogger.LogError("Axis has no controller assigned");
+                return;
+            }
+            int controllerId = axis.ControllerId.Value;
+            if (!_services.TryGetValue(controllerId, out var service))
+            {
+                _consoleLogger.LogError($"No motion service for controller {controllerId}");
+                return;
+            }
+            service.RemoveAxis(axis);
+        }   
         public void RemoveGroup(Group group)
         {
             ArgumentNullException.ThrowIfNull(group);
@@ -234,7 +263,6 @@ namespace AxisLink.Core.Management
             // Trigger event to notify listeners of the removed group
             GroupRemoved?.Invoke(group);
         }
-
         public void RemoveScenery(Scenery scenery)
         {
             ArgumentNullException.ThrowIfNull(scenery);
@@ -244,7 +272,6 @@ namespace AxisLink.Core.Management
             // Trigger event to notify listeners of the removed scenery
             SceneryRemoved?.Invoke(scenery);
         }
-
         public void RemovePatch(Patch patch)
         {
             ArgumentNullException.ThrowIfNull(patch);
@@ -257,6 +284,118 @@ namespace AxisLink.Core.Management
 
         public async Task RunCuePart(CuePart cuePart)
         {
+
+        }
+
+        // Jog an axis with no specified stop point, only stops on cancellation
+        public async Task JogAxisAsync(int axisId, float velocity, float acceleration, float deceleration)
+        {
+            // Stop any existing motion for this axis
+            await StopAxisAsync(axisId);
+
+            // Create and store new CancellationTokenSource for this axis
+            var cts = new CancellationTokenSource();
+            _activeMotionTokens[axisId] = cts;
+            // Get the axis and its associated controller
+            var axis = Axes.FirstOrDefault(a => a.Id == axisId);
+            if (axis == null)
+                throw new Exception("Axis not found");
+
+            if (!axis.ControllerId.HasValue)
+                throw new Exception("Axis has no controller assigned");
+
+            int controllerId = axis.ControllerId.Value;
+            if (!_services.TryGetValue(controllerId, out var service))
+            {
+                throw new Exception($"No motion service for controller {controllerId}");
+            }
+            try
+            {
+                // Start jog and keep the task alive until cancelled
+                await service.JogAsync(axis, velocity, acceleration, deceleration, cts.Token);
+                await Task.Delay(Timeout.Infinite, cts.Token);
+            }
+            // When the token is cancelled, this will throw OperationCanceledException meaning it already handled the stop, so we can just exit gracefully
+            catch (OperationCanceledException) 
+            { 
+                await service.StopAxisAsync(axis);
+            }
+            
+            catch (Exception ex)
+            {
+                // Unexpected error occurred, log it and attempt to stop the axis
+                _consoleLogger.LogError($"Error jogging axis {axisId}: {ex.Message}");
+                await StopAxisAsync(axis.Id);
+            }
+            finally
+            {
+                // Ensure the axis is stopped and token cleaned up
+                if (_activeMotionTokens.TryRemove(axisId, out var existingCts))
+                {
+                    existingCts.Dispose();
+                }
+            }
+        }
+
+        public async Task StopAxisAsync(int axisId)
+        {
+            // Cancel the token, but leave it in the dictionary to be handled the the specific move task 
+            if (_activeMotionTokens.TryGetValue(axisId, out var cts))
+            {
+                // Stop the motion by cancelling the token
+                cts.Cancel();
+                return; 
+            }
+            // If no active motion token exists, attempt to stop the axis directly via the service
+            try
+            {
+                // As a backup, also request the service to stop the axis directly
+                var axis = Axes.FirstOrDefault(a => a.Id == axisId);
+                if (axis == null || !axis.ControllerId.HasValue) return;
+
+                int controllerId = axis.ControllerId.Value;
+                if (_services.TryGetValue(controllerId, out var service))
+                {
+                    await service.StopAxisAsync(axis);
+                }
+            }
+            catch (Exception ex)
+            {
+                _consoleLogger.LogCritical($"Error stopping axis {axisId}: {ex.Message}");
+            }
+        }
+
+        public async Task StopAllAsync()
+        {
+            // Cancel and dispose all active motion tokens
+            foreach (var kvp in _activeMotionTokens.ToArray())
+            {
+                if (_activeMotionTokens.TryRemove(kvp.Key, out var cts))
+                {
+                    try 
+                    {
+                        // Stop the motion by cancelling the token
+                        cts.Cancel();
+                        // As a backup, also request the service to stop the axis directly
+                        var axis = Axes.FirstOrDefault(a => a.Id == kvp.Key);
+                        if (axis == null || !axis.ControllerId.HasValue) return;
+
+                        int controllerId = axis.ControllerId.Value;
+                        if (_services.TryGetValue(controllerId, out var service))
+                        {
+                            await service.StopAxisAsync(axis);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        _consoleLogger.LogCritical($"Error stopping axis {kvp.Key}: {ex.Message}");
+                    }
+                    finally 
+                    { 
+                        cts.Dispose(); 
+                    }
+                }
+            }
 
         }
     }

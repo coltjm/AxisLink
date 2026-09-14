@@ -15,10 +15,14 @@ namespace AxisLink.Core.Interfaces
         // Flag indicating if the service is connected to the controller
         bool IsConnected { get; }
 
+
         
         Task UpdateAllStatesAsync(IEnumerable<Axis> axes);
-        Task ExecuteMoveAsync(Axis axis, float targetPosition, float velocity, float acceleration, float deceleration);
+        Task ExecuteMoveAsync(Axis axis, float targetPosition, float velocity, float acceleration, float deceleration, CancellationToken cancellationToken = default);
         Task StopAxisAsync(Axis axis);
-        Task JogAsync(Axis axis, float velocity);
+        Task JogAsync(Axis axis, float velocity, float acceleration, float deceleration, CancellationToken cancellationToken = default);
+
+        void AddAxis(Axis axis);
+        void RemoveAxis(Axis axis);
     }
 }

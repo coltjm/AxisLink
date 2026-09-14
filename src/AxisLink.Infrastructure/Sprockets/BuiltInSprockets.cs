@@ -15,17 +15,63 @@ namespace AxisLink.Infrastructure.Sprockets
             Protocol = TransportProtocol.ModbusTcp,
             DefaultDriveScaleFactor = 2000f,
 
-            Registers = new Dictionary<string, string>
+            AddressAliases = new Dictionary<string, SprocketModbusTarget>
             {
-                ["target_pos"] = "16388 + ($channel - 1) * 20",
-                ["target_vel"] = "16390 + ($channel - 1) * 20",
-                ["target_accel"] = "16392 + ($channel - 1) * 20",
-                ["target_decel"] = "16394 + ($channel - 1) * 20",
-                ["data_available"] = "100035 + ($channel - 1)",
-                ["go_cue"] = "100033 + ($channel - 1)",
-                ["go_jog"] = "100034 + ($channel - 1)",
-                ["busy"] = "16385 + ($channel - 1)",
-                ["error_code"] = "1 + ($channel - 1)"
+                ["target_pos"] = new SprocketModbusTarget{Address = "16388 + ($channel - 1) * 20", ModbusDataType = ModbusDataType.Register16},
+                ["target_vel"] = new SprocketModbusTarget { Address = "16390 + ($channel - 1) * 20", ModbusDataType = ModbusDataType.Register16},
+                ["target_accel"] = new SprocketModbusTarget { Address = "16392 + ($channel - 1) * 20", ModbusDataType = ModbusDataType.Register16 },
+                ["target_decel"] = new SprocketModbusTarget { Address = "16394 + ($channel - 1) * 20", ModbusDataType = ModbusDataType.Register16 },
+                ["data_available"] = new SprocketModbusTarget { Address = "100035 + ($channel - 1)", ModbusDataType = ModbusDataType.Coil },
+                ["go_cue"] = new SprocketModbusTarget { Address = "100033 + ($channel - 1)", ModbusDataType = ModbusDataType.Coil },
+                ["go_jog"] = new SprocketModbusTarget { Address = "100034 + ($channel - 1)", ModbusDataType = ModbusDataType.Coil },
+                ["busy"] = new SprocketModbusTarget { Address = "16385 + ($channel - 1)", ModbusDataType = ModbusDataType.Coil },
+                ["error_code"] = new SprocketModbusTarget { Address = "1 + ($channel - 1)", ModbusDataType = ModbusDataType.Register16 }
+            },
+
+            RunCueSequence = new List<SprocketStep>
+            {
+                new() { Target = "target_pos", Value = "$position" },
+                new() { Target = "target_vel", Value = "$velocity" },
+                new() { Target = "target_accel", Value = "$accel" },
+                new() { Target = "target_decel", Value = "$decel" },
+                new() { Target = "data_available", PulseMs = 25 },
+                new() { DelayMs = 10 },
+                new() { Target = "go_cue", PulseMs = 50 }
+            },
+
+            RunJogSequence = new List<SprocketStep>
+            {
+                new() { Target = "target_vel", Value = "$velocity" },
+                new() { Target = "target_accel", Value = "$accel" },
+                new() { Target = "target_decel", Value = "$decel" },
+                new() { Target = "go_jog", Value = "1" }
+            },
+
+            StopSequence = new List<SprocketStep>
+            {
+                new() { Target = "go_jog", Value = "0" },
+                new() { Target = "go_cue", Value = "0" }
+            }
+        };
+
+        public static readonly Sprocket SimulatedAxis = new()
+        {
+            Id = "simulated_axis_v1",
+            DisplayName = "AxisLink Virtual / Simulated Axis (Dev Port)",
+            Protocol = TransportProtocol.ModbusTcp,
+            DefaultDriveScaleFactor = 2000f,
+
+            AddressAliases = new Dictionary<string, SprocketModbusTarget>
+            {
+                ["target_pos"] = new SprocketModbusTarget { Address = "16388 + ($channel - 1) * 20", ModbusDataType = ModbusDataType.Register16 },
+                ["target_vel"] = new SprocketModbusTarget { Address = "16390 + ($channel - 1) * 20", ModbusDataType = ModbusDataType.Register16 },
+                ["target_accel"] = new SprocketModbusTarget { Address = "16392 + ($channel - 1) * 20", ModbusDataType = ModbusDataType.Register16 },
+                ["target_decel"] = new SprocketModbusTarget { Address = "16394 + ($channel - 1) * 20", ModbusDataType = ModbusDataType.Register16 },
+                ["data_available"] = new SprocketModbusTarget { Address = "100035 + ($channel - 1)", ModbusDataType = ModbusDataType.Coil },
+                ["go_cue"] = new SprocketModbusTarget { Address = "100033 + ($channel - 1)", ModbusDataType = ModbusDataType.Coil },
+                ["go_jog"] = new SprocketModbusTarget { Address = "100034 + ($channel - 1)", ModbusDataType = ModbusDataType.Coil },
+                ["busy"] = new SprocketModbusTarget { Address = "16385 + ($channel - 1)", ModbusDataType = ModbusDataType.Coil },
+                ["error_code"] = new SprocketModbusTarget { Address = "1 + ($channel - 1)", ModbusDataType = ModbusDataType.Register16 }
             },
 
             RunCueSequence = new List<SprocketStep>
@@ -39,7 +85,7 @@ namespace AxisLink.Infrastructure.Sprockets
                 new() { Target = "go_cue", PulseMs = 50 }
             },
 
-            RunJogSequence = new List<SprocketStep>
+                    RunJogSequence = new List<SprocketStep>
             {
                 new() { Target = "target_vel", Value = "{Target.Velocity}" },
                 new() { Target = "target_accel", Value = "{Target.Accel}" },
@@ -47,12 +93,13 @@ namespace AxisLink.Infrastructure.Sprockets
                 new() { Target = "go_jog", Value = "1" }
             },
 
-            StopSequence = new List<SprocketStep>
+                    StopSequence = new List<SprocketStep>
             {
                 new() { Target = "go_jog", Value = "0" },
-                new() { Target = "go_cue", Value = "0" }
+                new() { Target = "go_cue", Value = "0" },
+                new() { Target = "stop", PulseMs = 50 }
             }
-        };
+                };
 
-    }
+            }
 }
